@@ -1,2 +1,7 @@
 #!/usr/bin/env ruby
+require "fileutils"
+
+# Development serves source assets. A precompiled manifest would make Propshaft
+# serve an old snapshot even after stylesheets and JavaScript have changed.
+FileUtils.rm_f(File.expand_path("../public/assets/.manifest.json", __dir__))
 exec "./bin/rails", "server", *ARGV

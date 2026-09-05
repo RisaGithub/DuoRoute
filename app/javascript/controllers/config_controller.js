@@ -1,7 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["weight", "sum", "warning", "config"]
+  static targets = ["weight", "sum", "warning", "config", "settings"]
+  static values = { catalog: Object, modes: Object }
+
+  strategy(event) {
+    const entry = this.catalogValue[event.target.value] || this.modesValue[event.target.value]
+    if (!entry) return
+    this.weightTargets.forEach(input => {
+      const key = input.name.match(/\[(.+)\]/)[1]
+      input.value = entry.weights[key] || 0
+    })
+    this.normalize()
+    this.settingsTarget.value = Object.entries(entry.parameters.provider_overrides || {}).flatMap(([name, values]) => Object.entries(values).map(([key, value]) => `provider_overrides.${name}.${key}=${JSON.stringify(value)}`)).join("\n")
+  }
 
   connect() { this.normalize() }
 
@@ -13,7 +25,7 @@ export default class extends Controller {
 
   save(event) {
     localStorage.setItem("duoroute-routing-config", this.configTarget.value)
-    event.currentTarget.textContent = "Сохранено"
+    event.currentTarget.querySelector(".icon-label__text").textContent = "Сохранено"
   }
 
   restore() {

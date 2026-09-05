@@ -1,0 +1,332 @@
+{
+  "simulation": {
+    "source": "scripted",
+    "minimum_samples": 20,
+    "latency_method": "mean",
+    "failure_expired_share": 0.2,
+    "latency_spread_sec": 0
+  },
+  "routing": {
+    "fallback_provider": "spacepayments",
+    "timeout_mode": "fallback_on_timeout"
+  },
+  "provider_overrides": {
+    "vipay": {
+      "traffic_percentage": 40,
+      "volume_share_pct": 50,
+      "priority": 1,
+      "preferred_amount_min": 50001,
+      "preferred_amount_max": 100000,
+      "requests_per_minute_limit": 7,
+      "daily_turnover_max": 5000000
+    },
+    "payflow": {
+      "traffic_percentage": 35,
+      "volume_share_pct": 25,
+      "priority": 2,
+      "preferred_amount_min": 500,
+      "preferred_amount_max": 50000,
+      "requests_per_minute_limit": 15,
+      "daily_turnover_min": 2000000
+    },
+    "quickpay": {
+      "traffic_percentage": 25,
+      "volume_share_pct": 25,
+      "priority": 3,
+      "preferred_amount_min": 100000.01,
+      "preferred_amount_max": null,
+      "requests_per_minute_limit": 20
+    }
+  },
+  "schema_version": "1.0",
+  "calibration": {
+    "enabled": false,
+    "minimum_samples": 20,
+    "prior_strength": 30
+  },
+  "presets": {
+    "balanced": {
+      "policy_priorities": [
+        "count_share",
+        "volume_share",
+        "turnover_commitment",
+        "conversion",
+        "load_safe",
+        "cascade",
+        "preferred_amount",
+        "intensity",
+        "economy"
+      ],
+      "weights": {
+        "count_share": 2.0,
+        "volume_share": 1.8,
+        "cascade": 0.6,
+        "preferred_amount": 0.8,
+        "conversion": 1.2,
+        "load_safe": 1.3,
+        "intensity": 0.5,
+        "turnover_commitment": 1.4,
+        "economy": 0.7
+      }
+    },
+    "conversion_first": {
+      "policy_priorities": [
+        "conversion",
+        "load_safe"
+      ],
+      "weights": {
+        "conversion": 3.0,
+        "load_safe": 0.7,
+        "economy": 0.3
+      }
+    },
+    "load_safe": {
+      "weights": {
+        "load_safe": 3.0,
+        "intensity": 1.0,
+        "conversion": 0.5
+      }
+    },
+    "economy_first": {
+      "weights": {
+        "economy": 3.0,
+        "conversion": 0.8,
+        "load_safe": 0.5
+      }
+    },
+    "count_share": {
+      "weights": {
+        "count_share": 1.0
+      },
+      "policy_priorities": [
+        "count_share"
+      ]
+    },
+    "volume_share": {
+      "weights": {
+        "volume_share": 1.0
+      },
+      "policy_priorities": [
+        "volume_share"
+      ]
+    },
+    "cascade": {
+      "weights": {
+        "cascade": 1.0
+      },
+      "policy_priorities": [
+        "cascade"
+      ]
+    },
+    "amount_range": {
+      "weights": {
+        "preferred_amount": 1.0
+      },
+      "policy_priorities": [
+        "preferred_amount"
+      ]
+    },
+    "conversion": {
+      "weights": {
+        "conversion": 1.0
+      },
+      "policy_priorities": [
+        "conversion"
+      ]
+    },
+    "intensity": {
+      "weights": {
+        "intensity": 1.0
+      },
+      "policy_priorities": [
+        "intensity"
+      ]
+    },
+    "turnover_commitment": {
+      "weights": {
+        "turnover_commitment": 1.0
+      },
+      "policy_priorities": [
+        "turnover_commitment"
+      ]
+    },
+    "custom": {
+      "policy_priorities": [
+        "count_share",
+        "volume_share",
+        "turnover_commitment",
+        "conversion",
+        "load_safe",
+        "cascade",
+        "preferred_amount",
+        "intensity",
+        "economy"
+      ],
+      "weights": {
+        "count_share": 2.0,
+        "volume_share": 1.8,
+        "cascade": 0.6,
+        "preferred_amount": 0.8,
+        "conversion": 1.2,
+        "load_safe": 1.3,
+        "intensity": 0.5,
+        "turnover_commitment": 1.4,
+        "economy": 0.7
+      }
+    }
+  },
+  "resolved_strategy": "balanced",
+  "user_configuration": {
+    "schema_version": "1.0",
+    "routing": {
+      "fallback_provider": "spacepayments",
+      "timeout_mode": "fallback_on_timeout"
+    },
+    "simulation": {
+      "source": "history",
+      "minimum_samples": 20,
+      "latency_method": "mean",
+      "failure_expired_share": 0.2,
+      "latency_spread_sec": 0
+    },
+    "calibration": {
+      "enabled": false,
+      "minimum_samples": 20,
+      "prior_strength": 30
+    },
+    "provider_overrides": {},
+    "presets": {
+      "balanced": {
+        "policy_priorities": [
+          "count_share",
+          "volume_share",
+          "turnover_commitment",
+          "conversion",
+          "load_safe",
+          "cascade",
+          "preferred_amount",
+          "intensity",
+          "economy"
+        ],
+        "weights": {
+          "count_share": 2.0,
+          "volume_share": 1.8,
+          "cascade": 0.6,
+          "preferred_amount": 0.8,
+          "conversion": 1.2,
+          "load_safe": 1.3,
+          "intensity": 0.5,
+          "turnover_commitment": 1.4,
+          "economy": 0.7
+        }
+      },
+      "conversion_first": {
+        "policy_priorities": [
+          "conversion",
+          "load_safe"
+        ],
+        "weights": {
+          "conversion": 3.0,
+          "load_safe": 0.7,
+          "economy": 0.3
+        }
+      },
+      "load_safe": {
+        "weights": {
+          "load_safe": 3.0,
+          "intensity": 1.0,
+          "conversion": 0.5
+        }
+      },
+      "economy_first": {
+        "weights": {
+          "economy": 3.0,
+          "conversion": 0.8,
+          "load_safe": 0.5
+        }
+      },
+      "count_share": {
+        "weights": {
+          "count_share": 1.0
+        },
+        "policy_priorities": [
+          "count_share"
+        ]
+      },
+      "volume_share": {
+        "weights": {
+          "volume_share": 1.0
+        },
+        "policy_priorities": [
+          "volume_share"
+        ]
+      },
+      "cascade": {
+        "weights": {
+          "cascade": 1.0
+        },
+        "policy_priorities": [
+          "cascade"
+        ]
+      },
+      "amount_range": {
+        "weights": {
+          "preferred_amount": 1.0
+        },
+        "policy_priorities": [
+          "preferred_amount"
+        ]
+      },
+      "conversion": {
+        "weights": {
+          "conversion": 1.0
+        },
+        "policy_priorities": [
+          "conversion"
+        ]
+      },
+      "intensity": {
+        "weights": {
+          "intensity": 1.0
+        },
+        "policy_priorities": [
+          "intensity"
+        ]
+      },
+      "turnover_commitment": {
+        "weights": {
+          "turnover_commitment": 1.0
+        },
+        "policy_priorities": [
+          "turnover_commitment"
+        ]
+      },
+      "custom": {
+        "policy_priorities": [
+          "count_share",
+          "volume_share",
+          "turnover_commitment",
+          "conversion",
+          "load_safe",
+          "cascade",
+          "preferred_amount",
+          "intensity",
+          "economy"
+        ],
+        "weights": {
+          "count_share": 2.0,
+          "volume_share": 1.8,
+          "cascade": 0.6,
+          "preferred_amount": 0.8,
+          "conversion": 1.2,
+          "load_safe": 1.3,
+          "intensity": 0.5,
+          "turnover_commitment": 1.4,
+          "economy": 0.7
+        }
+      }
+    },
+    "settings": []
+  },
+  "seed": 42
+}

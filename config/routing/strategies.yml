@@ -1,0 +1,188 @@
+{
+  "count_share": {
+    "name": "count_share",
+    "title": "Доли по количеству",
+    "description": "Распределяет заявки по целевым процентам.",
+    "policies": [
+      "count_share"
+    ],
+    "weights": {
+      "count_share": 1.0
+    },
+    "policy_priorities": [
+      "count_share"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "vipay": {
+          "traffic_percentage": 40
+        },
+        "payflow": {
+          "traffic_percentage": 35
+        },
+        "quickpay": {
+          "traffic_percentage": 25
+        }
+      }
+    },
+    "example": "vipay 40%, payflow 35%, quickpay 25%."
+  },
+  "volume_share": {
+    "name": "volume_share",
+    "title": "Доли по сумме",
+    "description": "Приближает распределение денег к заданным долям.",
+    "policies": [
+      "volume_share"
+    ],
+    "weights": {
+      "volume_share": 1.0
+    },
+    "policy_priorities": [
+      "volume_share"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "vipay": {
+          "volume_share_pct": 50
+        },
+        "payflow": {
+          "volume_share_pct": 25
+        },
+        "quickpay": {
+          "volume_share_pct": 25
+        }
+      }
+    },
+    "example": "vipay 50%, остальные вместе 50%."
+  },
+  "cascade": {
+    "name": "cascade",
+    "title": "Очередь провайдеров",
+    "description": "Пробует доступных провайдеров по порядку.",
+    "policies": [
+      "cascade"
+    ],
+    "weights": {
+      "cascade": 1.0
+    },
+    "policy_priorities": [
+      "cascade"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "vipay": {
+          "priority": 1
+        },
+        "payflow": {
+          "priority": 2
+        },
+        "quickpay": {
+          "priority": 3
+        }
+      }
+    },
+    "example": "vipay → payflow → quickpay."
+  },
+  "amount_range": {
+    "name": "amount_range",
+    "title": "Диапазоны сумм",
+    "description": "Предпочитает провайдера для суммы заявки. Жёсткие ограничения действуют всегда.",
+    "policies": [
+      "preferred_amount"
+    ],
+    "weights": {
+      "preferred_amount": 1.0
+    },
+    "policy_priorities": [
+      "preferred_amount"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "payflow": {
+          "preferred_amount_min": 500,
+          "preferred_amount_max": 50000
+        },
+        "vipay": {
+          "preferred_amount_min": 50001,
+          "preferred_amount_max": 100000
+        },
+        "quickpay": {
+          "preferred_amount_min": 100000.01,
+          "preferred_amount_max": null
+        }
+      }
+    },
+    "example": "500–50 000 → payflow; 50 001–100 000 → vipay; больше 100 000 → quickpay."
+  },
+  "conversion": {
+    "name": "conversion",
+    "title": "Успешность",
+    "description": "Предпочитает провайдера с более высокой conversion_24h из snapshot.",
+    "policies": [
+      "conversion"
+    ],
+    "weights": {
+      "conversion": 1.0
+    },
+    "policy_priorities": [
+      "conversion"
+    ],
+    "parameters": {
+      "provider_overrides": {}
+    },
+    "example": "Выше conversion_24h — выше предпочтение."
+  },
+  "intensity": {
+    "name": "intensity",
+    "title": "Запросы в минуту",
+    "description": "Учитывает число попыток за последние 60 секунд.",
+    "policies": [
+      "intensity"
+    ],
+    "weights": {
+      "intensity": 1.0
+    },
+    "policy_priorities": [
+      "intensity"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "vipay": {
+          "requests_per_minute_limit": 7
+        },
+        "payflow": {
+          "requests_per_minute_limit": 15
+        },
+        "quickpay": {
+          "requests_per_minute_limit": 20
+        }
+      }
+    },
+    "example": "Настраиваемое число запросов в минуту для каждого провайдера."
+  },
+  "turnover_commitment": {
+    "name": "turnover_commitment",
+    "title": "Дневной оборот",
+    "description": "Помогает достигать минимального оборота и учитывать верхнюю цель.",
+    "policies": [
+      "turnover_commitment"
+    ],
+    "weights": {
+      "turnover_commitment": 1.0
+    },
+    "policy_priorities": [
+      "turnover_commitment"
+    ],
+    "parameters": {
+      "provider_overrides": {
+        "payflow": {
+          "daily_turnover_min": 2000000
+        },
+        "vipay": {
+          "daily_turnover_max": 5000000
+        }
+      }
+    },
+    "example": "payflow не менее 2 000 000 ₽; vipay не более 5 000 000 ₽."
+  }
+}

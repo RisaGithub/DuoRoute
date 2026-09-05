@@ -3,10 +3,10 @@
 class RoutingRunsController < ApplicationController
   MAX_UPLOAD = 10 * 1024 * 1024
 
-  before_action :set_run, only: %i[show progress operation download]
+  before_action :set_run, only: %i[show progress operation download preview]
 
   def index
-    @runs = RoutingRun.recent.limit(50)
+    @runs = RoutingRun.recent
   end
 
   def new
@@ -15,6 +15,10 @@ class RoutingRunsController < ApplicationController
   end
 
   def create
+    params[:preset] = params[:preset].presence || "balanced"
+    params[:timeout_mode] = params[:timeout_mode].presence || "fallback_on_timeout"
+    params[:simulator_mode] = params[:simulator_mode].presence || "history"
+    params[:seed] = params[:seed].presence || 42
     providers_text = input_content(:providers_file, :providers_text, default_inputs[:providers])
     operations_text = input_content(:operations_file, :operations_text, default_inputs[:operations])
     config_text = input_content(:config_file, :config_text, default_inputs[:config])
@@ -22,15 +26,27 @@ class RoutingRunsController < ApplicationController
     outcomes_text = optional_content(:outcomes_file, :outcomes_text)
     providers = DuoRoute::Input::Loader.json_string(providers_text, label: "providers upload")
     operations = DuoRoute::Input::Loader.json_string(operations_text, label: "operations upload")
+    DuoRoute::Configuration.fail!("strategy", "неизвестная стратегия") unless RoutingRun::PRESETS.include?(params[:preset])
     config = parse_config(config_text)
+    config = DuoRoute::Configuration.resolve(config, strategy: params[:preset].presence || "balanced", settings: params[:settings].to_s.lines.map(&:strip).reject(&:empty?))
     apply_policy_weights!(config)
     outcomes = outcomes_text.present? ? DuoRoute::Input::Loader.json_string(outcomes_text, label: "outcomes upload") : nil
     history = history_text.present? ? DuoRoute::Input::Loader.csv_string(history_text, label: "history upload") : []
     preview_config = JSON.parse(JSON.generate(config))
     preview_config["routing"] ||= {}
     preview_config["routing"]["timeout_mode"] = params[:timeout_mode]
-    DuoRoute::Runner.new(providers_data: providers, operations:, config: preview_config, history:,
-      preset: params[:preset], seed: params[:seed], outcomes: params[:simulator_mode] == "scripted" ? outcomes : nil).validate!
+    preview_config["simulation"] ||= {}
+    preview_config["simulation"]["source"] = params[:simulator_mode] == "seeded" ? "provider_snapshot" : params[:simulator_mode].presence || "history"
+    runner = DuoRoute::Runner.new(providers_data: providers, operations:, config: preview_config, history:,
+      preset: params[:preset], seed: params[:seed], outcomes: params[:simulator_mode] == "scripted" ? outcomes : nil)
+    runner.validate!
+    config = runner.config
+    config["user_configuration"] ||= {}
+    config["user_configuration"]["settings"] = params[:settings].to_s.lines.map(&:strip).reject(&:empty?)
+    config["user_configuration"]["custom_weights"] = config.dig("presets", params[:preset], "weights") if params[:custom_weights] == "1"
+    config["input_metadata"] = { providers: providers_text, operations: operations_text, history: history_text, outcomes: outcomes_text, config: config_text }.to_h do |key, content|
+      [ key.to_s, { "filename" => params["#{key}_file"]&.original_filename, "bytes" => content.to_s.bytesize, "sha256" => Digest::SHA256.hexdigest(content.to_s) } ]
+    end
     run = RoutingRun.create!(name: params[:name].presence || "Run #{Time.current.strftime('%d.%m %H:%M')}",
       preset: params[:preset], timeout_mode: params[:timeout_mode], simulator_mode: params[:simulator_mode], seed: params[:seed],
       providers_json: JSON.generate(providers), operations_json: JSON.generate(operations), config_json: JSON.generate(config),
@@ -60,17 +76,40 @@ class RoutingRunsController < ApplicationController
   end
 
   def download
-    artifact, filename, type = case params[:artifact]
-    when "decisions" then [ @run.decisions_json, "routing_decisions.json", "application/json" ]
-    when "report" then [ @run.report_json, "routing_report.json", "application/json" ]
-    when "config" then [ DuoRoute.pretty_json(@run.config), "routing_config.json", "application/json" ]
-    when "manifest" then [ DuoRoute.pretty_json(@run.manifest), "routing_manifest.json", "application/json" ]
-    else raise ActiveRecord::RecordNotFound
-    end
+    artifact, filename, type = artifact_data
     send_data artifact, filename:, type:, disposition: "attachment"
   end
 
+  def preview
+    content, @filename, type = artifact_data
+    @content = if content.blank?
+      ""
+    elsif type == "application/json"
+      JSON.pretty_generate(JSON.parse(content))
+    else
+      content
+    end
+    respond_to do |format|
+      format.html
+      format.json { render json: { filename: @filename, content: @content } }
+    end
+  end
+
   private
+
+  def artifact_data
+    case params[:artifact]
+    when "decisions" then [ @run.decisions_json, "routing_decisions.json", "application/json" ]
+    when "report" then [ @run.report_json, "routing_report.json", "application/json" ]
+    when "config" then [ DuoRoute.pretty_json(@run.config), "routing_config.json", "application/json" ]
+    when "providers" then [ @run.providers_json, "providers.json", "application/json" ]
+    when "operations" then [ @run.operations_json, "operations.json", "application/json" ]
+    when "history" then [ @run.history_csv.to_s, "operations_history.csv", "text/csv" ]
+    when "outcomes" then [ @run.outcomes_json || "{}", "outcomes.json", "application/json" ]
+    when "manifest" then [ DuoRoute.pretty_json(@run.manifest), "routing_manifest.json", "application/json" ]
+    else raise ActiveRecord::RecordNotFound
+    end
+  end
 
   def set_run = @run = RoutingRun.find(params[:id])
 
@@ -86,6 +125,7 @@ class RoutingRunsController < ApplicationController
   end
 
   def parse_config(text)
+    text = text.to_s
     stripped = text.lstrip
     DuoRoute::Input::Loader.config_string(text, label: "config upload", format: stripped.start_with?("{") ? :json : :yaml)
   end
@@ -99,11 +139,17 @@ class RoutingRunsController < ApplicationController
   end
 
   def set_weight_defaults
-    parsed = parse_config(@defaults[:config])
+    base = parse_config(@defaults[:config])
+    @mode_defaults = %w[balanced custom].to_h do |mode|
+      resolved = DuoRoute::Configuration.resolve(base, strategy: mode)
+      [ mode, { "weights" => resolved.dig("presets", mode, "weights") || {}, "parameters" => resolved.slice("provider_overrides") } ]
+    end
+    parsed = DuoRoute::Configuration.resolve(base, strategy: params[:preset].presence || "balanced")
     preset = params[:preset].presence || "balanced"
     @weight_defaults = parsed.dig("presets", preset, "weights") || parsed.dig("presets", "balanced", "weights") || {}
   rescue DuoRoute::InputError
     @weight_defaults = {}
+    @mode_defaults = {}
   end
 
   def apply_policy_weights!(config)
@@ -113,11 +159,13 @@ class RoutingRunsController < ApplicationController
     return unless submitted.respond_to?(:to_unsafe_h)
 
     allowed = DuoRoute::Validation::InputValidator::POLICY_NAMES
-    weights = submitted.to_unsafe_h.slice(*allowed).transform_values { |value| Float(value) }
+    unknown = submitted.keys - allowed
+    DuoRoute::Configuration.fail!("weights", "неизвестные факторы: #{unknown.join(', ')}") if unknown.any?
+    weights = submitted.to_unsafe_h.transform_values { |value| Float(value) }
     config["presets"] ||= {}
     config["presets"][params[:preset]] ||= {}
     config["presets"][params[:preset]]["weights"] = weights
-  rescue ArgumentError
+  rescue ArgumentError, TypeError
     raise DuoRoute::InputError, [ DuoRoute::ValidationIssue.new(path: "$config.weights", code: "invalid_weight", message: "все веса должны быть числами") ]
   end
 end

@@ -1,3 +1,11 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DuoRoute">
+  <defs>
+    <linearGradient id="duoroute-gradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7184ff"/>
+      <stop offset="1" stop-color="#27c7ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="17" fill="#101522"/>
+  <rect x="5" y="5" width="54" height="54" rx="14" fill="url(#duoroute-gradient)"/>
+  <path d="M21 17h12.5C44.4 17 51 22.7 51 32S44.4 47 33.5 47H21V17Zm12.1 22.2c5.9 0 8.9-2.4 8.9-7.2s-3-7.2-8.9-7.2H30v14.4h3.1Z" fill="#fff"/>
 </svg>

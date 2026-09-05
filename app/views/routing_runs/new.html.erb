@@ -4,47 +4,49 @@
   <section class="alert alert--error"><strong>Вход не прошёл валидацию</strong><ul><% @issues.each do |issue| %><li><code><%= issue.path %></code> — <%= issue.message %></li><% end %></ul></section>
 <% end %>
 
-<%= form_with url: runs_path, multipart: true, class: "wizard", data: { controller: "config" } do |form| %>
+<%= form_with url: runs_path, multipart: true, class: "wizard", data: { controller: "config", config_catalog_value: DuoRoute::StrategyCatalog.all.to_json, config_modes_value: @mode_defaults.to_json } do |form| %>
   <section class="card panel">
-    <div class="section-head"><div><p class="step">01</p><h2>Входные данные</h2><p class="hint">Файл имеет приоритет над текстовым полем. Лимит 10 МБ, только локальный разбор.</p></div></div>
+    <div class="section-head"><div><p class="step">01</p><h2><%= icon_label("Входные данные") %></h2><p class="hint">Файл имеет приоритет над текстовым полем. Лимит 10 МБ, только локальный разбор.</p></div></div>
     <div class="form-grid form-grid--2">
-      <label class="field"><span>Название запуска</span><%= text_field_tag :name, nil, class: "input", placeholder: "Public demo · balanced" %></label>
-      <label class="field"><span>Providers JSON</span><%= file_field_tag :providers_file, accept: ".json,application/json", class: "file" %></label>
-      <label class="field"><span>Operations JSON</span><%= file_field_tag :operations_file, accept: ".json,application/json", class: "file" %></label>
-      <label class="field"><span>History CSV · optional</span><%= file_field_tag :history_file, accept: ".csv,text/csv", class: "file" %></label>
-      <label class="field"><span>Config YAML / JSON</span><%= file_field_tag :config_file, accept: ".yml,.yaml,.json", class: "file" %></label>
-      <label class="field"><span>Scripted outcomes · optional</span><%= file_field_tag :outcomes_file, accept: ".json,application/json", class: "file" %></label>
+      <label class="field"><span><%= icon_label("Название запуска") %></span><%= text_field_tag :name, params[:name], class: "input", placeholder: "Public demo · balanced" %></label>
+      <label class="field"><span><%= icon_label("Providers JSON") %></span><%= file_field_tag :providers_file, accept: ".json,application/json", class: "file" %></label>
+      <label class="field"><span><%= icon_label("Operations JSON") %></span><%= file_field_tag :operations_file, accept: ".json,application/json", class: "file" %></label>
+      <label class="field"><span><%= icon_label("History CSV · optional") %></span><%= file_field_tag :history_file, accept: ".csv,text/csv", class: "file" %></label>
+      <label class="field"><span><%= icon_label("Config YAML / JSON") %></span><%= file_field_tag :config_file, accept: ".yml,.yaml,.json", class: "file" %></label>
+      <label class="field"><span><%= icon_label("Scripted outcomes · optional") %></span><%= file_field_tag :outcomes_file, accept: ".json,application/json", class: "file" %></label>
     </div>
-    <details class="manual" open><summary>Ручной режим / preview входа</summary>
+    <details class="manual" open><summary><%= icon_label("Ручной режим / preview входа", "settings") %></summary>
       <div class="form-grid form-grid--2">
-        <label class="field"><span>providers.json</span><%= text_area_tag :providers_text, @defaults[:providers], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span>operations.json</span><%= text_area_tag :operations_text, @defaults[:operations], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span>routing config</span><%= text_area_tag :config_text, @defaults[:config], class: "code-input", rows: 12, spellcheck: false, data: { config_target: "config" } %></label>
-        <label class="field"><span>history.csv · optional</span><%= text_area_tag :history_text, @defaults[:history], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span>outcomes.json · scripted only</span><%= text_area_tag :outcomes_text, @defaults[:outcomes], class: "code-input", rows: 10, spellcheck: false %></label>
+        <label class="field"><span><%= icon_label("providers.json") %></span><%= text_area_tag :providers_text, @defaults[:providers], class: "code-input", rows: 12, spellcheck: false %></label>
+        <label class="field"><span><%= icon_label("operations.json") %></span><%= text_area_tag :operations_text, @defaults[:operations], class: "code-input", rows: 12, spellcheck: false %></label>
+        <label class="field"><span><%= icon_label("routing config") %></span><%= text_area_tag :config_text, @defaults[:config], class: "code-input", rows: 12, spellcheck: false, data: { config_target: "config" } %></label>
+        <label class="field"><span><%= icon_label("history.csv · optional") %></span><%= text_area_tag :history_text, @defaults[:history], class: "code-input", rows: 12, spellcheck: false %></label>
+        <label class="field"><span><%= icon_label("outcomes.json · scripted only") %></span><%= text_area_tag :outcomes_text, @defaults[:outcomes], class: "code-input", rows: 10, spellcheck: false %></label>
       </div>
     </details>
   </section>
 
   <section class="card panel">
-    <div class="section-head"><div><p class="step">02</p><h2>Стратегия и симуляция</h2></div><span class="pill pill--info">deterministic</span></div>
+    <div class="section-head"><div><p class="step">02</p><h2><%= icon_label("Стратегия и симуляция") %></h2></div><span class="pill pill--info">deterministic</span></div>
     <div class="form-grid form-grid--3">
-      <label class="field"><span>Preset</span><%= select_tag :preset, options_for_select(RoutingRun::PRESETS, params[:preset] || "balanced"), class: "select" %></label>
-      <label class="field"><span>Timeout policy</span><%= select_tag :timeout_mode, options_for_select(%w[fallback_on_timeout hold_until_status], params[:timeout_mode] || "fallback_on_timeout"), class: "select" %></label>
-      <label class="field"><span>Simulator</span><%= select_tag :simulator_mode, options_for_select(%w[scripted seeded], params[:simulator_mode] || "scripted"), class: "select" %></label>
-      <label class="field"><span>Seed</span><%= number_field_tag :seed, params[:seed] || 42, class: "input", min: 0 %></label>
+      <label class="field"><span><%= icon_label("Стратегия / режим") %></span><%= select_tag :preset, options_for_select(DuoRoute::StrategyCatalog.all.map { |key, row| [row["title"], key] } + [["Сбалансированная комбинация", "balanced"], ["Полностью пользовательская настройка", "custom"]], params[:preset] || "balanced"), class: "select", data: { action: "change->config#strategy" } %></label>
+      <label class="field"><span><%= icon_label("Timeout policy") %></span><%= select_tag :timeout_mode, options_for_select(%w[fallback_on_timeout hold_until_status], params[:timeout_mode] || "fallback_on_timeout"), class: "select" %></label>
+      <label class="field"><span><%= icon_label("Simulator") %></span><%= select_tag :simulator_mode, options_for_select([["История операций", "history"], ["Snapshot провайдера", "provider_snapshot"], ["Свои вероятности", "custom"], ["Точные outcomes", "scripted"]], params[:simulator_mode] || "history"), class: "select" %></label>
+      <label class="field"><span><%= icon_label("Seed") %></span><%= number_field_tag :seed, params[:seed] || 42, class: "input", min: 0 %></label>
     </div>
-    <div class="weight-head"><label class="check"><%= check_box_tag :custom_weights, "1", false %><strong>Переопределить preset этими весами</strong></label><span>Σ <b data-config-target="sum">0</b></span></div>
+    <label class="field"><span><%= icon_label("Изменения для этого запуска: по одному path=value на строку") %></span><%= text_area_tag :settings, params[:settings] || DuoRoute::StrategyCatalog.all.dig(params[:preset], "parameters", "provider_overrides")&.flat_map { |name, fields| fields.map { |key, value| "provider_overrides.#{name}.#{key}=#{value.to_json}" } }&.join("\n"), class: "code-input", rows: 8, data: { config_target: "settings" }, placeholder: "provider_overrides.vipay.traffic_percentage=50" %></label>
+    <p class="hint">Все параметры доступны в YAML/JSON выше или здесь: provider_overrides.NAME (traffic_percentage, volume_share_pct, priority, preferred_amount_min/max, conversion_24h, requests_per_minute_limit, daily_turnover_min/max); presets.NAME.policy_priorities — массив порядка факторов; routing.fallback_provider; simulation.minimum_samples; simulation.latency_method (mean/median); simulation.failure_expired_share — доля Expired среди неуспешных ответов. В custom: simulation.providers.NAME.approved_rate, rejected_rate, expired_rate (доли 0–1, сумма 1), average_latency_sec, latency_spread_sec. Только Approval: остаток делится согласно failure_expired_share. Настройки проверяются сервером.</p>
+    <div class="weight-head"><label class="check"><%= check_box_tag :custom_weights, "1", params[:custom_weights] == "1" %><strong>Переопределить preset этими весами</strong></label><span>Σ <b data-config-target="sum">0</b></span></div>
     <div class="weight-grid">
       <% DuoRoute::Validation::InputValidator::POLICY_NAMES.each do |policy| %>
-        <label class="field"><span><%= policy %></span><%= number_field_tag "policy_weights[#{policy}]", @weight_defaults.fetch(policy, 0), min: 0, max: 10, step: 0.1, class: "input mono", data: { config_target: "weight", action: "input->config#normalize" } %></label>
+        <label class="field"><span><%= icon_label(policy_title(policy)) %> · <code><%= policy %></code></span><%= number_field_tag "policy_weights[#{policy}]", params.dig(:policy_weights, policy) || @weight_defaults.fetch(policy, 0), min: 0, max: 10, step: 0.1, class: "input mono", data: { config_target: "weight", action: "input->config#normalize" } %></label>
       <% end %>
     </div>
     <p class="alert alert--error" data-config-target="warning" hidden>Все policies выключены: сумма весов должна быть больше нуля.</p>
     <div class="formula">combined = Σ(normalized policy score × weight) / Σ(active weights)</div>
     <p class="hint">Веса редактируются в config. Отсутствующее optional-поле отключает только свою policy. Tie-break: policy priority → provider priority → payment_system.</p>
-    <div class="toolbar"><button type="button" class="btn" data-action="config#save">Сохранить конфигурацию локально</button><button type="button" class="btn" data-action="config#restore">Восстановить</button><button type="button" class="btn" data-action="config#download">Скачать YAML</button></div>
+    <div class="toolbar"><button type="button" class="btn" data-action="config#save"><%= icon_label("Сохранить конфигурацию локально") %></button><button type="button" class="btn" data-action="config#restore"><%= icon_label("Восстановить") %></button><button type="button" class="btn" data-action="config#download"><%= icon_label("Скачать YAML") %></button></div>
   </section>
 
-  <section class="wizard__actions"><div><strong>03 · запуск</strong><p class="hint">Сначала выполняется полная валидация. Невалидный input не создаёт частичного результата.</p></div><%= form.submit "Запустить маршрутизацию", class: "btn btn--primary btn--large" %></section>
+  <section class="wizard__actions"><div><strong>03 · запуск</strong><p class="hint">Сначала выполняется полная валидация. Невалидный input не создаёт частичного результата.</p></div><%= form.button icon_label("Запустить маршрутизацию"), type: "submit", class: "btn btn--primary btn--large" %></section>
 <% end %>

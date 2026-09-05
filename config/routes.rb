@@ -7,13 +7,12 @@ Rails.application.routes.draw do
       get :progress
       get "operations/:operation_id", action: :operation, as: :operation
       get "download/:artifact", action: :download, as: :download
+      get "preview/:artifact", action: :preview, as: :preview
     end
   end
   resources :providers, only: %i[index show]
   get "strategies", to: "strategies#show"
   post "strategies/compare", to: "strategies#compare", as: :compare_strategies
-  get "analytics", to: "analytics#show"
   get "generator", to: "generators#show"
   post "generator", to: "generators#create"
-  get "methodology", to: "methodology#show"
 end

@@ -20,5 +20,5 @@ class StrategiesController < ApplicationController
 
   private
 
-  def routing_config = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/default.yml").to_s)
+  def routing_config = DuoRoute::Configuration.resolve(DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/default.yml").to_s), strategy: "balanced")
 end

@@ -20,13 +20,13 @@
 
 В public run открыть операцию с `provider_rejected`/`provider_expired` в timeline. Пояснить reserve → reject rollback → следующий provider. В New run переключить `hold_until_status`; подчеркнуть, что official default остаётся `fallback_on_timeout` из письменного ТЗ, но production-трактовка Q&A покрыта второй веткой.
 
-## 2:20–3:05 — Strategy Lab
+## 2:20–3:05 — Стратегии
 
-Выбрать balanced, cascade, conversion_first, load_safe и запустить сравнение. Показать trade-off: approval/fallback/latency и суммарное отклонение долей. Подчеркнуть reset исходного snapshot и подпись counterfactual.
+Выбрать count_share, cascade, conversion, intensity и запустить сравнение. Показать trade-off: approval/fallback/latency и суммарное отклонение долей. Подчеркнуть reset исходного snapshot и подпись counterfactual.
 
 ## 3:05–3:45 — аналитика
 
-Открыть Analytics: empirical conversion/latency из 100 history rows, snapshot остаётся canonical. Показать рекомендации с числовым evidence: utilization, deviation, success samples, turnover deficit.
+Открыть страницу запуска: empirical conversion/latency из 100 history rows, вероятности и время считаются из истории, если строк достаточно. Показать рекомендации с числовым evidence: utilization, deviation, success samples, turnover deficit.
 
 ## 3:45–4:25 — устойчивость
 
@@ -42,3 +42,5 @@ ruby script/validate_10.rb routing_decisions.json
 ## 4:25–4:50 — stopcode
 
 Показать одну команду `bin/router final ...`. Она отказывается от файла с неправильным basename, сначала валидирует всё, затем пишет два точных имени. Публичные файлы не маскируются под `_test`.
+
+В начале выберите конкретный запуск через run_id. Покажите ровно семь карточек стратегий, затем измените параметры одной из них в форме. В конце скачайте Config и Manifest и покажите повторный запуск CLI с теми же входами и seed.

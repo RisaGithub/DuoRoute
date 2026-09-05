@@ -1,3 +1,8 @@
-<%= render "shared/page_head", eyebrow: "Live snapshot", title: "Провайдеры", subtitle: "Hard limits, текущая загрузка и target-vs-fact из последнего завершённого run." %>
-<% unless @run %><div class="alert">Показан исходный public snapshot. После запуска здесь появятся фактические метрики.</div><% end %>
-<div class="provider-grid provider-grid--wide"><% @providers.each do |provider| %><%= link_to provider_path(provider["payment_system"]), class: "provider-card card" do %><div class="provider-card__head"><strong><%= provider["payment_system"] %></strong><span class="pill pill--<%= status_class(provider['status']) %>"><%= provider["status"] %></span></div><div class="stats-row"><div><span>Conversion</span><b><%= pct(provider["conversion_24h"].to_f * 100) %></b></div><div><span>Priority</span><b><%= provider["priority"] %></b></div><div><span>Requisites</span><b><%= provider["available_requisites"] %></b></div></div><div class="provider-card__metric"><span>Daily</span><b><%= money(provider["daily_approved_amount"]) %> / <%= provider["daily_amount_limit"] ? money(provider["daily_amount_limit"]) : "∞" %></b></div><div class="util"><span style="width:<%= provider['daily_amount_limit'] ? [provider['daily_approved_amount'].to_f / provider['daily_amount_limit'] * 100, 100].min : 0 %>%"></span></div><small><%= provider["banks"].empty? ? "Все банки" : provider["banks"].join(", ") %></small><% end %><% end %></div>
+<%= render "shared/page_head", eyebrow: "Snapshot запуска", title: "Провайдеры", subtitle: "Настройки и результаты выбранного запуска. Approval — успешные попытки; Latency — среднее время ответа провайдера.", run_selector: true %>
+<% if @run %>
+  <div class="provider-overview-grid">
+    <% @providers.each_with_index do |provider, index| %>
+      <%= render "overview_card", provider: provider, run: @run, index: index %>
+    <% end %>
+  </div>
+<% else %><section class="empty-state card"><p>Завершённых запусков пока нет.</p><%= link_to icon_label("Новый запуск"), new_run_path, class: "btn btn--primary" %></section><% end %>

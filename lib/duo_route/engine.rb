@@ -44,7 +44,7 @@ module DuoRoute
     def route_operation(operation, state)
       at = Time.iso8601(operation["created_at"])
       before = state.snapshot(at:)
-      external = @providers.reject { |provider| provider["payment_system"] == @fallback_name }
+      external = @providers.reject { |provider| [ @fallback_name, "spacepayments" ].include?(provider["payment_system"]) }
       fallback = @providers.find { |provider| provider["payment_system"] == @fallback_name }
       evaluations = external.to_h do |provider|
         [ provider["payment_system"], @constraints.evaluate(provider:, operation:, state:) ]
@@ -110,7 +110,7 @@ module DuoRoute
         "selected_provider" => selected["payment_system"],
         "attempts" => attempts,
         "simulated_result" => selected_outcome.result,
-        "latency_sec" => selected_outcome.latency_sec,
+        "latency_sec" => attempts.sum { |attempt| attempt.fetch("latency_sec", 0) },
         "strategy" => @preset,
         "score" => selected_rank&.dig("combined_score"),
         "score_breakdown" => selected_rank&.dig("score_breakdown") || {},

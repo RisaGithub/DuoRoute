@@ -9,7 +9,7 @@ module DuoRoute
       NUMERIC_FIELDS = %w[traffic_percentage limit_amount_min limit_amount_max daily_amount_limit daily_approved_amount
         in_progress_count_limit in_progress_count in_progress_amount_limit in_progress_amount available_requisites
         conversion_24h avg_latency_sec provider_margin_pct merchant_margin_pct priority requests_per_minute_limit
-        volume_share_pct daily_turnover_min daily_turnover_max].freeze
+        volume_share_pct daily_turnover_min daily_turnover_max preferred_amount_min preferred_amount_max].freeze
       POLICY_NAMES = %w[count_share volume_share cascade preferred_amount conversion load_safe intensity turnover_commitment economy].freeze
       TIMEOUT_MODES = %w[fallback_on_timeout hold_until_status].freeze
 
@@ -104,7 +104,7 @@ module DuoRoute
           end
           weights.each do |name, weight|
             add("$config.presets.#{preset_name}.weights.#{name}", "unknown_policy", "неизвестная policy") unless POLICY_NAMES.include?(name)
-            add("$config.presets.#{preset_name}.weights.#{name}", "invalid_weight", "вес должен быть неотрицательным числом") unless weight.is_a?(Numeric) && weight >= 0
+            add("$config.presets.#{preset_name}.weights.#{name}", "invalid_weight", "вес должен быть неотрицательным числом") unless weight.is_a?(Numeric) && weight.finite? && weight >= 0
           end
           add("$config.presets.#{preset_name}.weights", "zero_weights", "хотя бы один вес должен быть положительным") if weights.values.all? { |v| !v.is_a?(Numeric) || v <= 0 }
         end
@@ -116,8 +116,9 @@ module DuoRoute
           required(row, %w[operation_id created_at amount bank payment_system status latency_sec], path)
           iso_time(row["created_at"], "#{path}.created_at") if row["created_at"]
           begin
-            Float(row["amount"])
-            Float(row["latency_sec"])
+            amount = Float(row["amount"])
+            latency = Float(row["latency_sec"])
+            raise ArgumentError unless amount.finite? && amount.positive? && latency.finite? && latency >= 0
           rescue ArgumentError, TypeError
             add(path, "invalid_number", "amount и latency_sec должны быть числами")
           end
@@ -137,6 +138,10 @@ module DuoRoute
         NUMERIC_FIELDS.each do |field|
           value = provider[field]
           add("#{path}.#{field}", "negative_value", "значение не может быть отрицательным") if value.is_a?(Numeric) && value.negative?
+        end
+        %w[preferred_amount daily_turnover].each do |prefix|
+          low, high = provider.values_at("#{prefix}_min", "#{prefix}_max")
+          add(path, "invalid_range", "#{prefix}: минимум больше максимума") if low.is_a?(Numeric) && high.is_a?(Numeric) && low > high
         end
         if provider["limit_amount_min"].is_a?(Numeric) && provider["limit_amount_max"].is_a?(Numeric) && provider["limit_amount_min"] > provider["limit_amount_max"]
           add(path, "invalid_amount_range", "limit_amount_min больше limit_amount_max")

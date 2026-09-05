@@ -2,7 +2,7 @@
 
 class RoutingRun < ApplicationRecord
   STATUSES = %w[queued running completed failed].freeze
-  PRESETS = %w[balanced count_share volume_share cascade conversion_first load_safe turnover_commitment economy_first].freeze
+  PRESETS = (DuoRoute::StrategyCatalog.all.keys + %w[balanced custom conversion_first load_safe economy_first]).freeze
 
   validates :name, :status, :preset, :timeout_mode, :simulator_mode, presence: true
   validates :status, inclusion: { in: STATUSES }

@@ -1,0 +1,51 @@
+<% name = provider["payment_system"]
+   report = run.report
+   distribution = report.dig("distribution", name) || {}
+   volume = report.dig("volume_distribution", name) || {}
+   performance = report.dig("provider_performance", name) || {}
+   capacity = report.dig("capacity_utilization", name) || {}
+   approval = performance["success_rate_pct"]
+   utilization = capacity["daily_utilization_pct"]
+   fallback = run.decisions.count { |decision| decision["selected_provider"] == name && decision["fallback_used"] } %>
+<article class="provider-card provider-overview card" style="--provider-accent: var(--<%= %w[indigo cyan teal amber][index % 4] %>)">
+  <header class="provider-overview__head">
+    <div class="provider-overview__identity"><span class="provider-overview__icon"><%= ui_icon("providers") %></span><div><p class="eyebrow"><%= name == "spacepayments" ? "Резервный провайдер" : "Платёжный провайдер" %></p><h2><%= link_to name, provider_path(name, run_id: run.id) %></h2></div></div>
+    <span class="pill pill--<%= status_class(provider["status"]) %>"><%= icon_label(provider["status"]) %></span>
+  </header>
+
+  <div class="provider-overview__performance">
+    <div class="provider-ring" role="img" aria-label="Approval: <%= pct(approval) %>" style="--ring-value: <%= approval.to_f.clamp(0, 100) %>%">
+      <div><strong><%= pct(approval) %></strong><span>Approval</span></div>
+    </div>
+    <div class="provider-overview__figures">
+      <div><span>Назначено операций</span><strong><%= distribution["count"] || 0 %></strong></div>
+      <div><span>Общая сумма</span><strong><%= money(volume["amount"]) %></strong></div>
+      <div><span><%= icon_label("Средний ответ", "clock") %></span><b><%= performance["average_latency_sec"].nil? ? "—" : "#{performance['average_latency_sec']} с" %></b></div>
+    </div>
+  </div>
+
+  <div class="provider-overview__bars">
+    <% [["Доля операций", distribution], ["Доля суммы", volume]].each do |label, values| %>
+      <div class="provider-meter">
+        <div class="provider-meter__label"><span><%= label %></span><strong><%= pct(values["share_pct"]) %></strong></div>
+        <div class="provider-meter__track" role="img" aria-label="<%= label %>: <%= pct(values['share_pct']) %>, цель <%= pct(values['target_pct']) %>">
+          <span style="width: <%= values["share_pct"].to_f.clamp(0, 100) %>%"></span>
+          <% unless values["target_pct"].nil? %><i style="left: <%= values["target_pct"].to_f.clamp(0, 100) %>%" aria-hidden="true"></i><% end %>
+        </div>
+        <div class="provider-meter__caption"><span>Фактическая доля</span><span>Цель <%= pct(values["target_pct"]) %></span></div>
+      </div>
+    <% end %>
+    <div class="provider-meter <%= 'provider-meter--warning' if utilization.to_f >= 85 %>">
+      <div class="provider-meter__label"><span>Дневной лимит</span><strong><%= capacity["daily_limit"].nil? ? "Без лимита" : pct(utilization) %></strong></div>
+      <div class="provider-meter__track" role="img" aria-label="Загрузка дневного лимита: <%= pct(utilization) %>"><span style="width: <%= utilization.to_f.clamp(0, 100) %>%"></span></div>
+      <div class="provider-meter__caption"><span>Использовано <%= money(capacity["daily_used"]) %></span><span><%= capacity["daily_limit"].nil? ? "∞" : money(capacity["daily_limit"]) %></span></div>
+    </div>
+  </div>
+
+  <div class="provider-overview__counters">
+    <% [["Попытки", performance["attempts"] || 0], ["Reject", performance.dig("results", "rejected") || 0], ["Expired", performance.dig("results", "expired") || 0], ["Fallback", fallback]].each do |label, value| %>
+      <div><strong><%= value %></strong><span><%= label %></span></div>
+    <% end %>
+  </div>
+  <footer class="provider-overview__footer"><span><%= provider["available_requisites"] || "—" %> реквизитов · <%= capacity["in_progress_count_end"] || 0 %> в работе</span><%= link_to icon_label("Подробнее", "arrow"), provider_path(name, run_id: run.id), class: "btn", aria: { label: "Подробнее о #{name}" } %></footer>
+</article>

@@ -1,9 +1,14 @@
-schema_version: "1.0"
+---
+schema_version: '1.0'
 routing:
   fallback_provider: spacepayments
   timeout_mode: fallback_on_timeout
 simulation:
-  expired_rate: 0.04
+  source: history
+  minimum_samples: 20
+  latency_method: mean
+  failure_expired_share: 0.2
+  latency_spread_sec: 0
 calibration:
   enabled: false
 provider_overrides:
@@ -32,7 +37,16 @@ provider_overrides:
     requests_per_minute_limit: 60
 presets:
   balanced:
-    policy_priorities: [count_share, volume_share, turnover_commitment, conversion, load_safe, cascade, preferred_amount, intensity, economy]
+    policy_priorities:
+    - count_share
+    - volume_share
+    - turnover_commitment
+    - conversion
+    - load_safe
+    - cascade
+    - preferred_amount
+    - intensity
+    - economy
     weights:
       count_share: 2.0
       volume_share: 1.8
@@ -43,17 +57,18 @@ presets:
       intensity: 0.5
       turnover_commitment: 1.4
       economy: 0.7
-  count_share:
-    weights: { count_share: 1.0 }
-  volume_share:
-    weights: { volume_share: 1.0 }
-  cascade:
-    weights: { cascade: 1.0 }
   conversion_first:
-    weights: { conversion: 3.0, load_safe: 0.7, economy: 0.3 }
+    weights:
+      conversion: 3.0
+      load_safe: 0.7
+      economy: 0.3
   load_safe:
-    weights: { load_safe: 3.0, intensity: 1.0, conversion: 0.5 }
-  turnover_commitment:
-    weights: { turnover_commitment: 3.0, load_safe: 0.8, volume_share: 0.5 }
+    weights:
+      load_safe: 3.0
+      intensity: 1.0
+      conversion: 0.5
   economy_first:
-    weights: { economy: 3.0, conversion: 0.8, load_safe: 0.5 }
+    weights:
+      economy: 3.0
+      conversion: 0.8
+      load_safe: 0.5

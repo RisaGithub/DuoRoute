@@ -1,28 +1,28 @@
 <% if @run %>
   <% finished_at = @run.completed_at || @run.updated_at %>
-  <%= render "shared/page_head", eyebrow: "Данные последнего завершённого запуска", title: "Последний запуск · #{@run.name}", subtitle: "Завершён #{l(finished_at, format: '%d.%m.%Y в %H:%M')} · #{@run.preset} · seed #{@run.seed}. Все показатели ниже относятся к этому запуску.", action_label: "Запустить очередь", action_path: new_run_path %>
+  <%= render "shared/page_head", eyebrow: "Данные выбранного завершённого запуска", title: "Запуск · #{@run.name}", subtitle: "Завершён #{l(finished_at, format: '%d.%m.%Y в %H:%M')} · #{@run.preset} · seed #{@run.seed}. Все показатели ниже относятся к этому запуску.", run_selector: true %>
 <% else %>
-  <%= render "shared/page_head", eyebrow: "Routing intelligence", title: "Операционная картина", subtitle: "Завершённых запусков пока нет.", action_label: "Запустить очередь", action_path: new_run_path %>
+  <%= render "shared/page_head", eyebrow: "Routing intelligence", title: "Операционная картина", subtitle: "Завершённых запусков пока нет.", run_selector: true %>
 <% end %>
 
 <% if @run %>
   <% report = @run.report %>
   <section class="kpis" aria-label="Ключевые показатели">
-    <article class="kpi card"><span>Операции</span><strong><%= report["total_operations"] %></strong><small><%= money(report["total_amount"]) %> объёма</small></article>
-    <article class="kpi card"><span>Approval</span><strong><%= pct(report["approval_rate_pct"]) %></strong><small><%= report.fetch("results", {}).map { |k,v| "#{k}: #{v}" }.join(" · ") %></small></article>
-    <article class="kpi card"><span>Fallback</span><strong><%= pct(report["fallback_rate_pct"]) %></strong><small>после исчерпания external pool</small></article>
-    <article class="kpi card"><span>Latency</span><strong><%= report["average_latency_sec"] %>с</strong><small>средняя по финальным попыткам</small></article>
-    <article class="kpi card"><span>Отклонения</span><strong><%= report.fetch("target_exceptions", []).length %></strong><small>объяснённых target exceptions</small></article>
+    <article class="kpi card"><span><%= icon_label("Операции") %></span><strong><%= report["total_operations"] %></strong><small><%= money(report["total_amount"]) %> объёма</small></article>
+    <article class="kpi card"><span><%= icon_label("Approval") %></span><strong><%= pct(report["approval_rate_pct"]) %></strong><small><%= report.fetch("results", {}).map { |k,v| "#{k}: #{v}" }.join(" · ") %></small></article>
+    <article class="kpi card"><span><%= icon_label("Fallback") %></span><strong><%= pct(report["fallback_rate_pct"]) %></strong><small>после исчерпания external pool</small></article>
+    <article class="kpi card"><span><%= icon_label("Latency") %></span><strong><%= report["average_latency_sec"] %>с</strong><small>среднее время итогового ответа</small></article>
+    <article class="kpi card"><span><%= icon_label("Отклонения") %></span><strong><%= report.fetch("target_exceptions", []).length %></strong><small>объяснённых target exceptions</small></article>
   </section>
 
   <% dist = report.fetch("distribution", {}) %>
   <section class="grid grid--2">
     <article class="card panel">
-      <div class="section-head"><div><p class="eyebrow">Count share</p><h2>Цель и факт</h2></div><span class="pill pill--ok">online</span></div>
+      <div class="section-head"><div><p class="eyebrow">Count share</p><h2><%= icon_label("Цель и факт") %></h2></div><span class="pill pill--ok">online</span></div>
       <div class="chart"><canvas data-controller="chart" data-chart-title-value="Count share" data-chart-labels-value="<%= dist.keys.to_json %>" data-chart-target-value="<%= dist.values.map { |v| v['target_pct'] }.to_json %>" data-chart-fact-value="<%= dist.values.map { |v| v['share_pct'] }.to_json %>" role="img" aria-label="Сравнение целевой и фактической доли по количеству"></canvas></div>
     </article>
     <article class="card panel">
-      <div class="section-head"><div><p class="eyebrow">Decision signals</p><h2>Причины исключений</h2></div></div>
+      <div class="section-head"><div><p class="eyebrow">Decision signals</p><h2><%= icon_label("Причины исключений") %></h2></div></div>
       <div class="reason-list">
         <% report.fetch("skip_reasons", {}).sort_by { |_, v| -v }.each do |reason, count| %>
           <div class="reason"><code><%= reason %></code><span class="bar"><i style="width:<%= [count * 8, 100].min %>%"></i></span><strong><%= count %></strong></div>
@@ -32,12 +32,12 @@
   </section>
 
   <section>
-    <div class="section-head"><div><p class="eyebrow">Provider health</p><h2>Capacity и распределение</h2></div><%= link_to "Все провайдеры →", providers_path, class: "text-link" %></div>
+    <div class="section-head"><div><p class="eyebrow">Provider health</p><h2><%= icon_label("Capacity и распределение") %></h2></div><%= link_to icon_label("Все провайдеры →"), providers_path(run_id: @run.id), class: "text-link" %></div>
     <div class="provider-grid">
       <% @run.providers.fetch("providers", []).each do |provider| %>
         <% name = provider["payment_system"]; row = report.dig("distribution", name) || {}; cap = report.dig("capacity_utilization", name) || {} %>
-        <%= link_to provider_path(name), class: "provider-card card" do %>
-          <div class="provider-card__head"><strong><%= name %></strong><span class="pill pill--<%= status_class(provider['status']) %>"><%= provider["status"] %></span></div>
+        <%= link_to provider_path(name, run_id: @run.id), class: "provider-card card" do %>
+          <div class="provider-card__head"><strong><%= icon_label(name, "providers") %></strong><span class="pill pill--<%= status_class(provider['status']) %>"><%= icon_label(provider["status"]) %></span></div>
           <div class="provider-card__metric"><span>count факт / цель</span><b><%= pct(row["share_pct"]) %> / <%= pct(row["target_pct"]) %></b></div>
           <div class="provider-card__metric"><span>conversion</span><b><%= pct(provider["conversion_24h"].to_f * 100) %></b></div>
           <div class="util"><span style="width:<%= [cap['daily_utilization_pct'].to_f, 100].min %>%"></span></div>
@@ -47,7 +47,7 @@
     </div>
   </section>
 <% else %>
-  <section class="empty-state card"><span class="empty-state__icon">↗</span><h2>Начните с публичной очереди</h2><p>Форма уже содержит неизменённые конкурсные примеры, balanced config и scripted outcomes для воспроизводимого fallback.</p><%= link_to "Создать первый запуск", new_run_path, class: "btn btn--primary" %></section>
+  <section class="empty-state card"><span class="empty-state__icon"><%= ui_icon("play") %></span><h2><%= icon_label("Начните с публичной очереди") %></h2><p>Форма уже содержит неизменённые конкурсные примеры, конфигурацию и историю для воспроизводимой симуляции.</p><%= link_to icon_label("Создать первый запуск"), new_run_path, class: "btn btn--primary" %></section>
 <% end %>
 
-<section><div class="section-head"><div><p class="eyebrow">Run history</p><h2>Последние запуски</h2></div><%= link_to "Вся история →", runs_path, class: "text-link" %></div><%= render "shared/run_table", runs: @recent_runs %></section>
+<%= render "shared/report_summary", report: @run.report if @run %>

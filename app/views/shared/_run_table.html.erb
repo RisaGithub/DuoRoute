@@ -3,15 +3,15 @@
     <p class="empty">Запусков пока нет. Публичный пример уже предзаполнен в форме.</p>
   <% else %>
     <table>
-      <thead><tr><th>Запуск</th><th>Статус</th><th>Стратегия</th><th class="num">Прогресс</th><th class="num">Создан</th></tr></thead>
+      <thead><tr><th>Запуск</th><th>Статус</th><th>Стратегия</th><th class="num">Прогресс</th><th>Approval</th><th>Fallback</th><th>Время, с</th><th class="num">Создан</th></tr></thead>
       <tbody>
         <% runs.each do |run| %>
           <tr>
             <td><%= link_to run.name, run_path(run), class: "table-link" %></td>
-            <td><span class="pill pill--<%= status_class(run.status) %>"><%= run.status %></span></td>
+            <td><span class="pill pill--<%= status_class(run.status) %>"><%= icon_label(run.status) %></span></td>
             <td class="mono"><%= run.preset %></td>
             <td class="num mono"><%= run.processed %>/<%= run.total %></td>
-            <td class="num muted"><%= l(run.created_at, format: :short) %></td>
+            <td><%= pct(run.report["approval_rate_pct"]) %></td><td><%= pct(run.report["fallback_rate_pct"]) %></td><td><%= run.elapsed_seconds %></td><td class="num muted"><%= l(run.created_at, format: :short) %></td>
           </tr>
         <% end %>
       </tbody>

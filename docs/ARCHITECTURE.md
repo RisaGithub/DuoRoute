@@ -30,3 +30,7 @@ Engine принимает simulator, constraint registry, progress callback и c
 ## Расширение
 
 Новая hard-проверка реализует `call(provider:, operation:, state:)` и добавляется в `Constraints::Registry::DEFAULTS`. Новая soft policy возвращает `Policies::Score`, регистрируется в `Policies::Registry::TYPES` и включается весом в config. Simulator должен реализовать `call(operation:, provider:, attempt:)`.
+
+## Единые стратегии и конфигурация
+
+`StrategyCatalog` загружает и проверяет `config/routing/strategies.yml`. `Configuration` применяет общие настройки, параметры выбранной стратегии и пользовательские изменения. Web и CLI используют этот же объект перед `Runner`. Итоговый snapshot сохраняется в config_json и Manifest, включая seed; повторная обработка resolved-конфигурации не читает новые глобальные значения. `Simulation::Profile` вычисляет вероятности и параметры времени из истории, snapshot либо пользовательских значений. `Seeded` использует эти профили. `Scripted` обслуживает точные сценарии. Выбор run_id ограничен завершёнными запусками; данные других запусков не подмешиваются.

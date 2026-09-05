@@ -1,0 +1,15 @@
+<div class="artifact-actions" role="group" aria-label="<%= label %>" data-controller="artifact-preview" data-artifact-preview-url-value="<%= preview_run_path(run, artifact, format: :json) %>" data-action="turbo:before-cache@document->artifact-preview#close">
+  <%= link_to icon_label(label, "download"), download_run_path(run, artifact), class: "btn", data: { turbo: false } %>
+  <%= button_tag ui_icon("eye"), type: "button", class: "btn btn--icon", title: "Предпросмотр: #{label}", aria: { label: "Предпросмотр: #{label}", haspopup: "dialog", controls: "preview-#{run.id}-#{artifact}" }, data: { action: "artifact-preview#open" } %>
+  <dialog id="preview-<%= run.id %>-<%= artifact %>" class="artifact-dialog" aria-labelledby="preview-title-<%= run.id %>-<%= artifact %>" data-artifact-preview-target="dialog" data-action="click->artifact-preview#backdrop close->artifact-preview#cleanup">
+    <header class="artifact-dialog__head">
+      <div><p class="eyebrow">Предпросмотр · Run #<%= run.id %></p><h2 id="preview-title-<%= run.id %>-<%= artifact %>" data-artifact-preview-target="title"><%= label %></h2></div>
+      <button type="button" class="btn btn--icon" aria-label="Закрыть предпросмотр" data-action="artifact-preview#close" autofocus><%= ui_icon("close") %></button>
+    </header>
+    <div class="artifact-dialog__body" data-artifact-preview-target="body" aria-busy="false">
+      <p class="hint" role="status" data-artifact-preview-target="status"></p>
+      <pre class="json" tabindex="0" hidden data-artifact-preview-target="pre"><code data-artifact-preview-target="content"></code></pre>
+    </div>
+    <footer class="artifact-dialog__footer"><%= link_to icon_label("Скачать файл", "download"), download_run_path(run, artifact), class: "btn", data: { turbo: false } %></footer>
+  </dialog>
+</div>

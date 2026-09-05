@@ -1,0 +1,14 @@
+<%= render "shared/page_head", eyebrow: "Предпросмотр · Run ##{@run.id}", title: @filename, subtitle: @run.name %>
+
+<div class="toolbar">
+  <%= link_to icon_label("К запуску", "arrow"), run_path(@run), class: "btn" %>
+  <%= link_to icon_label("Скачать файл", "download"), download_run_path(@run, params[:artifact]), class: "btn", data: { turbo: false } %>
+</div>
+
+<section class="card panel artifact-preview" aria-label="Содержимое файла">
+  <% if @content.empty? %>
+    <p class="empty">Файл пуст или ещё не сформирован.</p>
+  <% else %>
+    <pre class="json" tabindex="0"><code><%= @content %></code></pre>
+  <% end %>
+</section>

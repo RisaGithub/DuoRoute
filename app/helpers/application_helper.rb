@@ -3,7 +3,13 @@ module ApplicationHelper
     active = Array(controllers).include?(controller_name)
     options = { class: class_names("nav__link", "nav__link--active": active) }
     options[:aria] = { current: "page" } if active
-    link_to label, path, options
+    icon = { "dashboard" => "dashboard", "providers" => "providers", "routing_runs" => "runs", "strategies" => "strategy", "generators" => "generate" }.fetch(Array(controllers).first, "info")
+    link_to icon_label(label, icon), path, options
+  end
+
+  def policy_title(name)
+    entry = DuoRoute::StrategyCatalog.all.values.find { |strategy| strategy["policies"].include?(name) }
+    entry ? entry["title"] : { "load_safe" => "Свободная загрузка", "economy" => "Маржинальный запас" }.fetch(name, name)
   end
 
   def money(value)

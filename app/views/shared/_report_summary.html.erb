@@ -1,0 +1,7 @@
+<section class="card panel report-summary">
+  <p>Approval — процент успешных операций. Reject — отказ; Expired — ответ не получен вовремя. Latency — среднее время итогового ответа, включая предшествующие попытки. Цель — значение из настроек провайдера или стратегии. Факт — результат выбранного запуска.</p>
+  <div class="stats-row"><% %w[approved rejected expired].each do |result| %><div><span><%= icon_label(result) %></span><b><%= report.fetch("results", {}).fetch(result, 0) %></b></div><% end %></div>
+  <h2><%= icon_label("Доли по количеству") %></h2><div class="table-wrap"><table><thead><tr><th>Провайдер</th><th>Операции</th><th>Цель</th><th>Факт</th><th>Отклонение, п.п.</th></tr></thead><tbody><% report.fetch("distribution", {}).each do |name, row| %><tr><td><%= name %></td><td><%= row["count"] %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"] %></td></tr><% end %></tbody></table></div>
+  <h2><%= icon_label("Доли по сумме") %></h2><div class="table-wrap"><table><thead><tr><th>Провайдер</th><th>Сумма</th><th>Цель</th><th>Факт</th><th>Отклонение, п.п.</th></tr></thead><tbody><% report.fetch("volume_distribution", {}).each do |name, row| %><tr><td><%= name %></td><td><%= money(row["amount"]) %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"] %></td></tr><% end %></tbody></table></div>
+  <h2><%= icon_label("Рекомендации") %></h2><% report.fetch("recommendations", []).each do |item| %><p><%= item %></p><% end %>
+</section>

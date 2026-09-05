@@ -4,33 +4,46 @@ module DuoRoute
   class Runner
     attr_reader :providers_data, :operations, :config, :history
 
-    def initialize(providers_data:, operations:, config:, history: [], preset: "balanced", seed: 42,
-      outcomes: nil, progress: nil)
+    def initialize(providers_data:, operations:, config:, history: [], preset: "balanced", seed: nil,
+      outcomes: nil, progress: nil, settings: [])
       @raw_providers_data = deep_copy(providers_data)
       @operations = operations
-      @config = config
+      @config = Configuration.resolve(config, strategy: preset, settings:)
       @history = history
       @preset = preset
-      @seed = seed.to_i
+      @seed = Integer((seed || @config["seed"] || 42).to_s, exception: false)
+      Configuration.fail!("seed", "ожидается целое неотрицательное число") unless @seed && @seed >= 0
+      @config["seed"] = @seed
       @outcomes = outcomes
+      @config["simulation"] = @config.fetch("simulation", {}).merge("source" => "scripted") if outcomes
       @progress = progress
       @providers_data = apply_overrides(@raw_providers_data)
-      apply_calibration!
     end
 
     def validate!
       issues = Validation::InputValidator.new.call(providers_data: @providers_data, operations:, config:, history:)
       issues << ValidationIssue.new(path: "$config.presets.#{@preset}", code: "unknown_preset", message: "preset не найден") unless config.fetch("presets", {}).key?(@preset)
       raise InputError, issues if issues.any?
+      names = providers_data["providers"].map { |provider| provider["payment_system"] }
+      user = config.fetch("user_configuration", {})
+      submitted_names = user.fetch("provider_overrides", {}).keys + Array(user["settings"]).filter_map { |setting| setting.split(".")[1] if setting.start_with?("provider_overrides.") }
+      submitted_names += config.dig("simulation", "providers")&.keys || []
+      unknown = submitted_names.uniq - names
+      Configuration.fail!("provider_overrides", "провайдеры не найдены: #{unknown.join(', ')}") if unknown.any?
+      apply_calibration!
+      fallback = config.dig("routing", "fallback_provider") || "spacepayments"
+      Configuration.fail!("routing.fallback_provider", "провайдер не найден") unless providers_data["providers"].any? { |provider| provider["payment_system"] == fallback }
+      @simulation = Simulation::Profile.new(providers: providers_data.fetch("providers"), history:, config: config.fetch("simulation", {}), seed: @seed, outcomes: @outcomes)
+      validate_outcomes! if @simulation.source == "scripted"
       true
     end
 
     def call
       validate!
-      simulator = if @outcomes
+      simulator = if @simulation.source == "scripted"
         Simulation::Scripted.new(outcomes: @outcomes.fetch("outcomes", @outcomes), fallback: @outcomes["default"])
       else
-        Simulation::Seeded.new(seed: @seed, expired_rate: config.dig("simulation", "expired_rate") || 0.04)
+        Simulation::Seeded.new(seed: @seed, profiles: @simulation.profiles)
       end
       manifest = {
         "providers_sha256" => digest(@raw_providers_data),
@@ -38,12 +51,28 @@ module DuoRoute
         "config_sha256" => digest(config),
         "history_sha256" => history.empty? ? nil : digest(history.map { |row| row.reject { |key, _| key == "_line" } }),
         "outcomes_sha256" => @outcomes ? digest(@outcomes) : nil,
+        "resolved_configuration" => config,
+        "simulation" => @simulation.profiles,
         "seed" => @seed
       }.compact
-      Engine.new(providers_data:, operations:, config:, preset: @preset, simulator:, history:, progress: @progress).call(manifest:)
+      result = Engine.new(providers_data:, operations:, config:, preset: @preset, simulator:, history:, progress: @progress).call(manifest:)
+      result.decisions.each do |decision|
+        decision["simulation"] = @simulation.profiles.fetch(decision["selected_provider"])
+        decision["attempts"].each { |attempt| attempt["simulation"] = @simulation.profiles[attempt["provider"]] if attempt.key?("result") }
+      end
+      result.report["simulation"] = @simulation.profiles
+      result
     end
 
     private
+
+    def validate_outcomes!
+      Configuration.fail!("outcomes", "ожидается объект") unless @outcomes.is_a?(Hash)
+      scripted = Simulation::Scripted.new(outcomes: @outcomes.fetch("outcomes", @outcomes), fallback: @outcomes["default"])
+      Engine.new(providers_data:, operations:, config:, preset: @preset, simulator: scripted, history:).call
+    rescue Error, KeyError, ArgumentError, TypeError, NoMethodError => e
+      Configuration.fail!("outcomes", e.message)
+    end
 
     def apply_overrides(data)
       overrides = config.fetch("provider_overrides", {})

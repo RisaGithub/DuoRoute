@@ -10,16 +10,15 @@
         "result": "rejected",
         "latency_sec": 18,
         "sequence": 1,
-        "score": 0.587278
-      },
-      {
-        "provider": "quickpay",
-        "decision": "skipped",
-        "reason": "provider_rejected",
-        "result": "rejected",
-        "latency_sec": 21,
-        "sequence": 2,
-        "score": 0.525852
+        "score": 0.53657,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "payflow",
@@ -27,19 +26,52 @@
         "reason": "provider_rejected",
         "result": "rejected",
         "latency_sec": 31,
+        "sequence": 2,
+        "score": 0.484353,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "provider_rejected",
+        "result": "rejected",
+        "latency_sec": 21,
         "sequence": 3,
-        "score": 0.481277
+        "score": 0.442526,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "spacepayments",
         "decision": "selected",
         "reason": "external_pool_exhausted",
         "result": "approved",
-        "latency_sec": 12
+        "latency_sec": 12,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
-    "latency_sec": 12,
+    "latency_sec": 82,
     "strategy": "balanced",
     "score_breakdown": {},
     "eligible_pool": [
@@ -50,7 +82,7 @@
     "ranking": [
       {
         "provider": "vipay",
-        "combined_score": 0.587278,
+        "combined_score": 0.53657,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
@@ -66,12 +98,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 100.0,
-              "target_pct": 40
+              "target_pct": 50
             },
-            "normalized_value": 0.4,
+            "normalized_value": 0.5,
             "weight": 1.8,
-            "contribution": 0.72,
-            "explanation": "projected volume share 100.0% при цели 40%"
+            "contribution": 0.9,
+            "explanation": "projected volume share 100.0% при цели 50%"
           },
           "cascade": {
             "raw_value": 1,
@@ -83,13 +115,13 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 15000.0,
-              "preferred_min": 10000,
+              "preferred_min": 50001,
               "preferred_max": 100000
             },
-            "normalized_value": 1.0,
+            "normalized_value": 0.299994,
             "weight": 0.8,
-            "contribution": 0.8,
-            "explanation": "сумма внутри предпочтительного диапазона"
+            "contribution": 0.23999500000000001,
+            "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
             "raw_value": 0.87,
@@ -108,23 +140,23 @@
           "intensity": {
             "raw_value": {
               "projected_rpm": 1,
-              "limit": 15
+              "limit": 7
             },
-            "normalized_value": 0.933333,
+            "normalized_value": 0.857143,
             "weight": 0.5,
-            "contribution": 0.466667,
-            "explanation": "projected RPM 1/15"
+            "contribution": 0.428571,
+            "explanation": "projected RPM 1/7"
           },
           "turnover_commitment": {
             "raw_value": {
               "projected": 3215000.0,
-              "min": 3500000,
+              "min": null,
               "max": 5000000
             },
-            "normalized_value": 0.724429,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 1.0142,
-            "explanation": "projected turnover 3215000.0, коридор 3500000–5000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 3215000.0, коридор —–5000000"
           },
           "economy": {
             "raw_value": 0.3,
@@ -137,8 +169,96 @@
         "rank": 1
       },
       {
+        "provider": "payflow",
+        "combined_score": 0.484353,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.35,
+            "weight": 2.0,
+            "contribution": 0.7,
+            "explanation": "projected count share 100.0% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 25
+            },
+            "normalized_value": 0.25,
+            "weight": 1.8,
+            "contribution": 0.45,
+            "explanation": "projected volume share 100.0% при цели 25%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 0.5,
+            "weight": 0.6,
+            "contribution": 0.3,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 15000.0,
+              "preferred_min": 500,
+              "preferred_max": 50000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.971667,
+            "normalized_value": 0.028333,
+            "weight": 1.3,
+            "contribution": 0.036833,
+            "explanation": "максимальная projected utilization 97.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 15
+            },
+            "normalized_value": 0.933333,
+            "weight": 0.5,
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2915000.0,
+              "min": 2000000,
+              "max": null
+            },
+            "normalized_value": 0.65,
+            "weight": 1.4,
+            "contribution": 0.91,
+            "explanation": "projected turnover 2915000.0, коридор 2000000–—"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 2
+      },
+      {
         "provider": "quickpay",
-        "combined_score": 0.525852,
+        "combined_score": 0.442526,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -154,12 +274,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 100.0,
-              "target_pct": 40
+              "target_pct": 25
             },
-            "normalized_value": 0.4,
+            "normalized_value": 0.25,
             "weight": 1.8,
-            "contribution": 0.72,
-            "explanation": "projected volume share 100.0% при цели 40%"
+            "contribution": 0.45,
+            "explanation": "projected volume share 100.0% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -171,12 +291,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 15000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.3,
+            "normalized_value": 0.15,
             "weight": 0.8,
-            "contribution": 0.24,
+            "contribution": 0.12,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -203,111 +323,12 @@
             "contribution": 0.475,
             "explanation": "projected RPM 1/20"
           },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1115000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.777,
-            "weight": 1.4,
-            "contribution": 1.0878,
-            "explanation": "projected turnover 1115000.0, коридор 1500000–8000000"
-          },
           "economy": {
             "raw_value": 0.7,
             "normalized_value": 0.466667,
             "weight": 0.7,
             "contribution": 0.326667,
             "explanation": "маржинальный запас 0.7 п.п."
-          }
-        },
-        "rank": 2
-      },
-      {
-        "provider": "payflow",
-        "combined_score": 0.481277,
-        "provider_priority": 2,
-        "score_breakdown": {
-          "count_share": {
-            "raw_value": {
-              "projected_pct": 100.0,
-              "target_pct": 35.0
-            },
-            "normalized_value": 0.35,
-            "weight": 2.0,
-            "contribution": 0.7,
-            "explanation": "projected count share 100.0% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 100.0,
-              "target_pct": 20
-            },
-            "normalized_value": 0.2,
-            "weight": 1.8,
-            "contribution": 0.36,
-            "explanation": "projected volume share 100.0% при цели 20%"
-          },
-          "cascade": {
-            "raw_value": 2,
-            "normalized_value": 0.5,
-            "weight": 0.6,
-            "contribution": 0.3,
-            "explanation": "cascade priority 2 (меньше — раньше)"
-          },
-          "preferred_amount": {
-            "raw_value": {
-              "amount": 15000.0,
-              "preferred_min": 500,
-              "preferred_max": 35000
-            },
-            "normalized_value": 1.0,
-            "weight": 0.8,
-            "contribution": 0.8,
-            "explanation": "сумма внутри предпочтительного диапазона"
-          },
-          "conversion": {
-            "raw_value": 0.91,
-            "normalized_value": 0.91,
-            "weight": 1.2,
-            "contribution": 1.092,
-            "explanation": "ожидаемая конверсия 91.0%"
-          },
-          "load_safe": {
-            "raw_value": 0.971667,
-            "normalized_value": 0.028333,
-            "weight": 1.3,
-            "contribution": 0.036833,
-            "explanation": "максимальная projected utilization 97.2%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 10
-            },
-            "normalized_value": 0.9,
-            "weight": 0.5,
-            "contribution": 0.45,
-            "explanation": "projected RPM 1/10"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2915000.0,
-              "min": 2950000,
-              "max": 3000000
-            },
-            "normalized_value": 0.703559,
-            "weight": 1.4,
-            "contribution": 0.984983,
-            "explanation": "projected turnover 2915000.0, коридор 2950000–3000000"
-          },
-          "economy": {
-            "raw_value": 0.5,
-            "normalized_value": 0.333333,
-            "weight": 0.7,
-            "contribution": 0.233333,
-            "explanation": "маржинальный запас 0.5 п.п."
           }
         },
         "rank": 3
@@ -389,7 +410,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": []
@@ -468,7 +489,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": []
@@ -620,7 +641,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 60
+            "threshold": null
           }
         ],
         "failures": []
@@ -633,11 +654,11 @@
           "count_share": "vipay",
           "volume_share": "vipay",
           "cascade": "vipay",
-          "preferred_amount": "vipay",
+          "preferred_amount": "payflow",
           "conversion": "payflow",
           "load_safe": "quickpay",
           "intensity": "quickpay",
-          "turnover_commitment": "quickpay",
+          "turnover_commitment": "vipay",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -697,11 +718,19 @@
       }
     },
     "fallback_used": true,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_102",
-    "selected_provider": "quickpay",
+    "selected_provider": "payflow",
     "attempts": [
       {
         "provider": "vipay",
@@ -716,106 +745,114 @@
         ]
       },
       {
-        "provider": "quickpay",
+        "provider": "payflow",
         "decision": "selected",
         "reason": "highest_combined_score",
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.711966
+        "score": 0.647551,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
-        "provider": "payflow",
+        "provider": "quickpay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.613551",
-        "score": 0.613551
+        "details": "rank 2, score 0.629291",
+        "score": 0.629291
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.711966,
+    "score": 0.647551,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
           "projected_pct": 50.0,
-          "target_pct": 25.0
+          "target_pct": 35.0
         },
-        "normalized_value": 0.75,
+        "normalized_value": 0.85,
         "weight": 2.0,
-        "contribution": 1.5,
-        "explanation": "projected count share 50.0% при цели 25.0%"
+        "contribution": 1.7,
+        "explanation": "projected count share 50.0% при цели 35.0%"
       },
       "volume_share": {
         "raw_value": {
           "projected_pct": 76.1905,
-          "target_pct": 40
+          "target_pct": 25
         },
-        "normalized_value": 0.638095,
+        "normalized_value": 0.488095,
         "weight": 1.8,
-        "contribution": 1.148571,
-        "explanation": "projected volume share 76.2% при цели 40%"
+        "contribution": 0.878571,
+        "explanation": "projected volume share 76.2% при цели 25%"
       },
       "cascade": {
-        "raw_value": 3,
-        "normalized_value": 0.0,
+        "raw_value": 2,
+        "normalized_value": 1.0,
         "weight": 0.6,
-        "contribution": 0.0,
-        "explanation": "cascade priority 3 (меньше — раньше)"
+        "contribution": 0.6,
+        "explanation": "cascade priority 2 (меньше — раньше)"
       },
       "preferred_amount": {
         "raw_value": {
           "amount": 48000.0,
-          "preferred_min": 50000,
-          "preferred_max": 200000
+          "preferred_min": 500,
+          "preferred_max": 50000
         },
-        "normalized_value": 0.96,
+        "normalized_value": 1.0,
         "weight": 0.8,
-        "contribution": 0.768,
-        "explanation": "сумма вне предпочтительного диапазона"
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
       },
       "conversion": {
-        "raw_value": 0.79,
-        "normalized_value": 0.79,
+        "raw_value": 0.91,
+        "normalized_value": 0.91,
         "weight": 1.2,
-        "contribution": 0.948,
-        "explanation": "ожидаемая конверсия 79.0%"
+        "contribution": 1.092,
+        "explanation": "ожидаемая конверсия 91.0%"
       },
       "load_safe": {
-        "raw_value": 0.1435,
-        "normalized_value": 0.8565,
+        "raw_value": 0.982667,
+        "normalized_value": 0.017333,
         "weight": 1.3,
-        "contribution": 1.11345,
-        "explanation": "максимальная projected utilization 14.4%"
+        "contribution": 0.022533,
+        "explanation": "максимальная projected utilization 98.3%"
       },
       "intensity": {
         "raw_value": {
           "projected_rpm": 2,
-          "limit": 20
+          "limit": 15
         },
-        "normalized_value": 0.9,
+        "normalized_value": 0.866667,
         "weight": 0.5,
-        "contribution": 0.45,
-        "explanation": "projected RPM 2/20"
+        "contribution": 0.433333,
+        "explanation": "projected RPM 2/15"
       },
       "turnover_commitment": {
         "raw_value": {
-          "projected": 1148000.0,
-          "min": 1500000,
-          "max": 8000000
+          "projected": 2948000.0,
+          "min": 2000000,
+          "max": null
         },
-        "normalized_value": 0.7704,
+        "normalized_value": 0.65,
         "weight": 1.4,
-        "contribution": 1.07856,
-        "explanation": "projected turnover 1148000.0, коридор 1500000–8000000"
+        "contribution": 0.91,
+        "explanation": "projected turnover 2948000.0, коридор 2000000–—"
       },
       "economy": {
-        "raw_value": 0.7,
-        "normalized_value": 0.466667,
+        "raw_value": 0.5,
+        "normalized_value": 0.333333,
         "weight": 0.7,
-        "contribution": 0.326667,
-        "explanation": "маржинальный запас 0.7 п.п."
+        "contribution": 0.233333,
+        "explanation": "маржинальный запас 0.5 п.п."
       }
     },
     "eligible_pool": [
@@ -824,8 +861,96 @@
     ],
     "ranking": [
       {
+        "provider": "payflow",
+        "combined_score": 0.647551,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 50.0,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.85,
+            "weight": 2.0,
+            "contribution": 1.7,
+            "explanation": "projected count share 50.0% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 76.1905,
+              "target_pct": 25
+            },
+            "normalized_value": 0.488095,
+            "weight": 1.8,
+            "contribution": 0.878571,
+            "explanation": "projected volume share 76.2% при цели 25%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 48000.0,
+              "preferred_min": 500,
+              "preferred_max": 50000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.982667,
+            "normalized_value": 0.017333,
+            "weight": 1.3,
+            "contribution": 0.022533,
+            "explanation": "максимальная projected utilization 98.3%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 15
+            },
+            "normalized_value": 0.866667,
+            "weight": 0.5,
+            "contribution": 0.433333,
+            "explanation": "projected RPM 2/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2948000.0,
+              "min": 2000000,
+              "max": null
+            },
+            "normalized_value": 0.65,
+            "weight": 1.4,
+            "contribution": 0.91,
+            "explanation": "projected turnover 2948000.0, коридор 2000000–—"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
         "provider": "quickpay",
-        "combined_score": 0.711966,
+        "combined_score": 0.629291,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -841,12 +966,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 76.1905,
-              "target_pct": 40
+              "target_pct": 25
             },
-            "normalized_value": 0.638095,
+            "normalized_value": 0.488095,
             "weight": 1.8,
-            "contribution": 1.148571,
-            "explanation": "projected volume share 76.2% при цели 40%"
+            "contribution": 0.878571,
+            "explanation": "projected volume share 76.2% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -858,12 +983,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 48000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.96,
+            "normalized_value": 0.48,
             "weight": 0.8,
-            "contribution": 0.768,
+            "contribution": 0.384,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -890,111 +1015,12 @@
             "contribution": 0.45,
             "explanation": "projected RPM 2/20"
           },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1148000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7704,
-            "weight": 1.4,
-            "contribution": 1.07856,
-            "explanation": "projected turnover 1148000.0, коридор 1500000–8000000"
-          },
           "economy": {
             "raw_value": 0.7,
             "normalized_value": 0.466667,
             "weight": 0.7,
             "contribution": 0.326667,
             "explanation": "маржинальный запас 0.7 п.п."
-          }
-        },
-        "rank": 1
-      },
-      {
-        "provider": "payflow",
-        "combined_score": 0.613551,
-        "provider_priority": 2,
-        "score_breakdown": {
-          "count_share": {
-            "raw_value": {
-              "projected_pct": 50.0,
-              "target_pct": 35.0
-            },
-            "normalized_value": 0.85,
-            "weight": 2.0,
-            "contribution": 1.7,
-            "explanation": "projected count share 50.0% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 76.1905,
-              "target_pct": 20
-            },
-            "normalized_value": 0.438095,
-            "weight": 1.8,
-            "contribution": 0.788571,
-            "explanation": "projected volume share 76.2% при цели 20%"
-          },
-          "cascade": {
-            "raw_value": 2,
-            "normalized_value": 1.0,
-            "weight": 0.6,
-            "contribution": 0.6,
-            "explanation": "cascade priority 2 (меньше — раньше)"
-          },
-          "preferred_amount": {
-            "raw_value": {
-              "amount": 48000.0,
-              "preferred_min": 500,
-              "preferred_max": 35000
-            },
-            "normalized_value": 0.628571,
-            "weight": 0.8,
-            "contribution": 0.502857,
-            "explanation": "сумма вне предпочтительного диапазона"
-          },
-          "conversion": {
-            "raw_value": 0.91,
-            "normalized_value": 0.91,
-            "weight": 1.2,
-            "contribution": 1.092,
-            "explanation": "ожидаемая конверсия 91.0%"
-          },
-          "load_safe": {
-            "raw_value": 0.982667,
-            "normalized_value": 0.017333,
-            "weight": 1.3,
-            "contribution": 0.022533,
-            "explanation": "максимальная projected utilization 98.3%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 10
-            },
-            "normalized_value": 0.8,
-            "weight": 0.5,
-            "contribution": 0.4,
-            "explanation": "projected RPM 2/10"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2948000.0,
-              "min": 2950000,
-              "max": 3000000
-            },
-            "normalized_value": 0.700203,
-            "weight": 1.4,
-            "contribution": 0.980285,
-            "explanation": "projected turnover 2948000.0, коридор 2950000–3000000"
-          },
-          "economy": {
-            "raw_value": 0.5,
-            "normalized_value": 0.333333,
-            "weight": 0.7,
-            "contribution": 0.233333,
-            "explanation": "маржинальный запас 0.5 п.п."
           }
         },
         "rank": 2
@@ -1076,7 +1102,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -1167,7 +1193,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": []
@@ -1254,13 +1280,13 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "payflow",
-          "volume_share": "quickpay",
+          "volume_share": "payflow",
           "cascade": "payflow",
-          "preferred_amount": "quickpay",
+          "preferred_amount": "payflow",
           "conversion": "payflow",
           "load_safe": "quickpay",
           "intensity": "quickpay",
-          "turnover_commitment": "quickpay",
+          "turnover_commitment": "payflow",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -1301,16 +1327,16 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
-        "requests_last_minute": 1
+        "requests_last_minute": 2
       },
       "quickpay": {
-        "daily_approved_amount": 1148000,
+        "daily_approved_amount": 1100000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 2
+        "requests_last_minute": 1
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -1320,7 +1346,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_103",
@@ -1349,33 +1383,41 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.705216
+        "score": 0.793513,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.705216,
+    "score": 0.793513,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 66.6667,
+          "projected_pct": 33.3333,
           "target_pct": 25.0
         },
-        "normalized_value": 0.583333,
+        "normalized_value": 0.916667,
         "weight": 2.0,
-        "contribution": 1.166667,
-        "explanation": "projected count share 66.7% при цели 25.0%"
+        "contribution": 1.833333,
+        "explanation": "projected count share 33.3% при цели 25.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 92.9577,
-          "target_pct": 40
+          "projected_pct": 70.4225,
+          "target_pct": 25
         },
-        "normalized_value": 0.470423,
+        "normalized_value": 0.545775,
         "weight": 1.8,
-        "contribution": 0.846761,
-        "explanation": "projected volume share 93.0% при цели 40%"
+        "contribution": 0.982394,
+        "explanation": "projected volume share 70.4% при цели 25%"
       },
       "cascade": {
         "raw_value": 3,
@@ -1387,8 +1429,8 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 150000.0,
-          "preferred_min": 50000,
-          "preferred_max": 200000
+          "preferred_min": 100000.01,
+          "preferred_max": null
         },
         "normalized_value": 1.0,
         "weight": 0.8,
@@ -1403,32 +1445,21 @@
         "explanation": "ожидаемая конверсия 79.0%"
       },
       "load_safe": {
-        "raw_value": 0.16225,
-        "normalized_value": 0.83775,
+        "raw_value": 0.15625,
+        "normalized_value": 0.84375,
         "weight": 1.3,
-        "contribution": 1.089075,
-        "explanation": "максимальная projected utilization 16.2%"
+        "contribution": 1.096875,
+        "explanation": "максимальная projected utilization 15.6%"
       },
       "intensity": {
         "raw_value": {
-          "projected_rpm": 2,
+          "projected_rpm": 1,
           "limit": 20
         },
-        "normalized_value": 0.9,
+        "normalized_value": 0.95,
         "weight": 0.5,
-        "contribution": 0.45,
-        "explanation": "projected RPM 2/20"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 1298000.0,
-          "min": 1500000,
-          "max": 8000000
-        },
-        "normalized_value": 0.7404,
-        "weight": 1.4,
-        "contribution": 1.03656,
-        "explanation": "projected turnover 1298000.0, коридор 1500000–8000000"
+        "contribution": 0.475,
+        "explanation": "projected RPM 1/20"
       },
       "economy": {
         "raw_value": 0.7,
@@ -1444,28 +1475,28 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.705216,
+        "combined_score": 0.793513,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 66.6667,
+              "projected_pct": 33.3333,
               "target_pct": 25.0
             },
-            "normalized_value": 0.583333,
+            "normalized_value": 0.916667,
             "weight": 2.0,
-            "contribution": 1.166667,
-            "explanation": "projected count share 66.7% при цели 25.0%"
+            "contribution": 1.833333,
+            "explanation": "projected count share 33.3% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 92.9577,
-              "target_pct": 40
+              "projected_pct": 70.4225,
+              "target_pct": 25
             },
-            "normalized_value": 0.470423,
+            "normalized_value": 0.545775,
             "weight": 1.8,
-            "contribution": 0.846761,
-            "explanation": "projected volume share 93.0% при цели 40%"
+            "contribution": 0.982394,
+            "explanation": "projected volume share 70.4% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -1477,8 +1508,8 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 150000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
             "normalized_value": 1.0,
             "weight": 0.8,
@@ -1493,32 +1524,21 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.16225,
-            "normalized_value": 0.83775,
+            "raw_value": 0.15625,
+            "normalized_value": 0.84375,
             "weight": 1.3,
-            "contribution": 1.089075,
-            "explanation": "максимальная projected utilization 16.2%"
+            "contribution": 1.096875,
+            "explanation": "максимальная projected utilization 15.6%"
           },
           "intensity": {
             "raw_value": {
-              "projected_rpm": 2,
+              "projected_rpm": 1,
               "limit": 20
             },
-            "normalized_value": 0.9,
+            "normalized_value": 0.95,
             "weight": 0.5,
-            "contribution": 0.45,
-            "explanation": "projected RPM 2/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1298000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7404,
-            "weight": 1.4,
-            "contribution": 1.03656,
-            "explanation": "projected turnover 1298000.0, коридор 1500000–8000000"
+            "contribution": 0.475,
+            "explanation": "projected RPM 1/20"
           },
           "economy": {
             "raw_value": 0.7,
@@ -1607,7 +1627,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -1647,8 +1667,8 @@
           {
             "eligible": false,
             "code": "daily_amount_limit_exceeded",
-            "explanation": "projected daily 3050000.0 > 3000000",
-            "actual": 3050000.0,
+            "explanation": "projected daily 3098000.0 > 3000000",
+            "actual": 3098000.0,
             "threshold": 3000000
           },
           {
@@ -1693,8 +1713,8 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
-            "actual": 1,
-            "threshold": 10
+            "actual": 2,
+            "threshold": 15
           }
         ],
         "failures": [
@@ -1708,8 +1728,8 @@
           {
             "eligible": false,
             "code": "daily_amount_limit_exceeded",
-            "explanation": "projected daily 3050000.0 > 3000000",
-            "actual": 3050000.0,
+            "explanation": "projected daily 3098000.0 > 3000000",
+            "actual": 3098000.0,
             "threshold": 3000000
           }
         ]
@@ -1742,7 +1762,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1298000.0,
+            "actual": 1250000.0,
             "threshold": 8000000
           },
           {
@@ -1784,7 +1804,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
-            "actual": 2,
+            "actual": 1,
             "threshold": 20
           }
         ],
@@ -1801,16 +1821,16 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
-        "requests_last_minute": 0
+        "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1148000,
+        "daily_approved_amount": 1100000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 1
+        "requests_last_minute": 0
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -1827,16 +1847,16 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
-        "requests_last_minute": 0
+        "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1298000,
+        "daily_approved_amount": 1250000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 2
+        "requests_last_minute": 1
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -1846,7 +1866,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_104",
@@ -1882,33 +1910,41 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.615726
+        "score": 0.665175,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.615726,
+    "score": 0.665175,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 75.0,
+          "projected_pct": 50.0,
           "target_pct": 25.0
         },
-        "normalized_value": 0.5,
+        "normalized_value": 0.75,
         "weight": 2.0,
-        "contribution": 1.0,
-        "explanation": "projected count share 75.0% при цели 25.0%"
+        "contribution": 1.5,
+        "explanation": "projected count share 50.0% при цели 25.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 93.0556,
-          "target_pct": 40
+          "projected_pct": 70.8333,
+          "target_pct": 25
         },
-        "normalized_value": 0.469444,
+        "normalized_value": 0.541667,
         "weight": 1.8,
-        "contribution": 0.845,
-        "explanation": "projected volume share 93.1% при цели 40%"
+        "contribution": 0.975,
+        "explanation": "projected volume share 70.8% при цели 25%"
       },
       "cascade": {
         "raw_value": 3,
@@ -1920,12 +1956,12 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 3000.0,
-          "preferred_min": 50000,
-          "preferred_max": 200000
+          "preferred_min": 100000.01,
+          "preferred_max": null
         },
-        "normalized_value": 0.06,
+        "normalized_value": 0.03,
         "weight": 0.8,
-        "contribution": 0.048,
+        "contribution": 0.024,
         "explanation": "сумма вне предпочтительного диапазона"
       },
       "conversion": {
@@ -1936,11 +1972,11 @@
         "explanation": "ожидаемая конверсия 79.0%"
       },
       "load_safe": {
-        "raw_value": 0.162625,
-        "normalized_value": 0.837375,
+        "raw_value": 0.156625,
+        "normalized_value": 0.843375,
         "weight": 1.3,
-        "contribution": 1.0885879999999999,
-        "explanation": "максимальная projected utilization 16.3%"
+        "contribution": 1.096388,
+        "explanation": "максимальная projected utilization 15.7%"
       },
       "intensity": {
         "raw_value": {
@@ -1951,17 +1987,6 @@
         "weight": 0.5,
         "contribution": 0.45,
         "explanation": "projected RPM 2/20"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 1301000.0,
-          "min": 1500000,
-          "max": 8000000
-        },
-        "normalized_value": 0.7398,
-        "weight": 1.4,
-        "contribution": 1.03572,
-        "explanation": "projected turnover 1301000.0, коридор 1500000–8000000"
       },
       "economy": {
         "raw_value": 0.7,
@@ -1977,28 +2002,28 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.615726,
+        "combined_score": 0.665175,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 75.0,
+              "projected_pct": 50.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.5,
+            "normalized_value": 0.75,
             "weight": 2.0,
-            "contribution": 1.0,
-            "explanation": "projected count share 75.0% при цели 25.0%"
+            "contribution": 1.5,
+            "explanation": "projected count share 50.0% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 93.0556,
-              "target_pct": 40
+              "projected_pct": 70.8333,
+              "target_pct": 25
             },
-            "normalized_value": 0.469444,
+            "normalized_value": 0.541667,
             "weight": 1.8,
-            "contribution": 0.845,
-            "explanation": "projected volume share 93.1% при цели 40%"
+            "contribution": 0.975,
+            "explanation": "projected volume share 70.8% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -2010,12 +2035,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 3000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.06,
+            "normalized_value": 0.03,
             "weight": 0.8,
-            "contribution": 0.048,
+            "contribution": 0.024,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -2026,11 +2051,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.162625,
-            "normalized_value": 0.837375,
+            "raw_value": 0.156625,
+            "normalized_value": 0.843375,
             "weight": 1.3,
-            "contribution": 1.0885879999999999,
-            "explanation": "максимальная projected utilization 16.3%"
+            "contribution": 1.096388,
+            "explanation": "максимальная projected utilization 15.7%"
           },
           "intensity": {
             "raw_value": {
@@ -2041,17 +2066,6 @@
             "weight": 0.5,
             "contribution": 0.45,
             "explanation": "projected RPM 2/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1301000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7398,
-            "weight": 1.4,
-            "contribution": 1.03572,
-            "explanation": "projected turnover 1301000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -2140,7 +2154,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -2185,7 +2199,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2903000.0,
+            "actual": 2951000.0,
             "threshold": 3000000
           },
           {
@@ -2231,7 +2245,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": [
@@ -2275,7 +2289,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1301000.0,
+            "actual": 1253000.0,
             "threshold": 8000000
           },
           {
@@ -2334,13 +2348,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1298000,
+        "daily_approved_amount": 1250000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -2360,13 +2374,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1301000,
+        "daily_approved_amount": 1253000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 2
@@ -2379,7 +2393,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_105",
@@ -2403,7 +2425,15 @@
         "result": "expired",
         "latency_sec": 320,
         "sequence": 1,
-        "score": 0.717659
+        "score": 0.647649,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "quickpay",
@@ -2412,33 +2442,41 @@
         "result": "approved",
         "latency_sec": 22,
         "sequence": 2,
-        "score": 0.579606
+        "score": 0.588487,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
-    "latency_sec": 22,
+    "latency_sec": 342,
     "strategy": "balanced",
-    "score": 0.579606,
+    "score": 0.588487,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 80.0,
+          "projected_pct": 60.0,
           "target_pct": 25.0
         },
-        "normalized_value": 0.45,
+        "normalized_value": 0.65,
         "weight": 2.0,
-        "contribution": 0.9,
-        "explanation": "projected count share 80.0% при цели 25.0%"
+        "contribution": 1.3,
+        "explanation": "projected count share 60.0% при цели 25.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 93.7759,
-          "target_pct": 40
+          "projected_pct": 73.8589,
+          "target_pct": 25
         },
-        "normalized_value": 0.462241,
+        "normalized_value": 0.511411,
         "weight": 1.8,
-        "contribution": 0.832033,
-        "explanation": "projected volume share 93.8% при цели 40%"
+        "contribution": 0.920539,
+        "explanation": "projected volume share 73.9% при цели 25%"
       },
       "cascade": {
         "raw_value": 3,
@@ -2450,12 +2488,12 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 25000.0,
-          "preferred_min": 50000,
-          "preferred_max": 200000
+          "preferred_min": 100000.01,
+          "preferred_max": null
         },
-        "normalized_value": 0.5,
+        "normalized_value": 0.25,
         "weight": 0.8,
-        "contribution": 0.4,
+        "contribution": 0.2,
         "explanation": "сумма вне предпочтительного диапазона"
       },
       "conversion": {
@@ -2466,11 +2504,11 @@
         "explanation": "ожидаемая конверсия 79.0%"
       },
       "load_safe": {
-        "raw_value": 0.16575,
-        "normalized_value": 0.83425,
+        "raw_value": 0.15975,
+        "normalized_value": 0.84025,
         "weight": 1.3,
-        "contribution": 1.084525,
-        "explanation": "максимальная projected utilization 16.6%"
+        "contribution": 1.092325,
+        "explanation": "максимальная projected utilization 16.0%"
       },
       "intensity": {
         "raw_value": {
@@ -2481,17 +2519,6 @@
         "weight": 0.5,
         "contribution": 0.45,
         "explanation": "projected RPM 2/20"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 1326000.0,
-          "min": 1500000,
-          "max": 8000000
-        },
-        "normalized_value": 0.7348,
-        "weight": 1.4,
-        "contribution": 1.02872,
-        "explanation": "projected turnover 1326000.0, коридор 1500000–8000000"
       },
       "economy": {
         "raw_value": 0.7,
@@ -2508,7 +2535,7 @@
     "ranking": [
       {
         "provider": "vipay",
-        "combined_score": 0.717659,
+        "combined_score": 0.647649,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
@@ -2524,12 +2551,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 10.3734,
-              "target_pct": 40
+              "target_pct": 50
             },
-            "normalized_value": 0.703734,
+            "normalized_value": 0.603734,
             "weight": 1.8,
-            "contribution": 1.266722,
-            "explanation": "projected volume share 10.4% при цели 40%"
+            "contribution": 1.086722,
+            "explanation": "projected volume share 10.4% при цели 50%"
           },
           "cascade": {
             "raw_value": 1,
@@ -2541,13 +2568,13 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 25000.0,
-              "preferred_min": 10000,
+              "preferred_min": 50001,
               "preferred_max": 100000
             },
-            "normalized_value": 1.0,
+            "normalized_value": 0.49999,
             "weight": 0.8,
-            "contribution": 0.8,
-            "explanation": "сумма внутри предпочтительного диапазона"
+            "contribution": 0.399992,
+            "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
             "raw_value": 0.87,
@@ -2566,23 +2593,23 @@
           "intensity": {
             "raw_value": {
               "projected_rpm": 1,
-              "limit": 15
+              "limit": 7
             },
-            "normalized_value": 0.933333,
+            "normalized_value": 0.857143,
             "weight": 0.5,
-            "contribution": 0.466667,
-            "explanation": "projected RPM 1/15"
+            "contribution": 0.428571,
+            "explanation": "projected RPM 1/7"
           },
           "turnover_commitment": {
             "raw_value": {
               "projected": 3225000.0,
-              "min": 3500000,
+              "min": null,
               "max": 5000000
             },
-            "normalized_value": 0.723571,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 1.013,
-            "explanation": "projected turnover 3225000.0, коридор 3500000–5000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 3225000.0, коридор —–5000000"
           },
           "economy": {
             "raw_value": 0.3,
@@ -2596,28 +2623,28 @@
       },
       {
         "provider": "quickpay",
-        "combined_score": 0.579606,
+        "combined_score": 0.588487,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 80.0,
+              "projected_pct": 60.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.45,
+            "normalized_value": 0.65,
             "weight": 2.0,
-            "contribution": 0.9,
-            "explanation": "projected count share 80.0% при цели 25.0%"
+            "contribution": 1.3,
+            "explanation": "projected count share 60.0% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 93.7759,
-              "target_pct": 40
+              "projected_pct": 73.8589,
+              "target_pct": 25
             },
-            "normalized_value": 0.462241,
+            "normalized_value": 0.511411,
             "weight": 1.8,
-            "contribution": 0.832033,
-            "explanation": "projected volume share 93.8% при цели 40%"
+            "contribution": 0.920539,
+            "explanation": "projected volume share 73.9% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -2629,12 +2656,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 25000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.5,
+            "normalized_value": 0.25,
             "weight": 0.8,
-            "contribution": 0.4,
+            "contribution": 0.2,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -2645,11 +2672,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.16575,
-            "normalized_value": 0.83425,
+            "raw_value": 0.15975,
+            "normalized_value": 0.84025,
             "weight": 1.3,
-            "contribution": 1.084525,
-            "explanation": "максимальная projected utilization 16.6%"
+            "contribution": 1.092325,
+            "explanation": "максимальная projected utilization 16.0%"
           },
           "intensity": {
             "raw_value": {
@@ -2660,17 +2687,6 @@
             "weight": 0.5,
             "contribution": 0.45,
             "explanation": "projected RPM 2/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1326000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7348,
-            "weight": 1.4,
-            "contribution": 1.02872,
-            "explanation": "projected turnover 1326000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -2759,7 +2775,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": []
@@ -2792,7 +2808,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2925000.0,
+            "actual": 2973000.0,
             "threshold": 3000000
           },
           {
@@ -2838,7 +2854,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": [
@@ -2882,7 +2898,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1326000.0,
+            "actual": 1278000.0,
             "threshold": 8000000
           },
           {
@@ -2941,8 +2957,8 @@
           "preferred_amount": "vipay",
           "conversion": "vipay",
           "load_safe": "quickpay",
-          "intensity": "vipay",
-          "turnover_commitment": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "vipay",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -2957,13 +2973,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1301000,
+        "daily_approved_amount": 1253000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -2983,13 +2999,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 2
@@ -3002,7 +3018,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_106",
@@ -3023,20 +3047,28 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.719841
+        "score": 0.685283,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "quickpay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.607804",
-        "score": 0.607804
+        "details": "rank 2, score 0.587443",
+        "score": 0.587443
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.719841,
+    "score": 0.685283,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -3051,12 +3083,12 @@
       "volume_share": {
         "raw_value": {
           "projected_pct": 17.7474,
-          "target_pct": 40
+          "target_pct": 50
         },
-        "normalized_value": 0.777474,
+        "normalized_value": 0.677474,
         "weight": 1.8,
-        "contribution": 1.399454,
-        "explanation": "projected volume share 17.7% при цели 40%"
+        "contribution": 1.219454,
+        "explanation": "projected volume share 17.7% при цели 50%"
       },
       "cascade": {
         "raw_value": 1,
@@ -3068,7 +3100,7 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 52000.0,
-          "preferred_min": 10000,
+          "preferred_min": 50001,
           "preferred_max": 100000
         },
         "normalized_value": 1.0,
@@ -3093,23 +3125,23 @@
       "intensity": {
         "raw_value": {
           "projected_rpm": 2,
-          "limit": 15
+          "limit": 7
         },
-        "normalized_value": 0.866667,
+        "normalized_value": 0.714286,
         "weight": 0.5,
-        "contribution": 0.433333,
-        "explanation": "projected RPM 2/15"
+        "contribution": 0.357143,
+        "explanation": "projected RPM 2/7"
       },
       "turnover_commitment": {
         "raw_value": {
           "projected": 3252000.0,
-          "min": 3500000,
+          "min": null,
           "max": 5000000
         },
-        "normalized_value": 0.721257,
+        "normalized_value": 0.65,
         "weight": 1.4,
-        "contribution": 1.00976,
-        "explanation": "projected turnover 3252000.0, коридор 3500000–5000000"
+        "contribution": 0.91,
+        "explanation": "projected turnover 3252000.0, коридор —–5000000"
       },
       "economy": {
         "raw_value": 0.3,
@@ -3126,7 +3158,7 @@
     "ranking": [
       {
         "provider": "vipay",
-        "combined_score": 0.719841,
+        "combined_score": 0.685283,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
@@ -3142,12 +3174,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 17.7474,
-              "target_pct": 40
+              "target_pct": 50
             },
-            "normalized_value": 0.777474,
+            "normalized_value": 0.677474,
             "weight": 1.8,
-            "contribution": 1.399454,
-            "explanation": "projected volume share 17.7% при цели 40%"
+            "contribution": 1.219454,
+            "explanation": "projected volume share 17.7% при цели 50%"
           },
           "cascade": {
             "raw_value": 1,
@@ -3159,7 +3191,7 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 52000.0,
-              "preferred_min": 10000,
+              "preferred_min": 50001,
               "preferred_max": 100000
             },
             "normalized_value": 1.0,
@@ -3184,23 +3216,23 @@
           "intensity": {
             "raw_value": {
               "projected_rpm": 2,
-              "limit": 15
+              "limit": 7
             },
-            "normalized_value": 0.866667,
+            "normalized_value": 0.714286,
             "weight": 0.5,
-            "contribution": 0.433333,
-            "explanation": "projected RPM 2/15"
+            "contribution": 0.357143,
+            "explanation": "projected RPM 2/7"
           },
           "turnover_commitment": {
             "raw_value": {
               "projected": 3252000.0,
-              "min": 3500000,
+              "min": null,
               "max": 5000000
             },
-            "normalized_value": 0.721257,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 1.00976,
-            "explanation": "projected turnover 3252000.0, коридор 3500000–5000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 3252000.0, коридор —–5000000"
           },
           "economy": {
             "raw_value": 0.3,
@@ -3214,28 +3246,28 @@
       },
       {
         "provider": "quickpay",
-        "combined_score": 0.607804,
+        "combined_score": 0.587443,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 83.3333,
+              "projected_pct": 66.6667,
               "target_pct": 25.0
             },
-            "normalized_value": 0.416667,
+            "normalized_value": 0.583333,
             "weight": 2.0,
-            "contribution": 0.833333,
-            "explanation": "projected count share 83.3% при цели 25.0%"
+            "contribution": 1.166667,
+            "explanation": "projected count share 66.7% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 94.8805,
-              "target_pct": 40
+              "projected_pct": 78.4983,
+              "target_pct": 25
             },
-            "normalized_value": 0.451195,
+            "normalized_value": 0.465017,
             "weight": 1.8,
-            "contribution": 0.81215,
-            "explanation": "projected volume share 94.9% при цели 40%"
+            "contribution": 0.837031,
+            "explanation": "projected volume share 78.5% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -3247,13 +3279,13 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 52000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 1.0,
+            "normalized_value": 0.52,
             "weight": 0.8,
-            "contribution": 0.8,
-            "explanation": "сумма внутри предпочтительного диапазона"
+            "contribution": 0.416,
+            "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
             "raw_value": 0.79,
@@ -3263,11 +3295,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.17225,
-            "normalized_value": 0.82775,
+            "raw_value": 0.16625,
+            "normalized_value": 0.83375,
             "weight": 1.3,
-            "contribution": 1.076075,
-            "explanation": "максимальная projected utilization 17.2%"
+            "contribution": 1.083875,
+            "explanation": "максимальная projected utilization 16.6%"
           },
           "intensity": {
             "raw_value": {
@@ -3278,17 +3310,6 @@
             "weight": 0.5,
             "contribution": 0.45,
             "explanation": "projected RPM 2/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1378000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7244,
-            "weight": 1.4,
-            "contribution": 1.01416,
-            "explanation": "projected turnover 1378000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -3377,7 +3398,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": []
@@ -3410,7 +3431,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2952000.0,
+            "actual": 3000000.0,
             "threshold": 3000000
           },
           {
@@ -3456,7 +3477,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": [
@@ -3497,7 +3518,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1378000.0,
+            "actual": 1330000.0,
             "threshold": 8000000
           },
           {
@@ -3557,7 +3578,7 @@
           "conversion": "vipay",
           "load_safe": "quickpay",
           "intensity": "quickpay",
-          "turnover_commitment": "quickpay",
+          "turnover_commitment": "vipay",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -3572,13 +3593,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -3598,13 +3619,13 @@
         "requests_last_minute": 2
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -3617,7 +3638,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_107",
@@ -3646,33 +3675,41 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.702518
+        "score": 0.742194,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.702518,
+    "score": 0.742194,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 14.2857,
+          "projected_pct": 28.5714,
           "target_pct": 35.0
         },
-        "normalized_value": 0.792857,
+        "normalized_value": 0.935714,
         "weight": 2.0,
-        "contribution": 1.585714,
-        "explanation": "projected count share 14.3% при цели 35.0%"
+        "contribution": 1.871429,
+        "explanation": "projected count share 28.6% при цели 35.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 0.2723,
-          "target_pct": 20
+          "projected_pct": 16.6099,
+          "target_pct": 25
         },
-        "normalized_value": 0.802723,
+        "normalized_value": 0.916099,
         "weight": 1.8,
-        "contribution": 1.444901,
-        "explanation": "projected volume share 0.3% при цели 20%"
+        "contribution": 1.648979,
+        "explanation": "projected volume share 16.6% при цели 25%"
       },
       "cascade": {
         "raw_value": 2,
@@ -3685,7 +3722,7 @@
         "raw_value": {
           "amount": 800.0,
           "preferred_min": 500,
-          "preferred_max": 35000
+          "preferred_max": 50000
         },
         "normalized_value": 1.0,
         "weight": 0.8,
@@ -3700,32 +3737,32 @@
         "explanation": "ожидаемая конверсия 91.0%"
       },
       "load_safe": {
-        "raw_value": 0.966933,
-        "normalized_value": 0.033067,
+        "raw_value": 0.982933,
+        "normalized_value": 0.017067,
         "weight": 1.3,
-        "contribution": 0.042987,
-        "explanation": "максимальная projected utilization 96.7%"
+        "contribution": 0.022187,
+        "explanation": "максимальная projected utilization 98.3%"
       },
       "intensity": {
         "raw_value": {
           "projected_rpm": 1,
-          "limit": 10
+          "limit": 15
         },
-        "normalized_value": 0.9,
+        "normalized_value": 0.933333,
         "weight": 0.5,
-        "contribution": 0.45,
-        "explanation": "projected RPM 1/10"
+        "contribution": 0.466667,
+        "explanation": "projected RPM 1/15"
       },
       "turnover_commitment": {
         "raw_value": {
-          "projected": 2900800.0,
-          "min": 2950000,
-          "max": 3000000
+          "projected": 2948800.0,
+          "min": 2000000,
+          "max": null
         },
-        "normalized_value": 0.705003,
+        "normalized_value": 0.65,
         "weight": 1.4,
-        "contribution": 0.987005,
-        "explanation": "projected turnover 2900800.0, коридор 2950000–3000000"
+        "contribution": 0.91,
+        "explanation": "projected turnover 2948800.0, коридор 2000000–—"
       },
       "economy": {
         "raw_value": 0.5,
@@ -3741,28 +3778,28 @@
     "ranking": [
       {
         "provider": "payflow",
-        "combined_score": 0.702518,
+        "combined_score": 0.742194,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 14.2857,
+              "projected_pct": 28.5714,
               "target_pct": 35.0
             },
-            "normalized_value": 0.792857,
+            "normalized_value": 0.935714,
             "weight": 2.0,
-            "contribution": 1.585714,
-            "explanation": "projected count share 14.3% при цели 35.0%"
+            "contribution": 1.871429,
+            "explanation": "projected count share 28.6% при цели 35.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 0.2723,
-              "target_pct": 20
+              "projected_pct": 16.6099,
+              "target_pct": 25
             },
-            "normalized_value": 0.802723,
+            "normalized_value": 0.916099,
             "weight": 1.8,
-            "contribution": 1.444901,
-            "explanation": "projected volume share 0.3% при цели 20%"
+            "contribution": 1.648979,
+            "explanation": "projected volume share 16.6% при цели 25%"
           },
           "cascade": {
             "raw_value": 2,
@@ -3775,7 +3812,7 @@
             "raw_value": {
               "amount": 800.0,
               "preferred_min": 500,
-              "preferred_max": 35000
+              "preferred_max": 50000
             },
             "normalized_value": 1.0,
             "weight": 0.8,
@@ -3790,32 +3827,32 @@
             "explanation": "ожидаемая конверсия 91.0%"
           },
           "load_safe": {
-            "raw_value": 0.966933,
-            "normalized_value": 0.033067,
+            "raw_value": 0.982933,
+            "normalized_value": 0.017067,
             "weight": 1.3,
-            "contribution": 0.042987,
-            "explanation": "максимальная projected utilization 96.7%"
+            "contribution": 0.022187,
+            "explanation": "максимальная projected utilization 98.3%"
           },
           "intensity": {
             "raw_value": {
               "projected_rpm": 1,
-              "limit": 10
+              "limit": 15
             },
-            "normalized_value": 0.9,
+            "normalized_value": 0.933333,
             "weight": 0.5,
-            "contribution": 0.45,
-            "explanation": "projected RPM 1/10"
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
           },
           "turnover_commitment": {
             "raw_value": {
-              "projected": 2900800.0,
-              "min": 2950000,
-              "max": 3000000
+              "projected": 2948800.0,
+              "min": 2000000,
+              "max": null
             },
-            "normalized_value": 0.705003,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 0.987005,
-            "explanation": "projected turnover 2900800.0, коридор 2950000–3000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 2948800.0, коридор 2000000–—"
           },
           "economy": {
             "raw_value": 0.5,
@@ -3904,7 +3941,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -3945,7 +3982,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2900800.0,
+            "actual": 2948800.0,
             "threshold": 3000000
           },
           {
@@ -3991,7 +4028,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": []
@@ -4024,7 +4061,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1326800.0,
+            "actual": 1278800.0,
             "threshold": 8000000
           },
           {
@@ -4091,13 +4128,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900000,
+        "daily_approved_amount": 2948000,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -4117,13 +4154,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -4136,7 +4173,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_108",
@@ -4172,33 +4217,41 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.723277
+        "score": 0.712572,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.723277,
+    "score": 0.712572,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 62.5,
+          "projected_pct": 50.0,
           "target_pct": 25.0
         },
-        "normalized_value": 0.625,
+        "normalized_value": 0.75,
         "weight": 2.0,
-        "contribution": 1.25,
-        "explanation": "projected count share 62.5% при цели 25.0%"
+        "contribution": 1.5,
+        "explanation": "projected count share 50.0% при цели 25.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 79.8094,
-          "target_pct": 40
+          "projected_pct": 65.5152,
+          "target_pct": 25
         },
-        "normalized_value": 0.601906,
+        "normalized_value": 0.594848,
         "weight": 1.8,
-        "contribution": 1.083431,
-        "explanation": "projected volume share 79.8% при цели 40%"
+        "contribution": 1.070727,
+        "explanation": "projected volume share 65.5% при цели 25%"
       },
       "cascade": {
         "raw_value": 3,
@@ -4210,12 +4263,12 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 42000.0,
-          "preferred_min": 50000,
-          "preferred_max": 200000
+          "preferred_min": 100000.01,
+          "preferred_max": null
         },
-        "normalized_value": 0.84,
+        "normalized_value": 0.42,
         "weight": 0.8,
-        "contribution": 0.672,
+        "contribution": 0.336,
         "explanation": "сумма вне предпочтительного диапазона"
       },
       "conversion": {
@@ -4226,11 +4279,11 @@
         "explanation": "ожидаемая конверсия 79.0%"
       },
       "load_safe": {
-        "raw_value": 0.171,
-        "normalized_value": 0.829,
+        "raw_value": 0.165,
+        "normalized_value": 0.835,
         "weight": 1.3,
-        "contribution": 1.0777,
-        "explanation": "максимальная projected utilization 17.1%"
+        "contribution": 1.0855,
+        "explanation": "максимальная projected utilization 16.5%"
       },
       "intensity": {
         "raw_value": {
@@ -4241,17 +4294,6 @@
         "weight": 0.5,
         "contribution": 0.475,
         "explanation": "projected RPM 1/20"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 1368000.0,
-          "min": 1500000,
-          "max": 8000000
-        },
-        "normalized_value": 0.7264,
-        "weight": 1.4,
-        "contribution": 1.01696,
-        "explanation": "projected turnover 1368000.0, коридор 1500000–8000000"
       },
       "economy": {
         "raw_value": 0.7,
@@ -4267,28 +4309,28 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.723277,
+        "combined_score": 0.712572,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 62.5,
+              "projected_pct": 50.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.625,
+            "normalized_value": 0.75,
             "weight": 2.0,
-            "contribution": 1.25,
-            "explanation": "projected count share 62.5% при цели 25.0%"
+            "contribution": 1.5,
+            "explanation": "projected count share 50.0% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 79.8094,
-              "target_pct": 40
+              "projected_pct": 65.5152,
+              "target_pct": 25
             },
-            "normalized_value": 0.601906,
+            "normalized_value": 0.594848,
             "weight": 1.8,
-            "contribution": 1.083431,
-            "explanation": "projected volume share 79.8% при цели 40%"
+            "contribution": 1.070727,
+            "explanation": "projected volume share 65.5% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -4300,12 +4342,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 42000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.84,
+            "normalized_value": 0.42,
             "weight": 0.8,
-            "contribution": 0.672,
+            "contribution": 0.336,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -4316,11 +4358,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.171,
-            "normalized_value": 0.829,
+            "raw_value": 0.165,
+            "normalized_value": 0.835,
             "weight": 1.3,
-            "contribution": 1.0777,
-            "explanation": "максимальная projected utilization 17.1%"
+            "contribution": 1.0855,
+            "explanation": "максимальная projected utilization 16.5%"
           },
           "intensity": {
             "raw_value": {
@@ -4331,17 +4373,6 @@
             "weight": 0.5,
             "contribution": 0.475,
             "explanation": "projected RPM 1/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1368000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7264,
-            "weight": 1.4,
-            "contribution": 1.01696,
-            "explanation": "projected turnover 1368000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -4430,7 +4461,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -4475,7 +4506,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2942800.0,
+            "actual": 2990800.0,
             "threshold": 3000000
           },
           {
@@ -4521,7 +4552,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": [
@@ -4565,7 +4596,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1368000.0,
+            "actual": 1320000.0,
             "threshold": 8000000
           },
           {
@@ -4624,13 +4655,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1278000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -4650,13 +4681,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1320000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -4669,7 +4700,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_109",
@@ -4693,20 +4732,28 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.733814
+        "score": 0.640934,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "quickpay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.603348",
-        "score": 0.603348
+        "details": "rank 2, score 0.5989",
+        "score": 0.5989
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.733814,
+    "score": 0.640934,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -4721,12 +4768,12 @@
       "volume_share": {
         "raw_value": {
           "projected_pct": 17.9294,
-          "target_pct": 40
+          "target_pct": 50
         },
-        "normalized_value": 0.779294,
+        "normalized_value": 0.679294,
         "weight": 1.8,
-        "contribution": 1.40273,
-        "explanation": "projected volume share 17.9% при цели 40%"
+        "contribution": 1.22273,
+        "explanation": "projected volume share 17.9% при цели 50%"
       },
       "cascade": {
         "raw_value": 1,
@@ -4738,13 +4785,13 @@
       "preferred_amount": {
         "raw_value": {
           "amount": 10000.0,
-          "preferred_min": 10000,
+          "preferred_min": 50001,
           "preferred_max": 100000
         },
-        "normalized_value": 1.0,
+        "normalized_value": 0.199996,
         "weight": 0.8,
-        "contribution": 0.8,
-        "explanation": "сумма внутри предпочтительного диапазона"
+        "contribution": 0.159997,
+        "explanation": "сумма вне предпочтительного диапазона"
       },
       "conversion": {
         "raw_value": 0.87,
@@ -4763,23 +4810,23 @@
       "intensity": {
         "raw_value": {
           "projected_rpm": 1,
-          "limit": 15
+          "limit": 7
         },
-        "normalized_value": 0.933333,
+        "normalized_value": 0.857143,
         "weight": 0.5,
-        "contribution": 0.466667,
-        "explanation": "projected RPM 1/15"
+        "contribution": 0.428571,
+        "explanation": "projected RPM 1/7"
       },
       "turnover_commitment": {
         "raw_value": {
           "projected": 3262000.0,
-          "min": 3500000,
+          "min": null,
           "max": 5000000
         },
-        "normalized_value": 0.7204,
+        "normalized_value": 0.65,
         "weight": 1.4,
-        "contribution": 1.00856,
-        "explanation": "projected turnover 3262000.0, коридор 3500000–5000000"
+        "contribution": 0.91,
+        "explanation": "projected turnover 3262000.0, коридор —–5000000"
       },
       "economy": {
         "raw_value": 0.3,
@@ -4796,7 +4843,7 @@
     "ranking": [
       {
         "provider": "vipay",
-        "combined_score": 0.733814,
+        "combined_score": 0.640934,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
@@ -4812,12 +4859,12 @@
           "volume_share": {
             "raw_value": {
               "projected_pct": 17.9294,
-              "target_pct": 40
+              "target_pct": 50
             },
-            "normalized_value": 0.779294,
+            "normalized_value": 0.679294,
             "weight": 1.8,
-            "contribution": 1.40273,
-            "explanation": "projected volume share 17.9% при цели 40%"
+            "contribution": 1.22273,
+            "explanation": "projected volume share 17.9% при цели 50%"
           },
           "cascade": {
             "raw_value": 1,
@@ -4829,13 +4876,13 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 10000.0,
-              "preferred_min": 10000,
+              "preferred_min": 50001,
               "preferred_max": 100000
             },
-            "normalized_value": 1.0,
+            "normalized_value": 0.199996,
             "weight": 0.8,
-            "contribution": 0.8,
-            "explanation": "сумма внутри предпочтительного диапазона"
+            "contribution": 0.159997,
+            "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
             "raw_value": 0.87,
@@ -4854,23 +4901,23 @@
           "intensity": {
             "raw_value": {
               "projected_rpm": 1,
-              "limit": 15
+              "limit": 7
             },
-            "normalized_value": 0.933333,
+            "normalized_value": 0.857143,
             "weight": 0.5,
-            "contribution": 0.466667,
-            "explanation": "projected RPM 1/15"
+            "contribution": 0.428571,
+            "explanation": "projected RPM 1/7"
           },
           "turnover_commitment": {
             "raw_value": {
               "projected": 3262000.0,
-              "min": 3500000,
+              "min": null,
               "max": 5000000
             },
-            "normalized_value": 0.7204,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 1.00856,
-            "explanation": "projected turnover 3262000.0, коридор 3500000–5000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 3262000.0, коридор —–5000000"
           },
           "economy": {
             "raw_value": 0.3,
@@ -4884,28 +4931,28 @@
       },
       {
         "provider": "quickpay",
-        "combined_score": 0.603348,
+        "combined_score": 0.5989,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 66.6667,
+              "projected_pct": 55.5556,
               "target_pct": 25.0
             },
-            "normalized_value": 0.583333,
+            "normalized_value": 0.694444,
             "weight": 2.0,
-            "contribution": 1.166667,
-            "explanation": "projected count share 66.7% при цели 25.0%"
+            "contribution": 1.388889,
+            "explanation": "projected count share 55.6% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 80.3933,
-              "target_pct": 40
+              "projected_pct": 66.5124,
+              "target_pct": 25
             },
-            "normalized_value": 0.596067,
+            "normalized_value": 0.584876,
             "weight": 1.8,
-            "contribution": 1.072921,
-            "explanation": "projected volume share 80.4% при цели 40%"
+            "contribution": 1.052776,
+            "explanation": "projected volume share 66.5% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -4917,12 +4964,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 10000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.2,
+            "normalized_value": 0.1,
             "weight": 0.8,
-            "contribution": 0.16,
+            "contribution": 0.08,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -4933,11 +4980,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.17225,
-            "normalized_value": 0.82775,
+            "raw_value": 0.16625,
+            "normalized_value": 0.83375,
             "weight": 1.3,
-            "contribution": 1.076075,
-            "explanation": "максимальная projected utilization 17.2%"
+            "contribution": 1.083875,
+            "explanation": "максимальная projected utilization 16.6%"
           },
           "intensity": {
             "raw_value": {
@@ -4948,17 +4995,6 @@
             "weight": 0.5,
             "contribution": 0.45,
             "explanation": "projected RPM 2/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1378000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7244,
-            "weight": 1.4,
-            "contribution": 1.01416,
-            "explanation": "projected turnover 1378000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -5047,7 +5083,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": []
@@ -5080,7 +5116,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2910800.0,
+            "actual": 2958800.0,
             "threshold": 3000000
           },
           {
@@ -5126,7 +5162,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": [
@@ -5170,7 +5206,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1378000.0,
+            "actual": 1330000.0,
             "threshold": 8000000
           },
           {
@@ -5229,8 +5265,8 @@
           "preferred_amount": "vipay",
           "conversion": "vipay",
           "load_safe": "quickpay",
-          "intensity": "vipay",
-          "turnover_commitment": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "vipay",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -5245,13 +5281,13 @@
         "requests_last_minute": 0
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1320000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -5271,13 +5307,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1320000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -5290,7 +5326,15 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   },
   {
     "operation_id": "op_110",
@@ -5315,40 +5359,48 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.718288
+        "score": 0.754482,
+        "simulation": {
+          "source": "scripted",
+          "requested_source": "scripted",
+          "probabilities_applied": false,
+          "history_records": 0,
+          "provider_snapshot_fallback": false,
+          "seed": 42
+        }
       },
       {
         "provider": "quickpay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.665011",
-        "score": 0.665011
+        "details": "rank 2, score 0.638832",
+        "score": 0.638832
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.718288,
+    "score": 0.754482,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 20.0,
+          "projected_pct": 30.0,
           "target_pct": 35.0
         },
-        "normalized_value": 0.85,
+        "normalized_value": 0.95,
         "weight": 2.0,
-        "contribution": 1.7,
-        "explanation": "projected count share 20.0% при цели 35.0%"
+        "contribution": 1.9,
+        "explanation": "projected count share 30.0% при цели 35.0%"
       },
       "volume_share": {
         "raw_value": {
-          "projected_pct": 10.5754,
-          "target_pct": 20
+          "projected_pct": 23.0171,
+          "target_pct": 25
         },
-        "normalized_value": 0.905754,
+        "normalized_value": 0.980171,
         "weight": 1.8,
-        "contribution": 1.630358,
-        "explanation": "projected volume share 10.6% при цели 20%"
+        "contribution": 1.764308,
+        "explanation": "projected volume share 23.0% при цели 25%"
       },
       "cascade": {
         "raw_value": 2,
@@ -5361,12 +5413,12 @@
         "raw_value": {
           "amount": 40000.0,
           "preferred_min": 500,
-          "preferred_max": 35000
+          "preferred_max": 50000
         },
-        "normalized_value": 0.857143,
+        "normalized_value": 1.0,
         "weight": 0.8,
-        "contribution": 0.685714,
-        "explanation": "сумма вне предпочтительного диапазона"
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
       },
       "conversion": {
         "raw_value": 0.91,
@@ -5376,32 +5428,32 @@
         "explanation": "ожидаемая конверсия 91.0%"
       },
       "load_safe": {
-        "raw_value": 0.980267,
-        "normalized_value": 0.019733,
+        "raw_value": 0.996267,
+        "normalized_value": 0.003733,
         "weight": 1.3,
-        "contribution": 0.025653,
-        "explanation": "максимальная projected utilization 98.0%"
+        "contribution": 0.004853,
+        "explanation": "максимальная projected utilization 99.6%"
       },
       "intensity": {
         "raw_value": {
           "projected_rpm": 1,
-          "limit": 10
+          "limit": 15
         },
-        "normalized_value": 0.9,
+        "normalized_value": 0.933333,
         "weight": 0.5,
-        "contribution": 0.45,
-        "explanation": "projected RPM 1/10"
+        "contribution": 0.466667,
+        "explanation": "projected RPM 1/15"
       },
       "turnover_commitment": {
         "raw_value": {
-          "projected": 2940800.0,
-          "min": 2950000,
-          "max": 3000000
+          "projected": 2988800.0,
+          "min": 2000000,
+          "max": null
         },
-        "normalized_value": 0.700936,
+        "normalized_value": 0.65,
         "weight": 1.4,
-        "contribution": 0.98131,
-        "explanation": "projected turnover 2940800.0, коридор 2950000–3000000"
+        "contribution": 0.91,
+        "explanation": "projected turnover 2988800.0, коридор 2000000–—"
       },
       "economy": {
         "raw_value": 0.5,
@@ -5418,28 +5470,28 @@
     "ranking": [
       {
         "provider": "payflow",
-        "combined_score": 0.718288,
+        "combined_score": 0.754482,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 20.0,
+              "projected_pct": 30.0,
               "target_pct": 35.0
             },
-            "normalized_value": 0.85,
+            "normalized_value": 0.95,
             "weight": 2.0,
-            "contribution": 1.7,
-            "explanation": "projected count share 20.0% при цели 35.0%"
+            "contribution": 1.9,
+            "explanation": "projected count share 30.0% при цели 35.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 10.5754,
-              "target_pct": 20
+              "projected_pct": 23.0171,
+              "target_pct": 25
             },
-            "normalized_value": 0.905754,
+            "normalized_value": 0.980171,
             "weight": 1.8,
-            "contribution": 1.630358,
-            "explanation": "projected volume share 10.6% при цели 20%"
+            "contribution": 1.764308,
+            "explanation": "projected volume share 23.0% при цели 25%"
           },
           "cascade": {
             "raw_value": 2,
@@ -5452,12 +5504,12 @@
             "raw_value": {
               "amount": 40000.0,
               "preferred_min": 500,
-              "preferred_max": 35000
+              "preferred_max": 50000
             },
-            "normalized_value": 0.857143,
+            "normalized_value": 1.0,
             "weight": 0.8,
-            "contribution": 0.685714,
-            "explanation": "сумма вне предпочтительного диапазона"
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
           },
           "conversion": {
             "raw_value": 0.91,
@@ -5467,32 +5519,32 @@
             "explanation": "ожидаемая конверсия 91.0%"
           },
           "load_safe": {
-            "raw_value": 0.980267,
-            "normalized_value": 0.019733,
+            "raw_value": 0.996267,
+            "normalized_value": 0.003733,
             "weight": 1.3,
-            "contribution": 0.025653,
-            "explanation": "максимальная projected utilization 98.0%"
+            "contribution": 0.004853,
+            "explanation": "максимальная projected utilization 99.6%"
           },
           "intensity": {
             "raw_value": {
               "projected_rpm": 1,
-              "limit": 10
+              "limit": 15
             },
-            "normalized_value": 0.9,
+            "normalized_value": 0.933333,
             "weight": 0.5,
-            "contribution": 0.45,
-            "explanation": "projected RPM 1/10"
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
           },
           "turnover_commitment": {
             "raw_value": {
-              "projected": 2940800.0,
-              "min": 2950000,
-              "max": 3000000
+              "projected": 2988800.0,
+              "min": 2000000,
+              "max": null
             },
-            "normalized_value": 0.700936,
+            "normalized_value": 0.65,
             "weight": 1.4,
-            "contribution": 0.98131,
-            "explanation": "projected turnover 2940800.0, коридор 2950000–3000000"
+            "contribution": 0.91,
+            "explanation": "projected turnover 2988800.0, коридор 2000000–—"
           },
           "economy": {
             "raw_value": 0.5,
@@ -5506,28 +5558,28 @@
       },
       {
         "provider": "quickpay",
-        "combined_score": 0.665011,
+        "combined_score": 0.638832,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 60.0,
+              "projected_pct": 50.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.65,
+            "normalized_value": 0.75,
             "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected count share 60.0% при цели 25.0%"
+            "contribution": 1.5,
+            "explanation": "projected count share 50.0% при цели 25.0%"
           },
           "volume_share": {
             "raw_value": {
-              "projected_pct": 79.8341,
-              "target_pct": 40
+              "projected_pct": 67.3924,
+              "target_pct": 25
             },
-            "normalized_value": 0.601659,
+            "normalized_value": 0.576076,
             "weight": 1.8,
-            "contribution": 1.082986,
-            "explanation": "projected volume share 79.8% при цели 40%"
+            "contribution": 1.036936,
+            "explanation": "projected volume share 67.4% при цели 25%"
           },
           "cascade": {
             "raw_value": 3,
@@ -5539,12 +5591,12 @@
           "preferred_amount": {
             "raw_value": {
               "amount": 40000.0,
-              "preferred_min": 50000,
-              "preferred_max": 200000
+              "preferred_min": 100000.01,
+              "preferred_max": null
             },
-            "normalized_value": 0.8,
+            "normalized_value": 0.4,
             "weight": 0.8,
-            "contribution": 0.64,
+            "contribution": 0.32,
             "explanation": "сумма вне предпочтительного диапазона"
           },
           "conversion": {
@@ -5555,11 +5607,11 @@
             "explanation": "ожидаемая конверсия 79.0%"
           },
           "load_safe": {
-            "raw_value": 0.176,
-            "normalized_value": 0.824,
+            "raw_value": 0.17,
+            "normalized_value": 0.83,
             "weight": 1.3,
-            "contribution": 1.0712,
-            "explanation": "максимальная projected utilization 17.6%"
+            "contribution": 1.079,
+            "explanation": "максимальная projected utilization 17.0%"
           },
           "intensity": {
             "raw_value": {
@@ -5570,17 +5622,6 @@
             "weight": 0.5,
             "contribution": 0.475,
             "explanation": "projected RPM 1/20"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 1408000.0,
-              "min": 1500000,
-              "max": 8000000
-            },
-            "normalized_value": 0.7184,
-            "weight": 1.4,
-            "contribution": 1.00576,
-            "explanation": "projected turnover 1408000.0, коридор 1500000–8000000"
           },
           "economy": {
             "raw_value": 0.7,
@@ -5669,7 +5710,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": 7
           }
         ],
         "failures": [
@@ -5714,7 +5755,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 2940800.0,
+            "actual": 2988800.0,
             "threshold": 3000000
           },
           {
@@ -5760,7 +5801,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 10
+            "threshold": 15
           }
         ],
         "failures": []
@@ -5793,7 +5834,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1408000.0,
+            "actual": 1360000.0,
             "threshold": 8000000
           },
           {
@@ -5853,7 +5894,7 @@
           "conversion": "payflow",
           "load_safe": "quickpay",
           "intensity": "quickpay",
-          "turnover_commitment": "quickpay",
+          "turnover_commitment": "payflow",
           "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
@@ -5868,13 +5909,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2900800,
+        "daily_approved_amount": 2948800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1320000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -5894,13 +5935,13 @@
         "requests_last_minute": 1
       },
       "payflow": {
-        "daily_approved_amount": 2940800,
+        "daily_approved_amount": 2988800,
         "in_progress_count": 2,
         "in_progress_amount": 120000,
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1320000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -5913,6 +5954,14 @@
       }
     },
     "fallback_used": false,
-    "decision_time_ms": 0.0
+    "decision_time_ms": 0.0,
+    "simulation": {
+      "source": "scripted",
+      "requested_source": "scripted",
+      "probabilities_applied": false,
+      "history_records": 0,
+      "provider_snapshot_fallback": false,
+      "seed": 42
+    }
   }
 ]

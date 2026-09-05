@@ -14,7 +14,9 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml" sizes="any">
+    <link rel="shortcut icon" href="/icon.svg?v=2" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.svg?v=2">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -26,15 +28,13 @@
       <div class="shell topbar__inner">
         <%= link_to root_path, class: "brand" do %><span class="brand__mark">D</span><span>DuoRoute</span><% end %>
         <nav class="nav" aria-label="Основная навигация">
-          <%= navigation_link "Обзор", root_path, controllers: "dashboard" %>
+          <%= navigation_link "Обзор", root_path(run_id: @run&.status == "completed" ? @run.id : params[:run_id]), controllers: "dashboard" %>
+          <%= navigation_link "Провайдеры", providers_path(run_id: @run&.status == "completed" ? @run.id : params[:run_id]), controllers: "providers" %>
           <%= navigation_link "Запуски", runs_path, controllers: "routing_runs" %>
-          <%= navigation_link "Провайдеры", providers_path, controllers: "providers" %>
-          <%= navigation_link "Strategy Lab", strategies_path, controllers: "strategies" %>
-          <%= navigation_link "Аналитика", analytics_path, controllers: "analytics" %>
+          <%= navigation_link "Стратегии", strategies_path, controllers: "strategies" %>
           <%= navigation_link "Генератор", generator_path, controllers: "generators" %>
-          <%= navigation_link "Методология", methodology_path, controllers: "methodology" %>
         </nav>
-        <%= link_to "Новый запуск", new_run_path, class: "btn btn--primary topbar__action" %>
+        <%= link_to icon_label("Новый запуск"), new_run_path, class: "btn btn--primary topbar__action" %>
       </div>
     </header>
     <main class="shell page"><%= yield %></main>

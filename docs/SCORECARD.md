@@ -6,16 +6,16 @@
 | State update | reserve/commit/rollback, daily/in-progress, 60-sec RPM | `state_test.rb`, `engine_test.rb` | state before/after |
 | Reject + fallback | пересчёт cascade; self-provider только после external exhaustion | engine cascade/fallback tests | attempt timeline |
 | Timeout modes | `fallback_on_timeout` + `hold_until_status` со status-check | 3 timeout branch tests | wizard + timeline |
-| Гибкость (33) | 9 policies, 8 presets, YAML weights/priorities/overrides, registry | policy unit tests | Strategy Lab + config editor |
+| Гибкость (33) | 9 policies, 7 стратегий и комбинированные настройки, YAML weights/priorities/overrides, registry | policy unit tests | Стратегии + config editor |
 | Совместный учёт | формальная weighted normalized sum | combined/conflict tests | waterfall и ranking |
 | Count / volume | projected state, не прошлый snapshot | projected policy tests | target-vs-fact chart/report |
 | Cascade / amount | priority и отдельный preferred range | policy tests | score breakdown |
 | Conversion / load / RPM | canonical conversion, projected capacity, sliding window | policy + constraint tests | provider drill-down |
-| Turnover / economy | min/max commitment и margin spread | policy/report tests | Analytics recommendations |
+| Turnover / economy | min/max commitment и margin spread | policy/report tests | Рекомендации на Обзоре |
 | Детерминизм | stable operation order/tie-break; SHA seeded simulator | simulator/order/tie tests | manifest download |
 | Объяснимость (15) | hard reasons, eligible ranking, contributions, conflicts, timeline | exact output/audit tests | Operation detail |
-| Аналитика (10) | count/volume, result mix, fallback, latency, capacity, history, target exceptions | report/history tests | Dashboard + Analytics |
-| Рекомендации | deterministic threshold rules с evidence/action/rationale | report recommendation test | Run detail + Analytics |
+| Аналитика (10) | count/volume, result mix, fallback, latency, capacity, history, target exceptions | report/history tests | Обзор + Провайдеры |
+| Рекомендации | deterministic threshold rules с evidence/action/rationale | report recommendation test | Страница запуска |
 | Входные ошибки | aggregate path/line errors, safe YAML, duplicates, malformed data | input validation tests | wizard error state / `validate` |
 | Генератор | 8 scenarios, seeded data/outcomes/history | reproducibility/invalid/invariant tests | Data Generator / `generate` |
 | Core boundaries | core без Rails; CLI/job — adapters | Zeitwerk + integration tests | architecture docs |
