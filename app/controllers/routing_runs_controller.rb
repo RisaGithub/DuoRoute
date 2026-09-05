@@ -27,7 +27,7 @@ class RoutingRunsController < ApplicationController
     providers = DuoRoute::Input::Loader.json_string(providers_text, label: "providers upload")
     operations = DuoRoute::Input::Loader.json_string(operations_text, label: "operations upload")
     DuoRoute::Configuration.fail!("strategy", "неизвестная стратегия") unless RoutingRun::PRESETS.include?(params[:preset])
-    config = parse_config(config_text)
+    config = StrategySetting.apply(parse_config(config_text), params[:preset])
     config = DuoRoute::Configuration.resolve(config, strategy: params[:preset].presence || "balanced", settings: params[:settings].to_s.lines.map(&:strip).reject(&:empty?))
     apply_policy_weights!(config)
     outcomes = outcomes_text.present? ? DuoRoute::Input::Loader.json_string(outcomes_text, label: "outcomes upload") : nil
@@ -139,12 +139,13 @@ class RoutingRunsController < ApplicationController
   end
 
   def set_weight_defaults
+    @strategy_catalog = StrategySetting.catalog
     base = parse_config(@defaults[:config])
     @mode_defaults = %w[balanced custom].to_h do |mode|
-      resolved = DuoRoute::Configuration.resolve(base, strategy: mode)
+      resolved = DuoRoute::Configuration.resolve(StrategySetting.apply(base, mode), strategy: mode)
       [ mode, { "weights" => resolved.dig("presets", mode, "weights") || {}, "parameters" => resolved.slice("provider_overrides") } ]
     end
-    parsed = DuoRoute::Configuration.resolve(base, strategy: params[:preset].presence || "balanced")
+    parsed = DuoRoute::Configuration.resolve(StrategySetting.apply(base, params[:preset].presence || "balanced"), strategy: params[:preset].presence || "balanced")
     preset = params[:preset].presence || "balanced"
     @weight_defaults = parsed.dig("presets", preset, "weights") || parsed.dig("presets", "balanced", "weights") || {}
   rescue DuoRoute::InputError

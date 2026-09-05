@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_04_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_05_090000) do
   create_table "routing_runs", force: :cascade do |t|
     t.datetime "completed_at"
     t.text "config_json", null: false
@@ -37,5 +37,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_090000) do
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_routing_runs_on_created_at"
     t.index ["status"], name: "index_routing_runs_on_status"
+  end
+
+  create_table "strategy_settings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.json "provider_overrides", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_strategy_settings_on_name", unique: true
   end
 end

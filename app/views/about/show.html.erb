@@ -1,0 +1,136 @@
+<% content_for :title, "DuoRoute · Объяснимый роутинг выплат" %>
+<% content_for :head do %><meta name="description" content="DuoRoute команды DuoTech для Hack.Genesis 2026: обязательные ограничения, настраиваемые стратегии, объяснение каждой выплаты. CLI и Web на одном Ruby-ядре."><% end %>
+<div class="product">
+  <section class="product-hero" aria-labelledby="product-title">
+    <div class="product-hero__copy">
+      <p class="eyebrow">DuoTech <span> / </span> Hack.Genesis 2026</p>
+      <p class="product-wordmark">DuoRoute<span aria-hidden="true">↗</span></p>
+      <h1 id="product-title">У каждой выплаты —<br><em>объяснимый маршрут.</em></h1>
+      <p class="product-lead">Безопасный и настраиваемый выбор провайдера: сначала обязательные ограничения, затем оптимизация. С понятной причиной каждого решения и резервным маршрутом.</p>
+      <div class="product-actions"><%= link_to "Запустить web-расчёт →", new_run_path, class: "btn btn--primary btn--large" %><a href="#how-it-works" class="btn btn--large">Как это работает ↓</a></div>
+      <p class="product-caption">Конкурсное решение для интеллектуального роутинга выплат.<br>Ответы провайдеров моделируются локально, без отправки платежей.</p>
+    </div>
+    <div class="product-flow" aria-label="Схема обработки выплаты">
+      <div class="product-flow__head"><span class="pill pill--info">Путь операции</span><span>Ruby routing core</span></div>
+      <div class="product-flow__input"><span>Входящая выплата</span><strong>Очередь → операция</strong><code>amount · bank · created_at</code></div>
+      <ol class="product-flow__steps">
+        <li><span class="product-node">01</span><div><strong>Обязательные ограничения</strong><p>Банк, сумма, лимиты, реквизиты, маржа</p><span class="product-flow__note">Недопустимые провайдеры исключены</span></div></li>
+        <li><span class="product-node">02</span><div><strong>Оценка по стратегии</strong><p>Взвешенный score допустимых кандидатов</p><div class="product-score-lines" aria-hidden="true"><i></i><i></i><i></i></div></div></li>
+        <li><span class="product-node">03</span><div><strong>Попытка отправки · симуляция</strong><p>Успех → решение. Отказ → следующий кандидат.</p><code>reserve → commit / rollback</code></div></li>
+      </ol>
+      <div class="product-flow__fallback"><span aria-hidden="true">↳</span><div><strong>spacepayments</strong><p>Резерв после исчерпания внешнего пула</p></div><span class="pill pill--warn">fallback</span></div>
+      <div class="product-flow__output">Выход <span>решение + объяснение + новое состояние</span></div>
+    </div>
+  </section>
+
+  <nav class="product-index" aria-label="Разделы о продукте"><a href="#how-it-works">01 / Процесс</a><a href="#interfaces">02 / CLI и Web</a><a href="#policies">03 / Стратегии</a><a href="#decision">04 / Решение</a><a href="#architecture">05 / Архитектура</a></nav>
+
+  <section id="how-it-works" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">01 / Логика маршрута</p><h2>Ограничения — прежде оптимизации</h2></div><p>Ни один вес не отменяет обязательную проверку. Сохраняются все причины допуска и исключения каждого проверенного провайдера.</p></div>
+    <ol class="product-process">
+      <li><span>01</span><h3>Загрузить</h3><p>Состояние провайдеров и очередь JSON, конфигурацию YAML/JSON. При необходимости — историю CSV.</p></li>
+      <li><span>02</span><h3>Проверить</h3><p>Активность, диапазон суммы, банк, дневной лимит, текущую загрузку, маржу, реквизиты и RPM.</p></li>
+      <li><span>03</span><h3>Оценить</h3><p>Каждая активная политика оценивает допустимого провайдера. Значения нормализуются от 0 до 1.</p></li>
+      <li><span>04</span><h3>Выбрать</h3><p>Взвешенный score определяет порядок попыток. Равенство разрешается детерминированно.</p></li>
+      <li><span>05</span><h3>Обработать ответ</h3><p>Успех фиксирует оборот. Отказ освобождает резерв и ведёт к следующему кандидату. Timeout зависит от режима.</p></li>
+      <li><span>06</span><h3>Перейти в резерв</h3><p>Если внешний пул исчерпан, проверяется и вызывается spacepayments. Он не участвует в scoring.</p></li>
+      <li><span>07</span><h3>Сохранить</h3><p>Решения по операциям, итоговый отчёт, конфигурацию и Manifest для повторения расчёта.</p></li>
+    </ol>
+    <div class="product-state"><span aria-hidden="true">↻</span><p><strong>Последовательно, с обновлением состояния.</strong> Очередь упорядочена по <code>created_at</code>; при равном времени сохраняется входной порядок. Каждое решение учитывает предыдущие попытки, оборот, занятые лимиты и запросы за последние 60 секунд.</p></div>
+  </section>
+
+  <section id="interfaces" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">02 / Два способа начать</p><h2>В терминале. Или в браузере.</h2></div><p>Общий routing core, одинаковая логика проверки и выбора. Выберите удобный способ работы с очередью.</p></div>
+    <div class="product-interfaces">
+      <article class="product-interface">
+        <div class="product-interface__title"><span class="product-interface__symbol" aria-hidden="true">&gt;_</span><div><h3>CLI</h3><p>Воспроизводимый расчёт из файлов</p></div><span class="pill pill--muted">Ruby</span></div>
+        <p>Работает без Rails-сервера и базы. Из корня подготовленного проекта запустите публичный пример:</p>
+        <%= render "command", label: "Публичный демозапуск", command: "bin/router demo --seed 42" %>
+        <p class="product-caption">Создаёт <code>routing_decisions.json</code> и <code>routing_report.json</code>, а также Config и Manifest. Повторный запуск заменяет эти выходные файлы. Использует точные ответы из <code>data/examples/demo_outcomes.json</code>.</p>
+        <dl class="product-command-list"><dt><code>validate</code></dt><dd>Проверить вход до расчёта.</dd><dt><code>route</code></dt><dd>Обработать свою очередь и сохранить JSON.</dd><dt><code>compare</code></dt><dd>Сравнить стратегии на одном исходном состоянии.</dd><dt><code>explain</code></dt><dd>Показать объяснение по <code>--operation ID</code>.</dd><dt><code>generate</code></dt><dd>Создать тестовый набор, включая сценарий <code>stress</code>.</dd><dt><code>strategies list</code></dt><dd>Получить каталог; <code>strategies show count_share</code> — настройки стратегии.</dd></dl>
+        <a href="#cli-reference" class="text-link">Команда для своей очереди ↓</a>
+      </article>
+      <article class="product-interface">
+        <div class="product-interface__title"><span class="product-interface__symbol" aria-hidden="true">▤</span><div><h3>Web</h3><p>От загрузки до разбора каждой операции</p></div><span class="pill pill--ok">Rails</span></div>
+        <p>Загрузите файлы или отредактируйте входные данные прямо в форме. Публичный пример уже подставлен.</p>
+        <div class="product-web-preview" aria-label="Иллюстрация этапов web-интерфейса, не текущий запуск"><div><span class="product-node">1</span><span>Файлы и проверка входа</span><span>JSON / CSV / YAML</span></div><div><span class="product-node">2</span><span>Стратегия, веса и симуляция</span><span>balanced</span></div><div><span class="product-node">3</span><span>Расчёт и подробный результат</span><span>решения + отчёт</span></div></div>
+        <ul class="product-feature-list"><li>Прогресс выполнения и статус фонового задания.</li><li>Таблица решений и последовательность попыток.</li><li>Матрица ограничений, ranking и вклад каждой политики.</li><li>Аналитика долей, лимитов и причин исключения.</li><li>История запусков с собственными входами и конфигурацией.</li><li>Просмотр и скачивание результатов, исходных данных и Manifest.</li></ul>
+        <div class="product-actions"><%= link_to "Новый расчёт →", new_run_path, class: "btn btn--primary" %><%= link_to "История запусков", runs_path, class: "text-link" %></div>
+      </article>
+    </div>
+    <details id="cli-reference" class="product-details"><summary>Практика CLI: свои файлы, параметры и первый запуск</summary><div class="product-details__body">
+      <p>Требования: Ruby 3.4.x, Bundler 2.6+, SQLite 3 для Web. Подготовка приложения: <code>bin/setup --skip-server</code>. Справка: <code>bin/router help</code> или <code>bin/router route --help</code>.</p>
+      <%= render "command", label: "Расчёт публичной очереди", command: "bin/router route \\\n  --providers data/examples/providers.json \\\n  --operations data/examples/operations_queue_10.json \\\n  --config config/routing/default.yml \\\n  --strategy balanced --seed 42 \\\n  --decisions routing_decisions.json \\\n  --report routing_report.json" %>
+      <p><code>--providers</code> — снимок провайдеров; <code>--operations</code> — JSON-массив операций; <code>--config</code> — YAML/JSON с настройками. Пути можно заменить своими. <code>--strategy</code> (также <code>--preset</code>) выбирает стратегию; <code>--seed</code> фиксирует симуляцию; <code>--decisions</code> и <code>--report</code> задают выходные файлы.</p>
+      <p>Необязательные входы: <code>--history data/examples/operations_history.csv</code> для статистики ответов, <code>--outcomes data/examples/demo_outcomes.json</code> для точного сценария. Без достаточной истории режим <code>history</code> использует snapshot провайдера. Для проверки замените <code>route</code> на <code>validate</code> и уберите <code>--decisions</code> и <code>--report</code>.</p>
+      <%= render "command", label: "Объяснение после демозапуска", command: "bin/router explain --decisions routing_decisions.json --operation op_105" %>
+    </div></details>
+  </section>
+
+  <section id="policies" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">03 / Управляемый выбор</p><h2>Семь стратегий. Ваши приоритеты.</h2></div><p>Каталог загружается из конфигурации проекта. Доли и предпочтения — цели оптимизации; обязательные ограничения действуют всегда.</p></div>
+    <div class="product-strategies">
+      <% @strategies.each_with_index do |(name, strategy), index| %>
+        <article class="product-strategy"><span class="product-strategy__number"><%= "%02d" % (index + 1) %></span><div><code><%= name %></code><h3><%= strategy["title"] %></h3></div><p><%= strategy["description"] %><small><%= strategy["example"] %></small></p></article>
+      <% end %>
+    </div>
+    <div class="product-combination"><div><h3>Когда важен баланс факторов</h3><p><code>balanced</code> объединяет политики с готовыми весами, <code>custom</code> позволяет задать свою комбинацию. <code>load_safe</code> учитывает свободную ёмкость, <code>economy</code> — запас между маржой мерчанта и провайдера.</p><p class="product-caption">Для совместимости CLI также поддерживает профили <code>conversion_first</code>, <code>load_safe</code> и <code>economy_first</code>.</p></div><%= link_to "Настроить стратегию →", new_run_path, class: "btn" %></div>
+    <details class="product-details"><summary>Параметры без догадок: точные имена и допустимые значения</summary><div class="product-details__body">
+      <p>В Web есть отдельные поля стратегии, весов, timeout, источника симуляции и seed. Остальные параметры задаются в YAML/JSON или в поле <code>path=value</code>. В CLI используйте <code>--config</code> или повторяемый <code>--set path=value</code>. <code>NAME</code> ниже — имя провайдера, <code>STRATEGY</code> — имя стратегии, <code>POLICY</code> — имя политики.</p>
+      <dl class="product-parameters">
+        <dt>Веса и порядок</dt><dd><code>presets.STRATEGY.weights.POLICY</code> ≥ 0; хотя бы один вес положительный. Поля весов Web: 0–10, шаг 0.1. Конфигурация допускает другие неотрицательные веса. <code>presets.STRATEGY.policy_priorities</code> — массив уникальных имён политик для разрешения равенства.</dd>
+        <dt>Доли и приоритет</dt><dd><code>provider_overrides.NAME.traffic_percentage</code> и <code>volume_share_pct</code>: 0–100; сумма <code>traffic_percentage</code> внешних провайдеров — 100. <code>priority</code> ≥ 0: меньше — предпочтительнее.</dd>
+        <dt>Сумма и конверсия</dt><dd><code>preferred_amount_min</code> / <code>preferred_amount_max</code> — неотрицательные границы или <code>null</code>. <code>conversion_24h</code>: доля 0–1. Эти поля также задаются через <code>provider_overrides.NAME</code>.</dd>
+        <dt>Загрузка и RPM</dt><dd><code>in_progress_count</code>, <code>in_progress_amount</code>, <code>daily_approved_amount</code> — исходное состояние. <code>in_progress_count_limit</code>, <code>in_progress_amount_limit</code>, <code>daily_amount_limit</code>, <code>requests_per_minute_limit</code> — неотрицательные лимиты; <code>null</code> отключает лимит. Префикс: <code>provider_overrides.NAME</code>.</dd>
+        <dt>Оборот и экономика</dt><dd><code>daily_turnover_min</code> / <code>daily_turnover_max</code> — мягкие цели, не замена <code>daily_amount_limit</code>. <code>merchant_margin_pct</code> и <code>provider_margin_pct</code> — неотрицательные проценты; <code>allow_negative_agreement</code>: <code>true</code> / <code>false</code>. Префикс: <code>provider_overrides.NAME</code>.</dd>
+        <dt>Timeout</dt><dd><code>routing.timeout_mode</code> / <code>--timeout-mode</code>: <code>fallback_on_timeout</code> освобождает резерв и продолжает попытки; <code>hold_until_status</code> удерживает ёмкость до результата проверки статуса. Поздний отказ позволяет продолжить каскад; неразрешённый timeout остаётся выбранным.</dd>
+        <dt>Симуляция и seed</dt><dd><code>simulation.source</code> / <code>--simulation-source</code>: <code>history</code>, <code>provider_snapshot</code>, <code>custom</code>, <code>scripted</code>. <code>seed</code> / <code>--seed</code> — целое ≥ 0. В <code>scripted</code> нужны точные outcomes.</dd>
+        <dt>История и вероятности</dt><dd><code>simulation.latency_method</code>: <code>mean</code> / <code>median</code>; <code>simulation.minimum_samples</code> — положительное целое (по умолчанию 20). <code>simulation.failure_expired_share</code>: 0–1. В <code>simulation.providers.NAME</code>: <code>approved_rate</code>, <code>rejected_rate</code>, <code>expired_rate</code> — доли 0–1 с суммой 1; <code>average_latency_sec</code>, <code>latency_spread_sec</code> — секунды ≥ 0.</dd>
+      </dl>
+      <%= render "command", label: "Усилить фактор конверсии", command: "bin/router route --strategy balanced \\\n  --set presets.balanced.weights.conversion=3 \\\n  --simulation-source provider_snapshot --seed 42" %>
+      <p class="product-caption">Команда использует стандартные входные пути CLI и записывает стандартные выходные файлы. Настройки применяются на сервере тем же core, что и в Web.</p>
+    </div></details>
+  </section>
+
+  <section id="decision" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">04 / Объяснимость в деталях</p><h2>Лучший score — ещё не успешная выплата</h2></div><p>Пример <code>op_105</code> из публичного сценария <code>demo</code>: стратегия <code>balanced</code>, seed 42, точные ответы <code>scripted</code>.</p></div>
+    <div class="product-decision">
+      <div class="product-decision__header"><strong><code>op_105</code></strong><span>Банк: <code>tinkoff</code></span><span class="pill pill--ok">Выбран quickpay</span></div>
+      <div class="product-decision__row"><div><strong>payflow</strong><span class="pill pill--fail">Исключён</span></div><p>Банк отсутствует в разрешённом списке. До scoring провайдер не допускается.</p><code>bank_not_in_list</code></div>
+      <div class="product-decision__row"><div><strong>vipay</strong><span class="pill pill--warn">Timeout</span></div><p>Первый в рейтинге: <b>0.647649</b>. Попытка вернула <code>expired</code> за 320 с. В режиме <code>fallback_on_timeout</code> резерв освобождён.</p><code>provider_expired</code></div>
+      <div class="product-decision__row product-decision__row--selected"><div><strong>quickpay</strong><span class="pill pill--ok">Выбран</span></div><p>Следующий допустимый кандидат: <b>0.588487</b>. Ответ <code>approved</code> за 22 с. Итоговая задержка операции — 342 с.</p><code>highest_combined_score</code></div>
+      <div class="product-decision__footer">spacepayments не понадобился: внешний кандидат успешно обработал выплату.</div>
+    </div>
+    <div class="product-proof-grid"><article><h3>Разложение, а не чёрный ящик</h3><p><code>score_breakdown</code> хранит исходное значение, нормализованный score, вес и вклад каждой политики. <code>constraint_matrix</code> объясняет проверки; <code>state_before</code> и <code>state_after</code> показывают изменения.</p><div class="product-equation">score = Σ(score политики × вес) / Σ(весов)</div><p class="product-caption">В знаменателе только веса политик, вернувших score для этого провайдера. Отсутствующее необязательное поле исключает соответствующий фактор из расчёта.</p></article><article><h3>Повторяемый результат</h3><p>Сохраните входы, итоговую конфигурацию, outcomes и seed. Manifest содержит SHA-256 для сверки. При одинаковых данных и версии core решения воспроизводятся; время исполнения не является детерминированной метрикой.</p><p class="product-caption">Равенство score: порядок политик → приоритет провайдера → имя <code>payment_system</code>. Seed влияет на симуляцию, а не на выбор при равенстве.</p></article></div>
+    <p class="product-footnote">Fallback также проходит обязательные проверки. Его недоступность останавливает расчёт; выбор резервного провайдера сам по себе не гарантирует ответ <code>approved</code>.</p>
+  </section>
+
+  <section id="outputs" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">Результат / Машиночитаемый аудит</p><h2>Решение по выплате. Картина по очереди.</h2></div><p>Ниже — сокращённые фрагменты публичного демозапуска. Показатели иллюстрируют сценарий и не являются обещанием успешности или SLA.</p></div>
+    <div class="product-outputs"><article><h3><code>routing_decisions.json</code></h3><p>Массив решений: выбранный провайдер, попытки, причины, score, ограничения и состояние.</p><pre><code>[
+  {
+    "operation_id": "op_105",
+    "selected_provider": "quickpay",
+    "simulated_result": "approved",
+    "score": 0.588487,
+    "fallback_used": false
+  }
+]</code></pre></article><article><h3><code>routing_report.json</code></h3><p>Итоги очереди, распределение количества и объёма, загрузка, причины пропуска и рекомендации.</p><pre><code>{
+  "total_operations": 10,
+  "total_amount": 385800,
+  "approval_rate_pct": 100.0,
+  "fallback_rate_pct": 10.0
+}</code></pre><p class="product-caption">В CLI рядом: <code>routing_report.json.config.json</code> и <code>routing_report.json.manifest.json</code>.</p></article></div>
+    <details class="product-details"><summary>Финальная очередь Hack.Genesis: команда final</summary><div class="product-details__body"><p>Workflow реализован. После получения настоящей финальной очереди команда принимает basename строго <code>operations_queue_test.json</code>, проверяет данные и записывает в корень репозитория <code>routing_decisions_test.json</code>, <code>routing_report_test.json</code> и сопровождающие Config/Manifest. Публичный demo не подменяет финальную очередь.</p><%= render "command", label: "Запуск финальной очереди", command: "bin/router final \\\n  --operations operations_queue_test.json \\\n  --providers data/providers.json \\\n  --config config/routing/final.yml \\\n  --strategy balanced --seed 42" %><%= link_to "Регламент финальной очереди →", product_document_path("final"), class: "text-link" %></div></details>
+  </section>
+
+  <section id="architecture" class="product-section">
+    <div class="product-section__head"><div><p class="eyebrow">05 / Архитектура</p><h2>Два интерфейса. Одна бизнес-логика.</h2></div><p>Независимое Ruby-ядро в <code>lib/duo_route</code> не знает о Rails, HTTP или базе данных. CLI и фоновое задание Web вызывают один <code>DuoRoute::Runner</code>.</p></div>
+    <div class="product-architecture" aria-label="CLI и Web вызывают Ruby routing core, который возвращает decisions и report"><div class="product-architecture__inputs"><span>CLI</span><span>Web</span></div><span class="product-architecture__arrow" aria-hidden="true">→</span><div class="product-architecture__core"><strong>Ruby routing core</strong><span>проверка → оценка → попытки → состояние</span></div><span class="product-architecture__arrow" aria-hidden="true">→</span><div class="product-architecture__outputs"><code>decisions</code><code>report + manifest</code></div></div>
+    <div class="product-tech"><span>Ruby 3.4</span><span>Rails 8.1</span><span>SQLite</span><span>Hotwire / Turbo</span><span>Stimulus</span><span>Chart.js</span><span>Minitest</span><span>CSS + importmap</span><span>Propshaft</span></div>
+    <div class="product-proof-grid"><article><h3>Локальная обработка</h3><p>Во время маршрутизации сеть не используется. Внутри решения нет нейросетей и внешних AI-сервисов: проверки, формулы политик и симуляция реализованы в Ruby. Chart.js поставляется локально.</p></article><article><h3>История с контекстом</h3><p>SQLite хранит входные данные, конфигурацию, статус и артефакты каждого Web-запуска. Интерфейс показывает именно выбранный расчёт; старые результаты не пересчитываются при изменении настроек.</p></article></div>
+  </section>
+
+  <section id="documentation" class="product-section product-documentation"><div><p class="eyebrow">Для следующего шага</p><h2>Документация из репозитория</h2></div><div class="product-doc-links"><%= link_to "Руководство и запуск ↗", product_document_path("readme") %><%= link_to "Алгоритм и формулы ↗", product_document_path("algorithm") %><%= link_to "Форматы и reason codes ↗", product_document_path("formats") %></div></section>
+  <section class="product-final"><div><p class="eyebrow">DuoRoute / DuoTech</p><h2>Посмотрите, почему<br>выбран именно этот провайдер.</h2><p>Начните с готового примера или загрузите свою очередь.</p></div><div class="product-final__actions"><%= link_to "Попробовать web-интерфейс →", new_run_path, class: "btn btn--primary btn--large" %><a href="#interfaces" class="text-link">Начать с команды CLI ↑</a></div></section>
+</div>

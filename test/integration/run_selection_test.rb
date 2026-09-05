@@ -42,7 +42,7 @@ class RunSelectionTest < ActionDispatch::IntegrationTest
     assert_not routes.any? { |path| path.include?("analytics") || path.include?("methodology") }
     get strategies_path
     assert_response :success
-    assert_select ".provider-grid article", count: 7
+    assert_select ".strategy-list article", count: 7
   end
 
   test "web config and core CLI configuration agree and stored run remains reproducible" do

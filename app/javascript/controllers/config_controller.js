@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["weight", "sum", "warning", "config", "settings"]
+  static targets = ["weight", "sum", "warning", "config", "settings", "preset", "description"]
   static values = { catalog: Object, modes: Object }
 
   strategy(event) {
@@ -11,11 +11,17 @@ export default class extends Controller {
       const key = input.name.match(/\[(.+)\]/)[1]
       input.value = entry.weights[key] || 0
     })
+    this.describe()
     this.normalize()
     this.settingsTarget.value = Object.entries(entry.parameters.provider_overrides || {}).flatMap(([name, values]) => Object.entries(values).map(([key, value]) => `provider_overrides.${name}.${key}=${JSON.stringify(value)}`)).join("\n")
   }
 
-  connect() { this.normalize() }
+  connect() { this.normalize(); this.describe() }
+
+  describe() {
+    if (!this.hasDescriptionTarget || !this.hasPresetTarget) return
+    this.descriptionTarget.textContent = this.catalogValue[this.presetTarget.value]?.description || (this.presetTarget.value === "balanced" ? "Комбинация факторов: распределение, конверсия и ограничения провайдеров. Подходит для первого запуска." : "Задайте собственную конфигурацию в расширенных параметрах или загрузите файл настроек.")
+  }
 
   normalize() {
     const sum = this.weightTargets.reduce((total, input) => total + Number(input.value || 0), 0)

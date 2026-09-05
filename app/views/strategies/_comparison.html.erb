@@ -1,0 +1,24 @@
+<section class="card panel compare-panel" id="comparison">
+  <div class="section-head"><div><p class="eyebrow">Один набор данных · разные приоритеты</p><h2>Сравнение стратегий</h2><p class="hint">10 демонстрационных операций · одинаковые провайдеры · симуляция по snapshot провайдера</p></div><span class="pill pill--info">What-if</span></div>
+  <%= form_with url: compare_strategies_path(anchor: "comparison"), method: :get, data: { turbo: false } do %>
+    <fieldset class="choice-fieldset"><legend>Выберите от двух стратегий</legend><div class="choice-grid">
+      <% selected = params.key?(:presets) ? Array(params[:presets]) : (@comparison_submitted ? [] : %w[count_share cascade conversion]) %>
+      <% @strategies.each do |name, preset| %>
+        <label class="choice-card"><%= check_box_tag "presets[]", name, selected.include?(name) %><span><strong><%= preset["title"] %></strong><small><%= preset["description"] %></small></span></label>
+      <% end %>
+    </div></fieldset>
+    <div class="experiment-actions"><label class="field"><span>Seed</span><%= number_field_tag :seed, params[:seed] || 42, min: 0, required: true, class: "input mono" %></label><p class="hint">Одинаковый seed позволяет повторить эксперимент.<br>Сохранённые параметры стратегий учитываются.</p><%= button_tag "Сравнить стратегии →", class: "btn btn--primary btn--large" %></div>
+  <% end %>
+  <% if @comparison.present? %>
+    <% best = @comparison.map { |row| row[:report]["approval_rate_pct"] }.max %>
+    <div class="comparison-results" aria-live="polite"><div class="section-head"><div><h2>Результаты эксперимента</h2><p class="hint">Подсвечена максимальная успешность, включая совпадения. Остальные метрики помогают оценить компромиссы.</p></div></div>
+      <div class="table-wrap"><table><caption class="hint">Seed <%= params[:seed].presence || 42 %> · выше успешность — лучше; ниже остальные показатели — лучше.</caption><thead><tr><th>Стратегия</th><th class="num">Успешность ↑</th><th class="num">Резерв ↓</th><th class="num">Задержка ↓</th><th class="num">Отклонение долей<br>по числу ↓</th><th class="num">Отклонение долей<br>по сумме ↓</th><th>Действие</th></tr></thead><tbody>
+      <% @comparison.each do |row| report = row[:report] %>
+        <tr><td><strong><%= @strategies.fetch(row[:name])["title"] %></strong></td><td class="num <%= "metric-best" if report["approval_rate_pct"] == best %>"><%= pct(report["approval_rate_pct"]) %><div class="comparison-meter"><span style="width: <%= report["approval_rate_pct"].to_f.clamp(0, 100) %>%"></span></div></td><td class="num"><%= pct(report["fallback_rate_pct"]) %></td><td class="num"><%= report["average_latency_sec"] %> с</td><td class="num"><%= report["distribution"].values.sum { |v| v["deviation_pp"].to_f.abs }.round(1) %> п.п.</td><td class="num"><%= report["volume_distribution"].values.sum { |v| v["deviation_pp"].to_f.abs }.round(1) %> п.п.</td><td><%= link_to "Новый запуск ↗", new_run_path(preset: row[:name], seed: params[:seed], simulator_mode: "provider_snapshot"), class: "text-link" %></td></tr>
+      <% end %>
+      </tbody></table></div><p class="hint">Отклонение — сумма абсолютных отклонений от целевых долей. Это симуляция на небольшом примере, а не прогноз реальной успешности.</p>
+    </div>
+  <% else %>
+    <div class="experiment-empty"><span>↗</span><div><strong>Какие приоритеты дадут лучший результат?</strong><p>Сравните успешность, время ответа и распределение. Результаты появятся здесь.</p></div></div>
+  <% end %>
+</section>

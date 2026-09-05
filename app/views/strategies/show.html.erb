@@ -1,10 +1,52 @@
-<%= render "shared/page_head", eyebrow: "Counterfactual simulation", title: "Стратегии", subtitle: "Один snapshot и одна очередь; каждый preset стартует с чистого состояния." %>
+<%= render "shared/page_head", eyebrow: "Настройки маршрутизации", title: "Стратегии", subtitle: "Семь стратегий и их параметры по умолчанию. Сохранённые значения используются в новых запусках и сравнении." %>
 
-<section class="provider-grid strategy-grid">
-<% DuoRoute::StrategyCatalog.all.each do |name, strategy| %>
-  <article class="card panel strategy-card"><h2><%= icon_label(strategy["title"]) %></h2><code><%= name %></code><p><%= strategy["description"] %></p><p><%= strategy["example"] %></p><details><summary><%= icon_label("Параметры и значения по умолчанию", "settings") %></summary><pre class="code-input"><%= DuoRoute.pretty_json(strategy.slice("weights", "policy_priorities", "parameters")) %></pre><p>Если параметр не переопределён, используется значение из загруженного providers.json.</p></details><%= link_to icon_label("Использовать в новом запуске"), new_run_path(preset: name), class: "btn" %></article>
+<% if flash[:notice] %><p class="alert" role="status"><%= flash[:notice] %></p><% end %>
+<% if @errors.present? %>
+  <div class="alert alert--error" role="alert"><strong>Проверьте параметры</strong><ul><% @errors.each do |error| %><li><%= error %></li><% end %></ul></div>
 <% end %>
+<section class="strategy-list" aria-label="Список стратегий">
+  <% @strategies.each_with_index do |(name, strategy), index| %>
+    <% original = DuoRoute::StrategyCatalog.all.fetch(name).dig("parameters", "provider_overrides") %>
+    <article class="card panel strategy-row" id="<%= name %>">
+      <div class="strategy-row__intro">
+        <div class="strategy-row__heading"><span class="strategy-number"><%= "%02d" % (index + 1) %></span><h2><%= strategy["title"] %></h2></div>
+        <p><%= strategy["description"] %></p>
+      </div>
+      <div class="strategy-row__editor">
+        <% if original.any? %>
+          <%= form_with url: strategy_settings_path(name: name), method: :patch, id: "strategy-form-#{name}", data: { turbo: false } do %>
+            <div class="strategy-parameters">
+              <% original.each do |provider, fields| %>
+                <fieldset class="strategy-provider">
+                  <legend><%= provider %></legend>
+                  <% fields.each do |key, default| %>
+                    <% integer = %w[priority requests_per_minute_limit].include?(key) %>
+                    <label class="field">
+                      <span><%= strategy_parameter_label(key) %></span>
+                      <%= number_field_tag "provider_overrides[#{provider}][#{key}]", strategy.dig("parameters", "provider_overrides", provider, key), id: "#{name}_#{provider}_#{key}", class: "input mono", min: integer ? 1 : 0, max: %w[traffic_percentage volume_share_pct].include?(key) ? 100 : nil, step: integer ? 1 : 0.01, required: !default.nil?, placeholder: "Без верхней границы" %>
+                      <small class="hint">Дефолт: <%= default.nil? ? "без ограничения" : number_with_delimiter(default, delimiter: " ") %></small>
+                    </label>
+                  <% end %>
+                </fieldset>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="strategy-row__footer">
+            <p class="hint"><%= %w[count_share volume_share].include?(name) ? "Сумма долей — 100%" : "Параметры новых запусков" %></p>
+            <div class="strategy-row__actions">
+              <%= button_to "Сбросить", reset_strategy_settings_path(name: name), method: :delete, class: "strategy-reset", form: { data: { turbo: false } } %>
+              <%= link_to "Новый запуск ↗", new_run_path(preset: name), class: "btn" %>
+              <%= button_tag "Сохранить", type: "submit", form: "strategy-form-#{name}", class: "btn btn--primary" %>
+            </div>
+          </div>
+        <% else %>
+          <p>Используется <code>conversion_24h</code> из загруженного <code>providers.json</code>: чем выше успешность, тем выше предпочтение.</p>
+          <p class="hint">Фиксированных параметров нет — значения берутся из snapshot каждого провайдера.</p>
+          <%= link_to "Новый запуск →", new_run_path(preset: name), class: "btn" %>
+        <% end %>
+      </div>
+    </article>
+  <% end %>
 </section>
-<%= form_with url: compare_strategies_path, class: "card panel strategy-form", data: { turbo: false } do %><div class="section-head"><div><h2><%= icon_label("Сравнить стратегии") %></h2><p class="hint">Это what-if, а не изменение исторических фактов.</p></div><%= button_tag icon_label("Запустить сравнение"), type: "submit", class: "btn btn--primary" %></div><div class="preset-grid"><% DuoRoute::StrategyCatalog.all.each do |name, preset| %><label class="preset"><%= check_box_tag "presets[]", name, %w[count_share cascade conversion].include?(name) %><span><strong><%= name %></strong><small><%= preset.fetch("weights").map { |k,v| "#{k}×#{v}" }.join(" · ") %></small></span></label><% end %></div><label class="field field--small"><span><%= icon_label("Seed") %></span><%= number_field_tag :seed, 42, class: "input" %></label><% end %>
-<% if @comparison %><section><div class="section-head"><h2><%= icon_label("Компромиссы стратегий") %></h2></div><div class="table-wrap card"><table><thead><tr><th>Preset</th><th class="num">Approval</th><th class="num">Fallback</th><th class="num">Latency</th><th class="num">Σ count deviation</th><th class="num">Σ volume deviation</th></tr></thead><tbody><% @comparison.each do |row| report = row[:report] %><tr><td class="mono"><%= row[:name] %></td><td class="num"><%= pct(report["approval_rate_pct"]) %></td><td class="num"><%= pct(report["fallback_rate_pct"]) %></td><td class="num"><%= report["average_latency_sec"] %>с</td><td class="num"><%= report["distribution"].values.sum { |v| v["deviation_pp"].abs }.round(1) %> п.п.</td><td class="num"><%= report["volume_distribution"].values.sum { |v| v["deviation_pp"].to_f.abs }.round(1) %> п.п.</td></tr><% end %></tbody></table></div></section><% end %>
+<%= render "comparison" %>
 <section class="card panel"><div class="section-head"><h2><%= icon_label("Формальный выбор") %></h2></div><p class="formula">score(provider) = Σ scoreᵢ(projected state) × weightᵢ / Σ weightᵢ</p><p>Hard constraints всегда применяются до scoring. При равном combined score сравниваются policy priorities, затем <code>provider.priority</code>, затем стабильный <code>payment_system</code>. Случайность не участвует в выборе.</p></section>

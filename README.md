@@ -16,7 +16,7 @@ ruby script/validate_10.rb routing_decisions.json
 bin/rails server
 ```
 
-Откройте <http://localhost:3000>. `bin/setup` устанавливает gems, готовит SQLite и идемпотентно добавляет завершённый public demo run.
+Откройте <http://localhost:3000>. Презентация продукта, команды CLI и документация доступны на <http://localhost:3000/about>; кнопка «Запустить web-расчёт» ведёт в форму нового запуска. `bin/setup` устанавливает gems, готовит SQLite и идемпотентно добавляет завершённый public demo run.
 
 ## Архитектура
 

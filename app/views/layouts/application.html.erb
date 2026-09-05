@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <title><%= content_for(:title) || "DuoRoute · Routing Intelligence" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -28,6 +28,7 @@
       <div class="shell topbar__inner">
         <%= link_to root_path, class: "brand" do %><span class="brand__mark">D</span><span>DuoRoute</span><% end %>
         <nav class="nav" aria-label="Основная навигация">
+          <%= navigation_link "О продукте", about_path, controllers: "about" %>
           <%= navigation_link "Обзор", root_path(run_id: @run&.status == "completed" ? @run.id : params[:run_id]), controllers: "dashboard" %>
           <%= navigation_link "Провайдеры", providers_path(run_id: @run&.status == "completed" ? @run.id : params[:run_id]), controllers: "providers" %>
           <%= navigation_link "Запуски", runs_path, controllers: "routing_runs" %>

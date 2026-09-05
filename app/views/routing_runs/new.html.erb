@@ -1,21 +1,50 @@
-<%= render "shared/page_head", eyebrow: "Run wizard · 01/03", title: "Новый запуск", subtitle: "Upload или ручное редактирование используют один и тот же строгий Ruby core." %>
+<%= render "shared/page_head", eyebrow: "Маршрутизация", title: "Новый запуск", subtitle: "Выберите стратегию и запустите пример. Свои данные и тонкие настройки можно добавить ниже." %>
 
 <% if @issues.present? %>
   <section class="alert alert--error"><strong>Вход не прошёл валидацию</strong><ul><% @issues.each do |issue| %><li><code><%= issue.path %></code> — <%= issue.message %></li><% end %></ul></section>
 <% end %>
 
-<%= form_with url: runs_path, multipart: true, class: "wizard", data: { controller: "config", config_catalog_value: DuoRoute::StrategyCatalog.all.to_json, config_modes_value: @mode_defaults.to_json } do |form| %>
+<%= form_with url: runs_path, multipart: true, class: "wizard", data: { controller: "config", config_catalog_value: @strategy_catalog.to_json, config_modes_value: @mode_defaults.to_json } do |form| %>
   <section class="card panel">
-    <div class="section-head"><div><p class="step">01</p><h2><%= icon_label("Входные данные") %></h2><p class="hint">Файл имеет приоритет над текстовым полем. Лимит 10 МБ, только локальный разбор.</p></div></div>
+    <div class="section-head"><div><p class="step">01 · Настройки</p><h2><%= icon_label("Стратегия и симуляция") %></h2></div><span class="pill pill--info">Повторяемый результат</span></div>
+    <div class="form-grid form-grid--4">
+      <label class="field"><span><%= icon_label("Стратегия") %></span><%= select_tag :preset, options_for_select(@strategy_catalog.map { |key, row| [row["title"], key] } + [["Сбалансированная комбинация", "balanced"], ["Полностью пользовательская настройка", "custom"]], params[:preset] || "balanced"), class: "select", data: { action: "change->config#strategy", config_target: "preset" } %></label>
+      <label class="field"><span><%= icon_label("При таймауте") %></span><%= select_tag :timeout_mode, options_for_select([["Перейти к резервному", "fallback_on_timeout"], ["Дождаться статуса", "hold_until_status"]], params[:timeout_mode] || "fallback_on_timeout"), class: "select" %></label>
+      <label class="field"><span><%= icon_label("Источник результатов") %></span><%= select_tag :simulator_mode, options_for_select([["История операций", "history"], ["Snapshot провайдера", "provider_snapshot"], ["Свои вероятности", "custom"], ["Заданные исходы", "scripted"]], params[:simulator_mode] || "history"), class: "select" %></label>
+      <label class="field"><span><%= icon_label("Seed") %></span><%= number_field_tag :seed, params[:seed] || 42, class: "input", min: 0 %></label>
+    </div>
+    <p class="selection-note" data-config-target="description"></p>
+    <details class="manual" <%= "open" if params[:settings].present? || params[:custom_weights] == "1" %>><summary>Расширенные параметры <span class="hint">· переопределения и веса факторов</span></summary>
+    <label class="field"><span><%= icon_label("Изменения для этого запуска: по одному path=value на строку") %></span><%= text_area_tag :settings, params[:settings] || @strategy_catalog.dig(params[:preset], "parameters", "provider_overrides")&.flat_map { |name, fields| fields.map { |key, value| "provider_overrides.#{name}.#{key}=#{value.to_json}" } }&.join("\n"), class: "code-input", rows: 8, data: { config_target: "settings" }, placeholder: "provider_overrides.vipay.traffic_percentage=50" %></label>
+    <p class="hint">Все параметры доступны в YAML/JSON в разделе исходных данных или здесь: provider_overrides.NAME (traffic_percentage, volume_share_pct, priority, preferred_amount_min/max, conversion_24h, requests_per_minute_limit, daily_turnover_min/max); presets.NAME.policy_priorities — массив порядка факторов; routing.fallback_provider; simulation.minimum_samples; simulation.latency_method (mean/median); simulation.failure_expired_share — доля Expired среди неуспешных ответов. В custom: simulation.providers.NAME.approved_rate, rejected_rate, expired_rate (доли 0–1, сумма 1), average_latency_sec, latency_spread_sec. Только Approval: остаток делится согласно failure_expired_share. Настройки проверяются сервером.</p>
+    <div class="weight-head"><label class="check"><%= check_box_tag :custom_weights, "1", params[:custom_weights] == "1" %><strong>Переопределить preset этими весами</strong></label><span>Σ <b data-config-target="sum">0</b></span></div>
+    <div class="weight-grid">
+      <% DuoRoute::Validation::InputValidator::POLICY_NAMES.each do |policy| %>
+        <label class="field"><span><%= icon_label(policy_title(policy)) %> · <code><%= policy %></code></span><%= number_field_tag "policy_weights[#{policy}]", params.dig(:policy_weights, policy) || @weight_defaults.fetch(policy, 0), min: 0, max: 10, step: 0.1, class: "input mono", data: { config_target: "weight", action: "input->config#normalize" } %></label>
+      <% end %>
+    </div>
+    <p class="alert alert--error" data-config-target="warning" hidden>Все policies выключены: сумма весов должна быть больше нуля.</p>
+    <div class="formula">combined = Σ(normalized policy score × weight) / Σ(active weights)</div>
+    <p class="hint">Веса применяются при включённом переопределении. Отсутствующее optional-поле отключает только свою policy. Tie-break: policy priority → provider priority → payment_system.</p>
+    <div class="toolbar"><button type="button" class="btn" data-action="config#save"><%= icon_label("Сохранить конфигурацию локально") %></button><button type="button" class="btn" data-action="config#restore"><%= icon_label("Восстановить") %></button><button type="button" class="btn" data-action="config#download"><%= icon_label("Скачать YAML") %></button></div>
+    </details>
+  </section>
+
+  <section class="card panel run-inputs">
+    <div class="section-head"><div><p class="step">02 · Данные</p><h2><%= icon_label("Входные данные") %></h2><p class="hint">Готовый пример: 10 операций, провайдеры и история уже заполнены. Загруженный файл заменяет соответствующее текстовое поле.</p></div></div>
     <div class="form-grid form-grid--2">
-      <label class="field"><span><%= icon_label("Название запуска") %></span><%= text_field_tag :name, params[:name], class: "input", placeholder: "Public demo · balanced" %></label>
+      <label class="field"><span><%= icon_label("Название запуска") %></span><%= text_field_tag :name, params[:name], class: "input", placeholder: "Например, проверка распределения" %></label>
+    </div>
+    <details class="manual"><summary>Загрузить свои файлы <span class="hint">· JSON, CSV, YAML · до 10 МБ на файл</span></summary>
+    <div class="form-grid form-grid--3">
       <label class="field"><span><%= icon_label("Providers JSON") %></span><%= file_field_tag :providers_file, accept: ".json,application/json", class: "file" %></label>
       <label class="field"><span><%= icon_label("Operations JSON") %></span><%= file_field_tag :operations_file, accept: ".json,application/json", class: "file" %></label>
       <label class="field"><span><%= icon_label("History CSV · optional") %></span><%= file_field_tag :history_file, accept: ".csv,text/csv", class: "file" %></label>
       <label class="field"><span><%= icon_label("Config YAML / JSON") %></span><%= file_field_tag :config_file, accept: ".yml,.yaml,.json", class: "file" %></label>
       <label class="field"><span><%= icon_label("Scripted outcomes · optional") %></span><%= file_field_tag :outcomes_file, accept: ".json,application/json", class: "file" %></label>
     </div>
-    <details class="manual" open><summary><%= icon_label("Ручной режим / preview входа", "settings") %></summary>
+    </details>
+    <details class="manual" <%= "open" if @issues.present? %>><summary><%= icon_label("Просмотреть и редактировать исходные данные", "settings") %></summary>
       <div class="form-grid form-grid--2">
         <label class="field"><span><%= icon_label("providers.json") %></span><%= text_area_tag :providers_text, @defaults[:providers], class: "code-input", rows: 12, spellcheck: false %></label>
         <label class="field"><span><%= icon_label("operations.json") %></span><%= text_area_tag :operations_text, @defaults[:operations], class: "code-input", rows: 12, spellcheck: false %></label>
@@ -26,27 +55,5 @@
     </details>
   </section>
 
-  <section class="card panel">
-    <div class="section-head"><div><p class="step">02</p><h2><%= icon_label("Стратегия и симуляция") %></h2></div><span class="pill pill--info">deterministic</span></div>
-    <div class="form-grid form-grid--3">
-      <label class="field"><span><%= icon_label("Стратегия / режим") %></span><%= select_tag :preset, options_for_select(DuoRoute::StrategyCatalog.all.map { |key, row| [row["title"], key] } + [["Сбалансированная комбинация", "balanced"], ["Полностью пользовательская настройка", "custom"]], params[:preset] || "balanced"), class: "select", data: { action: "change->config#strategy" } %></label>
-      <label class="field"><span><%= icon_label("Timeout policy") %></span><%= select_tag :timeout_mode, options_for_select(%w[fallback_on_timeout hold_until_status], params[:timeout_mode] || "fallback_on_timeout"), class: "select" %></label>
-      <label class="field"><span><%= icon_label("Simulator") %></span><%= select_tag :simulator_mode, options_for_select([["История операций", "history"], ["Snapshot провайдера", "provider_snapshot"], ["Свои вероятности", "custom"], ["Точные outcomes", "scripted"]], params[:simulator_mode] || "history"), class: "select" %></label>
-      <label class="field"><span><%= icon_label("Seed") %></span><%= number_field_tag :seed, params[:seed] || 42, class: "input", min: 0 %></label>
-    </div>
-    <label class="field"><span><%= icon_label("Изменения для этого запуска: по одному path=value на строку") %></span><%= text_area_tag :settings, params[:settings] || DuoRoute::StrategyCatalog.all.dig(params[:preset], "parameters", "provider_overrides")&.flat_map { |name, fields| fields.map { |key, value| "provider_overrides.#{name}.#{key}=#{value.to_json}" } }&.join("\n"), class: "code-input", rows: 8, data: { config_target: "settings" }, placeholder: "provider_overrides.vipay.traffic_percentage=50" %></label>
-    <p class="hint">Все параметры доступны в YAML/JSON выше или здесь: provider_overrides.NAME (traffic_percentage, volume_share_pct, priority, preferred_amount_min/max, conversion_24h, requests_per_minute_limit, daily_turnover_min/max); presets.NAME.policy_priorities — массив порядка факторов; routing.fallback_provider; simulation.minimum_samples; simulation.latency_method (mean/median); simulation.failure_expired_share — доля Expired среди неуспешных ответов. В custom: simulation.providers.NAME.approved_rate, rejected_rate, expired_rate (доли 0–1, сумма 1), average_latency_sec, latency_spread_sec. Только Approval: остаток делится согласно failure_expired_share. Настройки проверяются сервером.</p>
-    <div class="weight-head"><label class="check"><%= check_box_tag :custom_weights, "1", params[:custom_weights] == "1" %><strong>Переопределить preset этими весами</strong></label><span>Σ <b data-config-target="sum">0</b></span></div>
-    <div class="weight-grid">
-      <% DuoRoute::Validation::InputValidator::POLICY_NAMES.each do |policy| %>
-        <label class="field"><span><%= icon_label(policy_title(policy)) %> · <code><%= policy %></code></span><%= number_field_tag "policy_weights[#{policy}]", params.dig(:policy_weights, policy) || @weight_defaults.fetch(policy, 0), min: 0, max: 10, step: 0.1, class: "input mono", data: { config_target: "weight", action: "input->config#normalize" } %></label>
-      <% end %>
-    </div>
-    <p class="alert alert--error" data-config-target="warning" hidden>Все policies выключены: сумма весов должна быть больше нуля.</p>
-    <div class="formula">combined = Σ(normalized policy score × weight) / Σ(active weights)</div>
-    <p class="hint">Веса редактируются в config. Отсутствующее optional-поле отключает только свою policy. Tie-break: policy priority → provider priority → payment_system.</p>
-    <div class="toolbar"><button type="button" class="btn" data-action="config#save"><%= icon_label("Сохранить конфигурацию локально") %></button><button type="button" class="btn" data-action="config#restore"><%= icon_label("Восстановить") %></button><button type="button" class="btn" data-action="config#download"><%= icon_label("Скачать YAML") %></button></div>
-  </section>
-
-  <section class="wizard__actions"><div><strong>03 · запуск</strong><p class="hint">Сначала выполняется полная валидация. Невалидный input не создаёт частичного результата.</p></div><%= form.button icon_label("Запустить маршрутизацию"), type: "submit", class: "btn btn--primary btn--large" %></section>
+  <section class="wizard__actions"><div><strong>Всё готово к запуску</strong><p class="hint">Перед запуском проверим данные и настройки. Результат появится на отдельной странице.</p></div><%= form.button icon_label("Запустить маршрутизацию"), type: "submit", class: "btn btn--primary btn--large" %></section>
 <% end %>

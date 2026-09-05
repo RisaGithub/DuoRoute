@@ -1,0 +1,42 @@
+/* Experiment setup and results */
+.choice-fieldset { border: 0; padding: 0; margin: 20px 0; min-width: 0; }
+.choice-fieldset legend { margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+.choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.choice-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.choice-card { display: flex; align-items: start; gap: 12px; border: 1px solid var(--line-strong); border-radius: 10px; padding: 16px; cursor: pointer; background: var(--surface); }
+.choice-card:hover { border-color: var(--indigo); }
+.choice-card:has(input:checked) { border-color: var(--indigo); background: linear-gradient(125deg, rgba(113,128,255,.13), rgba(54,200,255,.035)); }
+.choice-card:focus-within { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.choice-card input { width: 16px; height: 16px; flex: none; margin: 3px 0 0; accent-color: var(--indigo); }
+.choice-card > span { display: grid; gap: 6px; min-width: 0; }
+.choice-card strong { font-size: 13px; line-height: 1.45; }
+.choice-card small { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.experiment-actions { display: flex; align-items: center; gap: 20px; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 18px; }
+.experiment-actions > .field { width: 110px; flex: none; }
+.experiment-actions > .hint { margin: 0; flex: 1; }
+.experiment-actions .toolbar { margin: 0; flex-wrap: wrap; }
+.experiment-empty { display: flex; align-items: center; gap: 18px; padding: 24px 0 4px; margin-top: 18px; border-top: 1px dashed var(--line-strong); }
+.experiment-empty.card { padding: 28px; margin: 0; border-style: dashed; }
+.experiment-empty > span { color: var(--indigo); font-size: 30px; }
+.experiment-empty p { color: var(--muted); font-size: 12px; margin: 5px 0 0; }
+.comparison-results { margin-top: 28px; border-top: 1px solid var(--line); padding-top: 24px; }
+.comparison-results > .hint { margin: 14px 0 0; }
+.comparison-meter { width: 100%; min-width: 70px; height: 3px; margin-top: 7px; background: var(--line); border-radius: 9px; }
+.comparison-meter span { display: block; height: 100%; background: var(--indigo); }
+.metric-best { color: var(--teal); background: rgba(45,212,191,.045); }
+.metric-best .comparison-meter span { background: var(--teal); }
+.compare-panel .hint, .generator-form .hint, .generator-result .hint, .wizard .hint { color: var(--muted); }
+.generator-parameters { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; border-top: 1px solid var(--line); padding-top: 24px; }
+.generator-parameters .form-grid { margin: 0; }
+.generator-result { display: grid; gap: 16px; min-width: 0; }
+.generator-result .section-head { margin: 0; }
+.generator-result caption, .comparison-results caption { text-align: left; padding: 12px 15px; color: var(--muted); font-size: 12px; }
+.selection-note { border-left: 2px solid var(--indigo); padding: 10px 14px; background: rgba(113,128,255,.05); color: var(--muted); font-size: 12px; margin: 16px 0 0; }
+.selection-note:empty { display: none; }
+.strategy-row__editor > summary { cursor: pointer; color: var(--muted); padding: 4px 0; }
+.strategy-row__editor[open] > summary { margin-bottom: 16px; }
+.strategy-row:target .strategy-row__editor > summary { color: var(--cyan); }
+.wizard .code-input { max-height: 300px; }
+.wizard__actions { padding: 18px 20px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius); }
+@media (max-width: 1050px) { .choice-grid, .choice-grid--4 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 740px) { .choice-grid, .choice-grid--4, .generator-parameters { grid-template-columns: minmax(0,1fr); } .experiment-actions { flex-wrap: wrap; gap: 14px; } .experiment-actions > .btn, .experiment-actions .toolbar { width: 100%; } .experiment-actions .toolbar .btn { flex: 1 1 160px; } .generator-parameters { gap: 12px; } }

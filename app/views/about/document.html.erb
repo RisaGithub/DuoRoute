@@ -1,0 +1,4 @@
+<% content_for :title, "#{@title} · DuoRoute" %>
+<%= render "shared/page_head", eyebrow: "Документация проекта", title: @title, subtitle: "Актуальный исходный документ из репозитория в формате Markdown." %>
+<div><%= link_to "← О продукте", about_path(anchor: "documentation"), class: "btn" %></div>
+<article class="product-doc"><pre><%= @source %></pre></article>
