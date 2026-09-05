@@ -1,12 +1,51 @@
 require "test_helper"
 
 class ExperimentsTest < ActionDispatch::IntegrationTest
+  test "strategy tabs show only their own content and keep validation in the active tab" do
+    get strategies_path
+    assert_response :success
+    assert_select ".strategy-tabs a[aria-current='page'][href='#{strategies_path}']", count: 1
+    assert_select ".strategy-row", count: 7
+    assert_select "#comparison", count: 0
+
+    get compare_strategies_path
+    assert_response :success
+    assert_select ".strategy-tabs a[aria-current='page'][href='#{compare_strategies_path}']", count: 1
+    assert_select "#comparison", count: 1
+    assert_select ".strategy-row", count: 0
+    assert_select ".comparison-analysis", count: 1
+
+    get compare_strategies_path, params: { seed: 42 }
+    assert_response :unprocessable_entity
+    assert_select ".strategy-tabs a[aria-current='page'][href='#{compare_strategies_path}']", count: 1
+    assert_select ".strategy-row", count: 0
+  end
+
+  test "strategy selection navigates within the comparison frame without an anchor" do
+    get compare_strategies_path
+    assert_response :success
+    assert_select "turbo-frame#strategy_comparison:not([autoscroll])", count: 1
+    links = css_select(".comparison-option__link[href]")
+    assert_equal 7, links.length
+    links.each do |link|
+      assert_not_includes link["href"], "#"
+      assert_equal "true", link["data-turbo"]
+      assert_equal "strategy_comparison", link["data-turbo-frame"]
+      assert_equal "advance", link["data-turbo-action"]
+    end
+    link = links.find { |item| item["aria-current"] != "true" }
+    get link["href"], headers: { "Turbo-Frame" => "strategy_comparison" }
+    assert_response :success
+    assert_select "turbo-frame#strategy_comparison .comparison-analysis h3", text: link.css("span").first.text
+  end
+
   test "comparison URL opens directly and GET results survive reload" do
     get compare_strategies_path
     assert_response :success
     assert_select "#comparison form[method='get']"
-    assert_select ".comparison-results", count: 0
-    assert_select "input[name='presets[]'][checked]", count: 3
+    assert_select ".comparison-analysis", count: 1
+    assert_select ".comparison-results tbody tr", count: 7
+    assert_select "input[name='presets[]'][checked]", count: 7
 
     url = compare_strategies_path(presets: %w[cascade conversion], seed: 17)
     get url
@@ -22,6 +61,39 @@ class ExperimentsTest < ActionDispatch::IntegrationTest
     get compare_strategies_path, params: { seed: 17 }
     assert_response :unprocessable_entity
     assert_select "input[name='presets[]'][checked]", count: 0
+  end
+
+  test "default analysis selects the ranked leader and allows another focus" do
+    get compare_strategies_path
+    assert_response :success
+    rows = css_select(".comparison-ranking tbody tr")
+    values = rows.map { |row| row.css("td").drop(1).map { |cell| cell.text.tr(",", ".").to_f } }
+    assert_equal values.sort_by { |approval, fallback, latency| [ -approval, fallback, latency ] }, values
+    assert_select ".comparison-analysis h3", text: rows.first.css("td").first.text
+    link = css_select(".comparison-option__link[href]").find { |item| item["aria-current"] != "true" }
+    get link["href"]
+    assert_response :success
+    assert_select ".comparison-analysis h3", text: link.css("span").first.text
+    assert_select ".comparison-ranking tbody tr", count: 7
+  end
+
+  test "default comparison ignores saved settings while saved comparison uses them" do
+    input = { presets: %w[count_share conversion], seed: 42, focus: "count_share" }
+    get compare_strategies_path, params: input
+    assert_response :success
+    default_results = css_select(".comparison-results").first.text
+    StrategySetting.create!(name: "count_share", provider_overrides: {
+      "vipay" => { "traffic_percentage" => 100 }, "payflow" => { "traffic_percentage" => 0 },
+      "quickpay" => { "traffic_percentage" => 0 }
+    })
+    get compare_strategies_path, params: input
+    assert_response :success
+    assert_equal default_results, css_select(".comparison-results").first.text
+    default_deviations = css_select(".comparison-deviations").first.text
+    get compare_strategies_path, params: input.merge(source: "saved")
+    assert_response :success
+    assert_select ".comparison-analysis .pill", text: "Сохранённые параметры"
+    assert_not_equal default_deviations, css_select(".comparison-deviations").first.text
   end
 
   test "comparison requires two strategies and keeps submitted selection" do

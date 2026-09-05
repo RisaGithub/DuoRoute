@@ -1,0 +1,49 @@
+<section class="strategy-list" aria-label="Список стратегий">
+  <% @strategies.each_with_index do |(name, strategy), index| %>
+    <% original = DuoRoute::StrategyCatalog.all.fetch(name).dig("parameters", "provider_overrides") %>
+    <article class="card panel strategy-row" id="<%= name %>">
+      <div class="strategy-row__intro">
+        <div class="strategy-row__heading"><span class="strategy-number"><%= "%02d" % (index + 1) %></span><h2><%= strategy["title"] %></h2></div>
+        <p><%= strategy["description"] %></p>
+      </div>
+      <div class="strategy-row__editor">
+        <% if original.any? %>
+          <% providers = original.keys.sort_by { |provider| [%w[vipay payflow quickpay].index(provider) || 99, provider] } %>
+          <%= form_with url: strategy_settings_path(name: name), method: :patch, id: "strategy-form-#{name}", data: { turbo: false } do %>
+            <div class="strategy-matrix-wrap">
+              <table class="strategy-matrix" aria-label="Параметры: <%= strategy['title'] %>">
+                <thead><tr><th scope="col">Параметр<% if %w[count_share volume_share].include?(name) %><small class="strategy-rule">Сумма долей — 100%</small><% end %></th><% providers.each do |provider| %><th scope="col"><span class="strategy-provider-heading"><%= provider %><% if (description = strategy_provider_description(provider)) %><small title="Характеристика провайдера в демонстрационном наборе"><%= description %></small><% end %></span></th><% end %></tr></thead>
+                <tbody>
+                  <% original.values.flat_map(&:keys).uniq.each do |key| %>
+                    <tr><th scope="row"><%= icon_label(strategy_parameter_label(key), strategy_parameter_icon(key)) %></th>
+                      <% providers.each do |provider| %>
+                        <td>
+                          <% if original.fetch(provider).key?(key) %>
+                            <% default = original.dig(provider, key); integer = %w[priority requests_per_minute_limit].include?(key) %>
+                            <%= number_field_tag "provider_overrides[#{provider}][#{key}]", strategy.dig("parameters", "provider_overrides", provider, key), id: "#{name}_#{provider}_#{key}", class: "input mono", min: integer ? 1 : 0, max: %w[traffic_percentage volume_share_pct].include?(key) ? 100 : nil, step: integer ? 1 : 0.01, required: !default.nil?, placeholder: "Без лимита", aria: { label: "#{provider} · #{strategy_parameter_label(key)}" }, title: "По умолчанию: #{default.nil? ? 'без ограничения' : number_with_delimiter(default, delimiter: ' ')}" %>
+                          <% else %>—<% end %>
+                        </td>
+                      <% end %>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="strategy-auto"><span class="pill pill--info">Автоматически</span><p>Конверсия из <code>providers.json</code>.<br>Выше успешность — выше приоритет.</p></div>
+        <% end %>
+      </div>
+      <div class="strategy-row__actions">
+        <% if original.any? %>
+          <%= button_tag "Сохранить", type: "submit", form: "strategy-form-#{name}", class: "btn btn--primary" %>
+        <% end %>
+        <%= link_to "Новый запуск ↗", new_run_path(preset: name), class: "strategy-launch" %>
+        <% if original.any? %>
+          <%= button_to "Сбросить", reset_strategy_settings_path(name: name), method: :delete, class: "strategy-reset", title: "Восстановить параметры по умолчанию", form: { data: { turbo: false } } %>
+        <% end %>
+      </div>
+    </article>
+  <% end %>
+</section>
+<section class="card panel"><div class="section-head"><h2><%= icon_label("Формальный выбор") %></h2></div><p class="formula">score(provider) = Σ scoreᵢ(projected state) × weightᵢ / Σ weightᵢ</p><p>Hard constraints всегда применяются до scoring. При равном combined score сравниваются policy priorities, затем <code>provider.priority</code>, затем стабильный <code>payment_system</code>. Случайность не участвует в выборе.</p></section>

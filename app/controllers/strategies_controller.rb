@@ -4,15 +4,15 @@ class StrategiesController < ApplicationController
   def show
     @strategies = StrategySetting.catalog
     @config = routing_config
-    @comparison = nil
   end
 
   def compare
     @strategies = StrategySetting.catalog
     @config = routing_config
-    return render :show if request.get? && !params.key?(:presets) && !params.key?(:seed)
-    providers = DuoRoute::Input::Loader.json_file(Rails.root.join("data/examples/providers.json").to_s)
-    operations = DuoRoute::Input::Loader.json_file(Rails.root.join("data/examples/operations_queue_10.json").to_s)
+    if request.get? && !params.key?(:presets) && !params.key?(:seed)
+      build_comparison(@strategies.keys, 42, "defaults")
+      return render :show
+    end
     @comparison_submitted = true
     presets = Array(params[:presets]).intersection(@strategies.keys)
     seed = Integer(params[:seed].presence || 42, exception: false)
@@ -20,12 +20,7 @@ class StrategiesController < ApplicationController
       @errors = [ "Выберите минимум две стратегии и укажите целый неотрицательный seed." ]
       return render :show, status: :unprocessable_entity
     end
-    @config["simulation"] ||= {}
-    @config["simulation"]["source"] = "provider_snapshot"
-    @comparison = presets.map do |preset|
-      result = DuoRoute::Runner.new(providers_data: providers, operations:, config: StrategySetting.apply(@config, preset), preset:, seed: seed).call
-      { name: preset, report: result.report }
-    end
+    build_comparison(presets, seed, params[:source] == "saved" ? "saved" : "defaults")
     render :show
   rescue DuoRoute::InputError => e
     @errors = e.issues.map { |issue| "#{issue.path}: #{issue.message}" }
@@ -59,6 +54,27 @@ class StrategiesController < ApplicationController
   end
 
   private
+
+  def build_comparison(presets, seed, source)
+    @comparison_seed = seed
+    @comparison_source = source
+    @comparison_catalog = source == "saved" ? StrategySetting.catalog : DuoRoute::StrategyCatalog.all
+    providers = DuoRoute::Input::Loader.json_file(Rails.root.join("data/examples/providers.json").to_s)
+    operations = DuoRoute::Input::Loader.json_file(Rails.root.join("data/examples/operations_queue_10.json").to_s)
+    config = routing_config
+    config["simulation"] ||= {}
+    config["simulation"]["source"] = "provider_snapshot"
+    @comparison = presets.map do |preset|
+      resolved = DuoRoute::Configuration.merge(@comparison_catalog.fetch(preset).fetch("parameters"), config)
+      result = DuoRoute::Runner.new(providers_data: providers, operations:, config: resolved, preset:, seed:).call
+      { name: preset, report: result.report }
+    end.sort_by do |row|
+      report = row[:report]
+      [ -report["approval_rate_pct"].to_f, report["fallback_rate_pct"].to_f, report["average_latency_sec"].to_f, row[:name] ]
+    end
+    @best_strategy = @comparison.first
+    @analysis = @comparison.find { |row| row[:name] == params[:focus] } || @best_strategy
+  end
 
   def routing_config = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/default.yml").to_s).merge("presets" => @strategies.transform_values { |entry| entry.slice("weights", "policy_priorities") })
 end

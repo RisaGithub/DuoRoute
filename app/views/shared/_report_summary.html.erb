@@ -1,7 +1,25 @@
 <section class="card panel report-summary">
-  <p>Approval — процент успешных операций. Reject — отказ; Expired — ответ не получен вовремя. Latency — среднее время итогового ответа, включая предшествующие попытки. Цель — значение из настроек провайдера или стратегии. Факт — результат выбранного запуска.</p>
-  <div class="stats-row"><% %w[approved rejected expired].each do |result| %><div><span><%= icon_label(result) %></span><b><%= report.fetch("results", {}).fetch(result, 0) %></b></div><% end %></div>
-  <h2><%= icon_label("Доли по количеству") %></h2><div class="table-wrap"><table><thead><tr><th>Провайдер</th><th>Операции</th><th>Цель</th><th>Факт</th><th>Отклонение, п.п.</th></tr></thead><tbody><% report.fetch("distribution", {}).each do |name, row| %><tr><td><%= name %></td><td><%= row["count"] %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"] %></td></tr><% end %></tbody></table></div>
-  <h2><%= icon_label("Доли по сумме") %></h2><div class="table-wrap"><table><thead><tr><th>Провайдер</th><th>Сумма</th><th>Цель</th><th>Факт</th><th>Отклонение, п.п.</th></tr></thead><tbody><% report.fetch("volume_distribution", {}).each do |name, row| %><tr><td><%= name %></td><td><%= money(row["amount"]) %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"] %></td></tr><% end %></tbody></table></div>
-  <h2><%= icon_label("Рекомендации") %></h2><% report.fetch("recommendations", []).each do |item| %><p><%= item %></p><% end %>
+  <div class="report-summary__head">
+    <div class="report-summary__statuses" aria-label="Результаты операций">
+      <% [["approved", "Успешно", "check"], ["rejected", "Отказ", "close"], ["expired", "Таймаут", "clock"]].each do |result, label, icon| %>
+        <div class="report-summary__status report-summary__status--<%= result %>"><span><%= icon_label(label, icon) %></span><b><%= report.fetch("results", {}).fetch(result, 0) %></b></div>
+      <% end %>
+    </div>
+    <details class="report-summary__help"><summary>Как читать показатели</summary><p>Approval — процент успешных операций. Reject — отказ; Expired — ответ не получен вовремя. Latency — среднее время итогового ответа, включая предшествующие попытки. Цель — значение из настроек провайдера или стратегии. Факт — результат выбранного запуска. Отклонение указано в процентных пунктах.</p></details>
+  </div>
+  <div class="report-summary__tables">
+    <% [["Доли по количеству", "count", "distribution", "Операции", "count"], ["Доли по сумме", "wallet", "volume_distribution", "Сумма", "amount"]].each do |title, icon, key, value_label, value_key| %>
+      <section class="report-summary__distribution">
+        <h2><%= icon_label(title, icon) %></h2>
+        <div class="table-wrap"><table aria-label="<%= title %>"><thead><tr><th scope="col">Провайдер</th><th scope="col"><%= value_label %></th><th scope="col">Цель</th><th scope="col">Факт</th><th scope="col" title="Отклонение в процентных пунктах">Δ, п.п.</th></tr></thead><tbody>
+          <% report.fetch(key, {}).each do |name, row| %>
+            <tr><td><%= name %></td><td><%= value_key == "amount" ? money(row[value_key]) : row[value_key] %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"].nil? ? "—" : row["deviation_pp"] %></td></tr>
+          <% end %>
+        </tbody></table></div>
+      </section>
+    <% end %>
+  </div>
+  <% if report.fetch("recommendations", []).any? %>
+    <section class="report-summary__recommendations"><h2><%= icon_label("Рекомендации", "bulb") %></h2><ul><% report["recommendations"].each do |item| %><li><%= item %></li><% end %></ul></section>
+  <% end %>
 </section>

@@ -40,3 +40,58 @@
 .wizard__actions { padding: 18px 20px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius); }
 @media (max-width: 1050px) { .choice-grid, .choice-grid--4 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 740px) { .choice-grid, .choice-grid--4, .generator-parameters { grid-template-columns: minmax(0,1fr); } .experiment-actions { flex-wrap: wrap; gap: 14px; } .experiment-actions > .btn, .experiment-actions .toolbar { width: 100%; } .experiment-actions .toolbar .btn { flex: 1 1 160px; } .generator-parameters { gap: 12px; } }
+
+/* Compact comparison: selection on the left, analysis on the right. */
+.comparison-workspace { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 26px; align-items: start; }
+.comparison-sidebar { min-width: 0; border-right: 1px solid var(--line); padding-right: 24px; }
+.comparison-options { border: 0; padding: 0; margin: 0; min-width: 0; }
+.comparison-options legend { display: flex; flex-wrap: wrap; gap: 5px 8px; font-size: 12px; margin-bottom: 10px; }
+.comparison-options legend span { color: var(--muted); font-size: 10px; }
+.comparison-option { display: flex; align-items: center; gap: 9px; border: 1px solid transparent; border-radius: 7px; padding: 0 9px; min-height: 38px; margin-bottom: 4px; }
+.comparison-option:hover { background: var(--surface-2); }
+.comparison-option--active { border-color: rgba(113,128,255,.45); background: rgba(113,128,255,.1); }
+.comparison-option input { accent-color: var(--indigo); width: 14px; height: 14px; flex: none; margin: 0; }
+.comparison-option__link { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex: 1; padding-block: 9px; font-size: 12px; cursor: pointer; }
+.comparison-option__link small { font: 10px var(--mono); color: var(--teal); white-space: nowrap; }
+.comparison-controls { display: grid; grid-template-columns: minmax(0, 1fr) 74px; gap: 10px; margin: 16px 0 10px; }
+.comparison-controls .field { margin: 0; }
+.comparison-controls .input, .comparison-controls .select { width: 100%; min-width: 0; font-size: 12px; height: 34px; min-height: 34px; padding: 5px 8px; }
+.comparison-submit { width: 100%; }
+.comparison-sidebar > .hint { font-size: 10px; line-height: 1.6; margin: 10px 0 0; }
+.comparison-workspace > .comparison-results { min-width: 0; margin: 0; padding: 0; border: 0; }
+.comparison-analysis .section-head { margin-bottom: 8px; align-items: center; }
+.comparison-analysis h3 { font-size: 20px; letter-spacing: -.025em; margin: 0; }
+.comparison-description { color: var(--muted); font-size: 12px; margin-bottom: 14px; }
+.comparison-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); }
+.comparison-kpis > div { display: grid; gap: 8px; padding: 14px 18px; }
+.comparison-kpis > div + div { border-left: 1px solid var(--line); }
+.comparison-kpis > div > span { color: var(--muted); font-size: 11px; }
+.comparison-kpis .icon-label { --icon-size: 14px; }
+.comparison-kpis strong { font: 600 25px/1.1 var(--mono); letter-spacing: -.04em; }
+.comparison-kpis > div:first-child strong { color: var(--teal); }
+.comparison-kpis strong small { font-size: 13px; color: var(--muted); }
+.comparison-criterion { margin: 10px 0 16px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.comparison-ranking th, .comparison-ranking td { padding: 8px 10px; }
+.comparison-ranking caption { padding: 0 10px 8px; font-size: 11px; }
+.comparison-ranking__active { background: rgba(113,128,255,.07); }
+.comparison-deviations { display: flex; flex-wrap: wrap; gap: 7px 16px; margin-top: 12px; color: var(--muted); font-size: 11px; }
+.comparison-deviations b { color: var(--text); font-weight: 500; }
+.comparison-workspace .comparison-results > .hint { font-size: 10px; margin-top: 9px; }
+@media (max-width: 1050px) { .comparison-workspace { grid-template-columns: 245px minmax(0,1fr); gap: 18px; } .comparison-sidebar { padding-right: 16px; } .comparison-analysis .section-head { flex-wrap: wrap; } .comparison-kpis > div { padding: 12px; } }
+@media (max-width: 740px) { .comparison-workspace { grid-template-columns: minmax(0,1fr); } .comparison-sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 18px; } .comparison-kpis strong { font-size: 21px; } .comparison-kpis > div { padding: 12px 8px; } }
+
+/* Page-level strategy navigation. */
+.strategy-page-head { padding-top: 8px; }
+.strategy-page-head__row { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 10px; }
+.strategy-page-head__row h1 { margin: 0; }
+.strategy-tabs { display: flex; gap: 8px; flex-shrink: 0; }
+@media (max-width: 850px) { .strategy-page-head__row { flex-wrap: wrap; } .strategy-tabs { flex-shrink: 1; } }
+.strategy-tab { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 42px; padding: 10px 16px; border: 1px solid var(--line-strong); border-radius: 8px; color: var(--text); background: var(--surface-2); box-shadow: inset 0 1px 0 rgba(255,255,255,.04); cursor: pointer; font-size: 13px; font-weight: 550; }
+.strategy-tab:hover { border-color: rgba(113,128,255,.65); background: #1b2030; }
+.strategy-tab--active { color: var(--text); border-color: var(--indigo); background: linear-gradient(135deg, rgba(113,128,255,.28), rgba(54,200,255,.12)); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 16px rgba(113,128,255,.1); }
+.strategy-tab--active:hover { border-color: var(--cyan); background: linear-gradient(135deg, rgba(113,128,255,.34), rgba(54,200,255,.16)); }
+.strategy-tab--active .ui-icon { color: var(--cyan); }
+.strategy-tab:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.strategy-tab .icon-label { --icon-size: 16px; }
+.strategy-tab__count { display: grid; place-items: center; min-width: 21px; height: 21px; border-radius: 5px; background: rgba(113,128,255,.15); color: #bfc7ff; font: 11px var(--mono); }
+@media (max-width: 600px) { .strategy-tabs { gap: 4px; } .strategy-tab { flex: 1; padding: 9px 8px; font-size: 12px; gap: 5px; } .strategy-tab .icon-label { --icon-size: 14px; gap: 5px; } }

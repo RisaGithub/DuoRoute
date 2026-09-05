@@ -1,24 +1,55 @@
+<%= turbo_frame_tag "strategy_comparison" do %>
 <section class="card panel compare-panel" id="comparison">
-  <div class="section-head"><div><p class="eyebrow">Один набор данных · разные приоритеты</p><h2>Сравнение стратегий</h2><p class="hint">10 демонстрационных операций · одинаковые провайдеры · симуляция по snapshot провайдера</p></div><span class="pill pill--info">What-if</span></div>
-  <%= form_with url: compare_strategies_path(anchor: "comparison"), method: :get, data: { turbo: false } do %>
-    <fieldset class="choice-fieldset"><legend>Выберите от двух стратегий</legend><div class="choice-grid">
-      <% selected = params.key?(:presets) ? Array(params[:presets]) : (@comparison_submitted ? [] : %w[count_share cascade conversion]) %>
-      <% @strategies.each do |name, preset| %>
-        <label class="choice-card"><%= check_box_tag "presets[]", name, selected.include?(name) %><span><strong><%= preset["title"] %></strong><small><%= preset["description"] %></small></span></label>
+  <div class="section-head"><div><p class="eyebrow">Одинаковые данные · разные приоритеты</p><h2><%= icon_label("Сравнение стратегий", "compare") %></h2><p class="hint">10 демоопераций · симуляция по snapshot · seed <%= @comparison_seed || params[:seed] || 42 %></p></div><span class="pill pill--info">What-if</span></div>
+  <div class="comparison-workspace">
+    <%= form_with url: compare_strategies_path(anchor: "comparison"), method: :get, class: "comparison-sidebar", data: { turbo: false } do %>
+      <% selected = @comparison ? @comparison.map { |row| row[:name] } : (params.key?(:presets) ? Array(params[:presets]) : (@comparison_submitted ? [] : @strategies.keys)) %>
+      <fieldset class="comparison-options"><legend>Стратегии <span>выберите минимум две</span></legend>
+        <% @strategies.each_with_index do |(name, strategy), index| %>
+          <% result = @comparison&.find { |row| row[:name] == name } %>
+          <div class="comparison-option <%= 'comparison-option--active' if @analysis && @analysis[:name] == name %>">
+            <%= check_box_tag "presets[]", name, selected.include?(name), id: "compare_#{name}", aria: { label: "Включить в сравнение: #{strategy['title']}" } %>
+            <% if result %>
+              <%= link_to compare_strategies_path(presets: selected, seed: @comparison_seed, source: @comparison_source, focus: name), class: "comparison-option__link", aria: { current: @analysis[:name] == name ? "true" : nil }, data: { turbo: true, turbo_frame: "strategy_comparison", turbo_action: "advance" } do %>
+                <span><%= strategy["title"] %></span><small><%= @best_strategy[:name] == name ? "Лидер" : pct(result[:report]["approval_rate_pct"]) %></small>
+              <% end %>
+            <% else %>
+              <label for="compare_<%= name %>" class="comparison-option__link"><span><%= strategy["title"] %></span></label>
+            <% end %>
+          </div>
+        <% end %>
+      </fieldset>
+      <div class="comparison-controls">
+        <label class="field"><span>Параметры</span><%= select_tag :source, options_for_select([["По умолчанию", "defaults"], ["Сохранённые", "saved"]], @comparison_source || params[:source] || "defaults"), class: "select" %></label>
+        <label class="field"><span>Seed</span><%= number_field_tag :seed, @comparison_seed || params[:seed] || 42, min: 0, required: true, class: "input mono" %></label>
+      </div>
+      <%= button_tag "Пересчитать сравнение", class: "btn btn--primary comparison-submit" %>
+      <p class="hint">Нажмите на название, чтобы открыть анализ. Галочки задают набор для пересчёта.</p>
+    <% end %>
+    <div class="comparison-results" aria-live="polite">
+      <% if @analysis %>
+        <% report = @analysis[:report]; leader = @analysis[:name] == @best_strategy[:name] %>
+        <div class="comparison-analysis" data-strategy="<%= @analysis[:name] %>">
+          <div class="section-head"><div><p class="eyebrow"><%= leader ? "Лучший результат в сравнении" : "Анализ стратегии" %></p><h3><%= @strategies.fetch(@analysis[:name])["title"] %></h3></div><span class="pill <%= leader ? 'pill--ok' : 'pill--info' %>"><%= @comparison_source == "defaults" ? "Дефолтные параметры" : "Сохранённые параметры" %></span></div>
+          <p class="comparison-description"><%= @strategies.fetch(@analysis[:name])["description"] %></p>
+          <div class="comparison-kpis">
+            <div><span><%= icon_label("Успешность ↑", "check") %></span><strong><%= pct(report["approval_rate_pct"]) %></strong></div>
+            <div><span><%= icon_label("Резерв ↓", "fallback") %></span><strong><%= pct(report["fallback_rate_pct"]) %></strong></div>
+            <div><span><%= icon_label("Задержка ↓", "clock") %></span><strong><%= report["average_latency_sec"] %><small> с</small></strong></div>
+          </div>
+          <p class="comparison-criterion">Лидер: максимальная успешность → меньше резерва → ниже задержка. При полном совпадении метрик порядок определяется кодом стратегии.</p>
+        </div>
+        <div class="table-wrap"><table class="comparison-ranking"><caption>Результаты всех выбранных стратегий · <%= @comparison_source == "defaults" ? "параметры по умолчанию" : "сохранённые параметры" %></caption><thead><tr><th>Стратегия</th><th class="num">Успешность ↑</th><th class="num">Резерв ↓</th><th class="num">Задержка ↓</th></tr></thead><tbody>
+          <% @comparison.each do |row| metrics = row[:report] %>
+            <tr class="<%= 'comparison-ranking__active' if row[:name] == @analysis[:name] %>"><td><%= @strategies.fetch(row[:name])["title"] %></td><td class="num <%= 'metric-best' if metrics['approval_rate_pct'] == @best_strategy[:report]['approval_rate_pct'] %>"><%= pct(metrics["approval_rate_pct"]) %></td><td class="num"><%= pct(metrics["fallback_rate_pct"]) %></td><td class="num"><%= metrics["average_latency_sec"] %> с</td></tr>
+          <% end %>
+        </tbody></table></div>
+        <div class="comparison-deviations"><span>Отклонение долей выбранной стратегии</span><span>По числу: <b><%= strategy_distribution_deviation(report["distribution"]) %></b></span><span>По сумме: <b><%= strategy_distribution_deviation(report["volume_distribution"]) %></b></span></div>
+        <p class="hint">Отклонение — сумма абсолютных отклонений от целевых долей. Рейтинг относится только к этому демонабору; при других данных лидер может измениться.</p>
+      <% else %>
+        <div class="experiment-empty"><%= ui_icon("compare") %><div><strong>Проверьте параметры сравнения</strong><p>Выберите минимум две стратегии и целый неотрицательный seed.</p></div></div>
       <% end %>
-    </div></fieldset>
-    <div class="experiment-actions"><label class="field"><span>Seed</span><%= number_field_tag :seed, params[:seed] || 42, min: 0, required: true, class: "input mono" %></label><p class="hint">Одинаковый seed позволяет повторить эксперимент.<br>Сохранённые параметры стратегий учитываются.</p><%= button_tag "Сравнить стратегии →", class: "btn btn--primary btn--large" %></div>
-  <% end %>
-  <% if @comparison.present? %>
-    <% best = @comparison.map { |row| row[:report]["approval_rate_pct"] }.max %>
-    <div class="comparison-results" aria-live="polite"><div class="section-head"><div><h2>Результаты эксперимента</h2><p class="hint">Подсвечена максимальная успешность, включая совпадения. Остальные метрики помогают оценить компромиссы.</p></div></div>
-      <div class="table-wrap"><table><caption class="hint">Seed <%= params[:seed].presence || 42 %> · выше успешность — лучше; ниже остальные показатели — лучше.</caption><thead><tr><th>Стратегия</th><th class="num">Успешность ↑</th><th class="num">Резерв ↓</th><th class="num">Задержка ↓</th><th class="num">Отклонение долей<br>по числу ↓</th><th class="num">Отклонение долей<br>по сумме ↓</th><th>Действие</th></tr></thead><tbody>
-      <% @comparison.each do |row| report = row[:report] %>
-        <tr><td><strong><%= @strategies.fetch(row[:name])["title"] %></strong></td><td class="num <%= "metric-best" if report["approval_rate_pct"] == best %>"><%= pct(report["approval_rate_pct"]) %><div class="comparison-meter"><span style="width: <%= report["approval_rate_pct"].to_f.clamp(0, 100) %>%"></span></div></td><td class="num"><%= pct(report["fallback_rate_pct"]) %></td><td class="num"><%= report["average_latency_sec"] %> с</td><td class="num"><%= report["distribution"].values.sum { |v| v["deviation_pp"].to_f.abs }.round(1) %> п.п.</td><td class="num"><%= report["volume_distribution"].values.sum { |v| v["deviation_pp"].to_f.abs }.round(1) %> п.п.</td><td><%= link_to "Новый запуск ↗", new_run_path(preset: row[:name], seed: params[:seed], simulator_mode: "provider_snapshot"), class: "text-link" %></td></tr>
-      <% end %>
-      </tbody></table></div><p class="hint">Отклонение — сумма абсолютных отклонений от целевых долей. Это симуляция на небольшом примере, а не прогноз реальной успешности.</p>
     </div>
-  <% else %>
-    <div class="experiment-empty"><span>↗</span><div><strong>Какие приоритеты дадут лучший результат?</strong><p>Сравните успешность, время ответа и распределение. Результаты появятся здесь.</p></div></div>
-  <% end %>
+  </div>
 </section>
+<% end %>
