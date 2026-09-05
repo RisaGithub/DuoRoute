@@ -1,0 +1,20 @@
+<div class="table-wrap card">
+  <% if runs.empty? %>
+    <p class="empty">Запусков пока нет. Публичный пример уже предзаполнен в форме.</p>
+  <% else %>
+    <table>
+      <thead><tr><th>Запуск</th><th>Статус</th><th>Стратегия</th><th class="num">Прогресс</th><th class="num">Создан</th></tr></thead>
+      <tbody>
+        <% runs.each do |run| %>
+          <tr>
+            <td><%= link_to run.name, run_path(run), class: "table-link" %></td>
+            <td><span class="pill pill--<%= status_class(run.status) %>"><%= run.status %></span></td>
+            <td class="mono"><%= run.preset %></td>
+            <td class="num mono"><%= run.processed %>/<%= run.total %></td>
+            <td class="num muted"><%= l(run.created_at, format: :short) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

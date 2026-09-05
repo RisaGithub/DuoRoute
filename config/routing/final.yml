@@ -1,0 +1,59 @@
+schema_version: "1.0"
+routing:
+  fallback_provider: spacepayments
+  timeout_mode: fallback_on_timeout
+simulation:
+  expired_rate: 0.04
+calibration:
+  enabled: false
+provider_overrides:
+  vipay:
+    volume_share_pct: 40
+    preferred_amount_min: 10000
+    preferred_amount_max: 100000
+    requests_per_minute_limit: 15
+    daily_turnover_min: 3500000
+    daily_turnover_max: 5000000
+  payflow:
+    volume_share_pct: 20
+    preferred_amount_min: 500
+    preferred_amount_max: 35000
+    requests_per_minute_limit: 10
+    daily_turnover_min: 2950000
+    daily_turnover_max: 3000000
+  quickpay:
+    volume_share_pct: 40
+    preferred_amount_min: 50000
+    preferred_amount_max: 200000
+    requests_per_minute_limit: 20
+    daily_turnover_min: 1500000
+    daily_turnover_max: 8000000
+  spacepayments:
+    requests_per_minute_limit: 60
+presets:
+  balanced:
+    policy_priorities: [count_share, volume_share, turnover_commitment, conversion, load_safe, cascade, preferred_amount, intensity, economy]
+    weights:
+      count_share: 2.0
+      volume_share: 1.8
+      cascade: 0.6
+      preferred_amount: 0.8
+      conversion: 1.2
+      load_safe: 1.3
+      intensity: 0.5
+      turnover_commitment: 1.4
+      economy: 0.7
+  count_share:
+    weights: { count_share: 1.0 }
+  volume_share:
+    weights: { volume_share: 1.0 }
+  cascade:
+    weights: { cascade: 1.0 }
+  conversion_first:
+    weights: { conversion: 3.0, load_safe: 0.7, economy: 0.3 }
+  load_safe:
+    weights: { load_safe: 3.0, intensity: 1.0, conversion: 0.5 }
+  turnover_commitment:
+    weights: { turnover_commitment: 3.0, load_safe: 0.8, volume_share: 0.5 }
+  economy_first:
+    weights: { economy: 3.0, conversion: 0.8, load_safe: 0.5 }

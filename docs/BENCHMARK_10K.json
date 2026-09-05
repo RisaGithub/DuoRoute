@@ -1,0 +1,24 @@
+{
+  "measured_at": "2026-09-04T21:38:00+05:00",
+  "environment": {
+    "ruby": "3.4.10",
+    "rails": "8.1.3.1",
+    "platform": "arm64-darwin"
+  },
+  "scenario": "stress",
+  "operations": 10000,
+  "external_providers": 20,
+  "seed": 42,
+  "preset": "balanced",
+  "wall_seconds": 24.89,
+  "engine_duration_ms": 19785.033,
+  "decisions_bytes": 719098790,
+  "report_bytes": 33766,
+  "approval_rate_pct": 100.0,
+  "fallback_rate_pct": 87.93,
+  "notes": [
+    "Полный audit trail намеренно сохраняет матрицу 10 hard checks для каждого рассмотренного провайдера и поэтому доминирует в размере файла.",
+    "Высокий fallback ожидаем: суммарный объём синтетической очереди значительно превышает совокупные daily limits внешнего пула.",
+    "Результат является наблюдением на одном локальном запуске, а не обещанием SLA."
+  ]
+}

@@ -1,0 +1,28 @@
+<%= render "shared/page_head", eyebrow: "Run ##{@run.id}", title: @run.name, subtitle: "#{@run.preset} · seed #{@run.seed} · #{@run.timeout_mode}" %>
+
+<section class="run-status card panel" data-controller="run-progress" data-run-progress-url-value="<%= progress_run_path(@run) %>" data-terminal="<%= %w[completed failed].include?(@run.status) %>">
+  <div class="run-status__top"><span class="pill pill--<%= status_class(@run.status) %>"><%= @run.status %></span><strong data-run-progress-target="label"><%= @run.processed %>/<%= @run.total %> · <%= @run.progress_pct %>% · <%= @run.elapsed_seconds %> с</strong></div>
+  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= @run.progress_pct %>"><span data-run-progress-target="bar" style="width:<%= @run.progress_pct %>%"></span></div>
+  <p class="event" data-run-progress-target="event"><%= @run.last_event || "В очереди" %></p>
+  <p class="alert alert--error" data-run-progress-target="error" <%= "hidden" unless @run.status == "failed" %>><%= @run.error_message %></p>
+</section>
+
+<% if @run.status == "completed" %>
+  <% report = @run.report %>
+  <div class="toolbar"><%= link_to "Decisions JSON", download_run_path(@run, "decisions"), class: "btn" %><%= link_to "Report JSON", download_run_path(@run, "report"), class: "btn" %><%= link_to "Config", download_run_path(@run, "config"), class: "btn" %><%= link_to "Manifest", download_run_path(@run, "manifest"), class: "btn" %></div>
+  <section class="kpis kpis--4"><article class="kpi card"><span>Approval</span><strong><%= pct(report["approval_rate_pct"]) %></strong></article><article class="kpi card"><span>Fallback</span><strong><%= pct(report["fallback_rate_pct"]) %></strong></article><article class="kpi card"><span>Latency</span><strong><%= report["average_latency_sec"] %>с</strong></article><article class="kpi card"><span>Рекомендации</span><strong><%= report.fetch("recommendations", []).length %></strong></article></section>
+
+  <section><div class="section-head"><div><p class="eyebrow">Replay queue</p><h2>Решения</h2></div><span class="hint">Кликните для полного объяснения</span></div>
+    <div class="table-wrap card"><table><thead><tr><th>#</th><th>Operation</th><th>Provider</th><th>Result</th><th class="num">Amount</th><th class="num">Latency</th><th>Fallback</th></tr></thead><tbody>
+    <% @run.decisions.each_with_index do |decision, index| operation = @run.operations.find { |item| item["operation_id"] == decision["operation_id"] } %>
+      <tr><td class="muted"><%= index + 1 %></td><td><%= link_to decision["operation_id"], operation_run_path(@run, decision["operation_id"]), class: "table-link" %></td><td class="mono"><%= decision["selected_provider"] %></td><td><span class="pill pill--<%= status_class(decision['simulated_result']) %>"><%= decision["simulated_result"] %></span></td><td class="num mono"><%= money(operation["amount"]) %></td><td class="num mono"><%= decision["latency_sec"] %>с</td><td><%= decision["fallback_used"] ? "да" : "—" %></td></tr>
+    <% end %></tbody></table></div>
+  </section>
+
+  <section class="grid grid--2"><article class="card panel"><div class="section-head"><h2>Рекомендации</h2></div><div class="insights"><% report.fetch("recommendation_details", []).each do |item| %><div class="insight"><span class="pill pill--<%= item['severity'] == 'warning' ? 'warn' : 'info' %>"><%= item["severity"] %></span><div><strong><%= item["provider"] %> · <%= item["proposed_action"] %></strong><p><%= item["evidence"] %>. <%= item["rationale"] %>.</p></div></div><% end %><% if report.fetch("recommendation_details", []).empty? %><p class="empty">Пороговые правила не нашли существенных отклонений.</p><% end %></div></article>
+  <article class="card panel"><div class="section-head"><h2>Воспроизводимость</h2></div><dl class="kv"><% report.fetch("reproducibility", {}).each do |key, value| %><dt><%= key %></dt><dd class="mono"><%= value.to_s.length > 28 ? "#{value.to_s.first(12)}…#{value.to_s.last(8)}" : value %></dd><% end %></dl></article></section>
+<% elsif @run.status == "failed" %>
+  <section class="empty-state card"><h2>Запуск остановлен безопасно</h2><p><%= @run.error_message %></p><%= link_to "Исправить вход", new_run_path, class: "btn" %></section>
+<% else %>
+  <section class="skeleton-grid" aria-label="Загрузка"><div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div></section>
+<% end %>

@@ -1,0 +1,11 @@
+{
+  "default": { "result": "approved", "latency_sec": 24 },
+  "outcomes": {
+    "op_101:vipay": { "result": "rejected", "latency_sec": 18 },
+    "op_101:payflow": { "result": "rejected", "latency_sec": 31 },
+    "op_101:quickpay": { "result": "rejected", "latency_sec": 21 },
+    "op_101:spacepayments": { "result": "approved", "latency_sec": 12 },
+    "op_105:vipay": { "result": "expired", "latency_sec": 320 },
+    "op_105:quickpay": { "result": "approved", "latency_sec": 22 }
+  }
+}

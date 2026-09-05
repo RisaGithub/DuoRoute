@@ -1,0 +1,8 @@
+<div class="page-head">
+  <div>
+    <p class="eyebrow"><%= local_assigns[:eyebrow] %></p>
+    <h1><%= title %></h1>
+    <% if local_assigns[:subtitle] %><p class="page-head__sub"><%= subtitle %></p><% end %>
+  </div>
+  <% if local_assigns[:action_label] %><%= link_to action_label, action_path, class: "btn btn--primary" %><% end %>
+</div>

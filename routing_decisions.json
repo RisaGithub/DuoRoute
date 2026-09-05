@@ -1,0 +1,5918 @@
+[
+  {
+    "operation_id": "op_101",
+    "selected_provider": "spacepayments",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "provider_rejected",
+        "result": "rejected",
+        "latency_sec": 18,
+        "sequence": 1,
+        "score": 0.587278
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "provider_rejected",
+        "result": "rejected",
+        "latency_sec": 21,
+        "sequence": 2,
+        "score": 0.525852
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "provider_rejected",
+        "result": "rejected",
+        "latency_sec": 31,
+        "sequence": 3,
+        "score": 0.481277
+      },
+      {
+        "provider": "spacepayments",
+        "decision": "selected",
+        "reason": "external_pool_exhausted",
+        "result": "approved",
+        "latency_sec": 12
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 12,
+    "strategy": "balanced",
+    "score_breakdown": {},
+    "eligible_pool": [
+      "vipay",
+      "payflow",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "vipay",
+        "combined_score": 0.587278,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.4,
+            "weight": 2.0,
+            "contribution": 0.8,
+            "explanation": "projected count share 100.0% при цели 40.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 40
+            },
+            "normalized_value": 0.4,
+            "weight": 1.8,
+            "contribution": 0.72,
+            "explanation": "projected volume share 100.0% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 1,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 1 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 15000.0,
+              "preferred_min": 10000,
+              "preferred_max": 100000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.87,
+            "normalized_value": 0.87,
+            "weight": 1.2,
+            "contribution": 1.044,
+            "explanation": "ожидаемая конверсия 87.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.643,
+            "normalized_value": 0.357,
+            "weight": 1.3,
+            "contribution": 0.4641,
+            "explanation": "максимальная projected utilization 64.3%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 15
+            },
+            "normalized_value": 0.933333,
+            "weight": 0.5,
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 3215000.0,
+              "min": 3500000,
+              "max": 5000000
+            },
+            "normalized_value": 0.724429,
+            "weight": 1.4,
+            "contribution": 1.0142,
+            "explanation": "projected turnover 3215000.0, коридор 3500000–5000000"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.7,
+            "contribution": 0.14,
+            "explanation": "маржинальный запас 0.3 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "quickpay",
+        "combined_score": 0.525852,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.25,
+            "weight": 2.0,
+            "contribution": 0.5,
+            "explanation": "projected count share 100.0% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 40
+            },
+            "normalized_value": 0.4,
+            "weight": 1.8,
+            "contribution": 0.72,
+            "explanation": "projected volume share 100.0% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 15000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.3,
+            "weight": 0.8,
+            "contribution": 0.24,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.139375,
+            "normalized_value": 0.860625,
+            "weight": 1.3,
+            "contribution": 1.118813,
+            "explanation": "максимальная projected utilization 13.9%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 20
+            },
+            "normalized_value": 0.95,
+            "weight": 0.5,
+            "contribution": 0.475,
+            "explanation": "projected RPM 1/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1115000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.777,
+            "weight": 1.4,
+            "contribution": 1.0878,
+            "explanation": "projected turnover 1115000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 2
+      },
+      {
+        "provider": "payflow",
+        "combined_score": 0.481277,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.35,
+            "weight": 2.0,
+            "contribution": 0.7,
+            "explanation": "projected count share 100.0% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 100.0,
+              "target_pct": 20
+            },
+            "normalized_value": 0.2,
+            "weight": 1.8,
+            "contribution": 0.36,
+            "explanation": "projected volume share 100.0% при цели 20%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 0.5,
+            "weight": 0.6,
+            "contribution": 0.3,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 15000.0,
+              "preferred_min": 500,
+              "preferred_max": 35000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.971667,
+            "normalized_value": 0.028333,
+            "weight": 1.3,
+            "contribution": 0.036833,
+            "explanation": "максимальная projected utilization 97.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 10
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 1/10"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2915000.0,
+              "min": 2950000,
+              "max": 3000000
+            },
+            "normalized_value": 0.703559,
+            "weight": 1.4,
+            "contribution": 0.984983,
+            "explanation": "projected turnover 2915000.0, коридор 2950000–3000000"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 3
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3215000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 395000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": []
+      },
+      "payflow": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2915000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 135000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": []
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1115000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 65000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "sberbank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      },
+      "spacepayments": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": null
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 15000,
+            "threshold": null
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 15000.0,
+            "threshold": null
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 1,
+            "threshold": null
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 15000.0,
+            "threshold": null
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "sberbank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.5,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 8,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 60
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "vipay",
+          "volume_share": "vipay",
+          "cascade": "vipay",
+          "preferred_amount": "vipay",
+          "conversion": "payflow",
+          "load_safe": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1100000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 0,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1100000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 1
+      }
+    },
+    "fallback_used": true,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_102",
+    "selected_provider": "quickpay",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк alfa отсутствует в include list",
+        "actual": "alfa",
+        "threshold": [
+          "sberbank",
+          "tinkoff",
+          "vtb"
+        ]
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.711966
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "lower_combined_score",
+        "details": "rank 2, score 0.613551",
+        "score": 0.613551
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.711966,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 50.0,
+          "target_pct": 25.0
+        },
+        "normalized_value": 0.75,
+        "weight": 2.0,
+        "contribution": 1.5,
+        "explanation": "projected count share 50.0% при цели 25.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 76.1905,
+          "target_pct": 40
+        },
+        "normalized_value": 0.638095,
+        "weight": 1.8,
+        "contribution": 1.148571,
+        "explanation": "projected volume share 76.2% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 3,
+        "normalized_value": 0.0,
+        "weight": 0.6,
+        "contribution": 0.0,
+        "explanation": "cascade priority 3 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 48000.0,
+          "preferred_min": 50000,
+          "preferred_max": 200000
+        },
+        "normalized_value": 0.96,
+        "weight": 0.8,
+        "contribution": 0.768,
+        "explanation": "сумма вне предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.79,
+        "normalized_value": 0.79,
+        "weight": 1.2,
+        "contribution": 0.948,
+        "explanation": "ожидаемая конверсия 79.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.1435,
+        "normalized_value": 0.8565,
+        "weight": 1.3,
+        "contribution": 1.11345,
+        "explanation": "максимальная projected utilization 14.4%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 2,
+          "limit": 20
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 2/20"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 1148000.0,
+          "min": 1500000,
+          "max": 8000000
+        },
+        "normalized_value": 0.7704,
+        "weight": 1.4,
+        "contribution": 1.07856,
+        "explanation": "projected turnover 1148000.0, коридор 1500000–8000000"
+      },
+      "economy": {
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
+        "weight": 0.7,
+        "contribution": 0.326667,
+        "explanation": "маржинальный запас 0.7 п.п."
+      }
+    },
+    "eligible_pool": [
+      "payflow",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "quickpay",
+        "combined_score": 0.711966,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 50.0,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.75,
+            "weight": 2.0,
+            "contribution": 1.5,
+            "explanation": "projected count share 50.0% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 76.1905,
+              "target_pct": 40
+            },
+            "normalized_value": 0.638095,
+            "weight": 1.8,
+            "contribution": 1.148571,
+            "explanation": "projected volume share 76.2% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 48000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.96,
+            "weight": 0.8,
+            "contribution": 0.768,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.1435,
+            "normalized_value": 0.8565,
+            "weight": 1.3,
+            "contribution": 1.11345,
+            "explanation": "максимальная projected utilization 14.4%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1148000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7704,
+            "weight": 1.4,
+            "contribution": 1.07856,
+            "explanation": "projected turnover 1148000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "payflow",
+        "combined_score": 0.613551,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 50.0,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.85,
+            "weight": 2.0,
+            "contribution": 1.7,
+            "explanation": "projected count share 50.0% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 76.1905,
+              "target_pct": 20
+            },
+            "normalized_value": 0.438095,
+            "weight": 1.8,
+            "contribution": 0.788571,
+            "explanation": "projected volume share 76.2% при цели 20%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 48000.0,
+              "preferred_min": 500,
+              "preferred_max": 35000
+            },
+            "normalized_value": 0.628571,
+            "weight": 0.8,
+            "contribution": 0.502857,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.982667,
+            "normalized_value": 0.017333,
+            "weight": 1.3,
+            "contribution": 0.022533,
+            "explanation": "максимальная projected utilization 98.3%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 10
+            },
+            "normalized_value": 0.8,
+            "weight": 0.5,
+            "contribution": 0.4,
+            "explanation": "projected RPM 2/10"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2948000.0,
+              "min": 2950000,
+              "max": 3000000
+            },
+            "normalized_value": 0.700203,
+            "weight": 1.4,
+            "contribution": 0.980285,
+            "explanation": "projected turnover 2948000.0, коридор 2950000–3000000"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 2
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3248000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 428000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк alfa отсутствует в include list",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк alfa отсутствует в include list",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2948000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 168000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 10
+          }
+        ],
+        "failures": []
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 48000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1148000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 98000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "alfa",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "payflow",
+          "volume_share": "quickpay",
+          "cascade": "payflow",
+          "preferred_amount": "quickpay",
+          "conversion": "payflow",
+          "load_safe": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1100000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 1
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1148000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 2
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 1
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_103",
+    "selected_provider": "quickpay",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 100000",
+        "actual": 150000,
+        "threshold": 100000
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "150000 > limit_amount_max 50000",
+        "actual": 150000,
+        "threshold": 50000
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.705216
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.705216,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 66.6667,
+          "target_pct": 25.0
+        },
+        "normalized_value": 0.583333,
+        "weight": 2.0,
+        "contribution": 1.166667,
+        "explanation": "projected count share 66.7% при цели 25.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 92.9577,
+          "target_pct": 40
+        },
+        "normalized_value": 0.470423,
+        "weight": 1.8,
+        "contribution": 0.846761,
+        "explanation": "projected volume share 93.0% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 3,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 3 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 150000.0,
+          "preferred_min": 50000,
+          "preferred_max": 200000
+        },
+        "normalized_value": 1.0,
+        "weight": 0.8,
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.79,
+        "normalized_value": 0.79,
+        "weight": 1.2,
+        "contribution": 0.948,
+        "explanation": "ожидаемая конверсия 79.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.16225,
+        "normalized_value": 0.83775,
+        "weight": 1.3,
+        "contribution": 1.089075,
+        "explanation": "максимальная projected utilization 16.2%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 2,
+          "limit": 20
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 2/20"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 1298000.0,
+          "min": 1500000,
+          "max": 8000000
+        },
+        "normalized_value": 0.7404,
+        "weight": 1.4,
+        "contribution": 1.03656,
+        "explanation": "projected turnover 1298000.0, коридор 1500000–8000000"
+      },
+      "economy": {
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
+        "weight": 0.7,
+        "contribution": 0.326667,
+        "explanation": "маржинальный запас 0.7 п.п."
+      }
+    },
+    "eligible_pool": [
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "quickpay",
+        "combined_score": 0.705216,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 66.6667,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.583333,
+            "weight": 2.0,
+            "contribution": 1.166667,
+            "explanation": "projected count share 66.7% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 92.9577,
+              "target_pct": 40
+            },
+            "normalized_value": 0.470423,
+            "weight": 1.8,
+            "contribution": 0.846761,
+            "explanation": "projected volume share 93.0% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 150000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.16225,
+            "normalized_value": 0.83775,
+            "weight": 1.3,
+            "contribution": 1.089075,
+            "explanation": "максимальная projected utilization 16.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1298000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7404,
+            "weight": 1.4,
+            "contribution": 1.03656,
+            "explanation": "projected turnover 1298000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 150000,
+            "threshold": 1000
+          },
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "150000 > limit_amount_max 100000",
+            "actual": 150000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3350000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 530000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "150000 > limit_amount_max 100000",
+            "actual": 150000,
+            "threshold": 100000
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 150000,
+            "threshold": 500
+          },
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "150000 > limit_amount_max 50000",
+            "actual": 150000,
+            "threshold": 50000
+          },
+          {
+            "eligible": false,
+            "code": "daily_amount_limit_exceeded",
+            "explanation": "projected daily 3050000.0 > 3000000",
+            "actual": 3050000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 270000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "150000 > limit_amount_max 50000",
+            "actual": 150000,
+            "threshold": 50000
+          },
+          {
+            "eligible": false,
+            "code": "daily_amount_limit_exceeded",
+            "explanation": "projected daily 3050000.0 > 3000000",
+            "actual": 3050000.0,
+            "threshold": 3000000
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 150000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 150000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1298000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 200000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "sberbank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1148000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1298000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 2
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_104",
+    "selected_provider": "quickpay",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк gazprombank отсутствует в include list",
+        "actual": "gazprombank",
+        "threshold": [
+          "sberbank",
+          "tinkoff",
+          "vtb"
+        ]
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк gazprombank отсутствует в include list",
+        "actual": "gazprombank",
+        "threshold": [
+          "sberbank",
+          "alfa"
+        ]
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.615726
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.615726,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 75.0,
+          "target_pct": 25.0
+        },
+        "normalized_value": 0.5,
+        "weight": 2.0,
+        "contribution": 1.0,
+        "explanation": "projected count share 75.0% при цели 25.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 93.0556,
+          "target_pct": 40
+        },
+        "normalized_value": 0.469444,
+        "weight": 1.8,
+        "contribution": 0.845,
+        "explanation": "projected volume share 93.1% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 3,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 3 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 3000.0,
+          "preferred_min": 50000,
+          "preferred_max": 200000
+        },
+        "normalized_value": 0.06,
+        "weight": 0.8,
+        "contribution": 0.048,
+        "explanation": "сумма вне предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.79,
+        "normalized_value": 0.79,
+        "weight": 1.2,
+        "contribution": 0.948,
+        "explanation": "ожидаемая конверсия 79.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.162625,
+        "normalized_value": 0.837375,
+        "weight": 1.3,
+        "contribution": 1.0885879999999999,
+        "explanation": "максимальная projected utilization 16.3%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 2,
+          "limit": 20
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 2/20"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 1301000.0,
+          "min": 1500000,
+          "max": 8000000
+        },
+        "normalized_value": 0.7398,
+        "weight": 1.4,
+        "contribution": 1.03572,
+        "explanation": "projected turnover 1301000.0, коридор 1500000–8000000"
+      },
+      "economy": {
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
+        "weight": 0.7,
+        "contribution": 0.326667,
+        "explanation": "маржинальный запас 0.7 п.п."
+      }
+    },
+    "eligible_pool": [
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "quickpay",
+        "combined_score": 0.615726,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 75.0,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.5,
+            "weight": 2.0,
+            "contribution": 1.0,
+            "explanation": "projected count share 75.0% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 93.0556,
+              "target_pct": 40
+            },
+            "normalized_value": 0.469444,
+            "weight": 1.8,
+            "contribution": 0.845,
+            "explanation": "projected volume share 93.1% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 3000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.06,
+            "weight": 0.8,
+            "contribution": 0.048,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.162625,
+            "normalized_value": 0.837375,
+            "weight": 1.3,
+            "contribution": 1.0885879999999999,
+            "explanation": "максимальная projected utilization 16.3%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1301000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7398,
+            "weight": 1.4,
+            "contribution": 1.03572,
+            "explanation": "projected turnover 1301000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3203000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 383000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк gazprombank отсутствует в include list",
+            "actual": "gazprombank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк gazprombank отсутствует в include list",
+            "actual": "gazprombank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2903000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 123000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк gazprombank отсутствует в include list",
+            "actual": "gazprombank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк gazprombank отсутствует в include list",
+            "actual": "gazprombank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 3000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1301000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 53000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "gazprombank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1298000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1301000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 2
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_105",
+    "selected_provider": "quickpay",
+    "attempts": [
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк tinkoff отсутствует в include list",
+        "actual": "tinkoff",
+        "threshold": [
+          "sberbank",
+          "alfa"
+        ]
+      },
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "provider_expired",
+        "result": "expired",
+        "latency_sec": 320,
+        "sequence": 1,
+        "score": 0.717659
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 22,
+        "sequence": 2,
+        "score": 0.579606
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 22,
+    "strategy": "balanced",
+    "score": 0.579606,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 80.0,
+          "target_pct": 25.0
+        },
+        "normalized_value": 0.45,
+        "weight": 2.0,
+        "contribution": 0.9,
+        "explanation": "projected count share 80.0% при цели 25.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 93.7759,
+          "target_pct": 40
+        },
+        "normalized_value": 0.462241,
+        "weight": 1.8,
+        "contribution": 0.832033,
+        "explanation": "projected volume share 93.8% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 3,
+        "normalized_value": 0.0,
+        "weight": 0.6,
+        "contribution": 0.0,
+        "explanation": "cascade priority 3 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 25000.0,
+          "preferred_min": 50000,
+          "preferred_max": 200000
+        },
+        "normalized_value": 0.5,
+        "weight": 0.8,
+        "contribution": 0.4,
+        "explanation": "сумма вне предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.79,
+        "normalized_value": 0.79,
+        "weight": 1.2,
+        "contribution": 0.948,
+        "explanation": "ожидаемая конверсия 79.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.16575,
+        "normalized_value": 0.83425,
+        "weight": 1.3,
+        "contribution": 1.084525,
+        "explanation": "максимальная projected utilization 16.6%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 2,
+          "limit": 20
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 2/20"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 1326000.0,
+          "min": 1500000,
+          "max": 8000000
+        },
+        "normalized_value": 0.7348,
+        "weight": 1.4,
+        "contribution": 1.02872,
+        "explanation": "projected turnover 1326000.0, коридор 1500000–8000000"
+      },
+      "economy": {
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
+        "weight": 0.7,
+        "contribution": 0.326667,
+        "explanation": "маржинальный запас 0.7 п.п."
+      }
+    },
+    "eligible_pool": [
+      "vipay",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "vipay",
+        "combined_score": 0.717659,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 20.0,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.8,
+            "weight": 2.0,
+            "contribution": 1.6,
+            "explanation": "projected count share 20.0% при цели 40.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 10.3734,
+              "target_pct": 40
+            },
+            "normalized_value": 0.703734,
+            "weight": 1.8,
+            "contribution": 1.266722,
+            "explanation": "projected volume share 10.4% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 1,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 1 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 25000.0,
+              "preferred_min": 10000,
+              "preferred_max": 100000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.87,
+            "normalized_value": 0.87,
+            "weight": 1.2,
+            "contribution": 1.044,
+            "explanation": "ожидаемая конверсия 87.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.645,
+            "normalized_value": 0.355,
+            "weight": 1.3,
+            "contribution": 0.4615,
+            "explanation": "максимальная projected utilization 64.5%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 15
+            },
+            "normalized_value": 0.933333,
+            "weight": 0.5,
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 3225000.0,
+              "min": 3500000,
+              "max": 5000000
+            },
+            "normalized_value": 0.723571,
+            "weight": 1.4,
+            "contribution": 1.013,
+            "explanation": "projected turnover 3225000.0, коридор 3500000–5000000"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.7,
+            "contribution": 0.14,
+            "explanation": "маржинальный запас 0.3 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "quickpay",
+        "combined_score": 0.579606,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 80.0,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.45,
+            "weight": 2.0,
+            "contribution": 0.9,
+            "explanation": "projected count share 80.0% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 93.7759,
+              "target_pct": 40
+            },
+            "normalized_value": 0.462241,
+            "weight": 1.8,
+            "contribution": 0.832033,
+            "explanation": "projected volume share 93.8% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 25000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.5,
+            "weight": 0.8,
+            "contribution": 0.4,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.16575,
+            "normalized_value": 0.83425,
+            "weight": 1.3,
+            "contribution": 1.084525,
+            "explanation": "максимальная projected utilization 16.6%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1326000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7348,
+            "weight": 1.4,
+            "contribution": 1.02872,
+            "explanation": "projected turnover 1326000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 2
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3225000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 405000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "tinkoff",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": []
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2925000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 145000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк tinkoff отсутствует в include list",
+            "actual": "tinkoff",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк tinkoff отсутствует в include list",
+            "actual": "tinkoff",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 25000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1326000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 75000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "tinkoff",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "vipay",
+          "volume_share": "vipay",
+          "cascade": "vipay",
+          "preferred_amount": "vipay",
+          "conversion": "vipay",
+          "load_safe": "quickpay",
+          "intensity": "vipay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1301000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 2
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_106",
+    "selected_provider": "vipay",
+    "attempts": [
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "amount_exceeds_limit",
+        "details": "52000 > limit_amount_max 50000",
+        "actual": 52000,
+        "threshold": 50000
+      },
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.719841
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_combined_score",
+        "details": "rank 2, score 0.607804",
+        "score": 0.607804
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.719841,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 16.6667,
+          "target_pct": 40.0
+        },
+        "normalized_value": 0.766667,
+        "weight": 2.0,
+        "contribution": 1.533333,
+        "explanation": "projected count share 16.7% при цели 40.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 17.7474,
+          "target_pct": 40
+        },
+        "normalized_value": 0.777474,
+        "weight": 1.8,
+        "contribution": 1.399454,
+        "explanation": "projected volume share 17.7% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 1,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 1 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 52000.0,
+          "preferred_min": 10000,
+          "preferred_max": 100000
+        },
+        "normalized_value": 1.0,
+        "weight": 0.8,
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.87,
+        "normalized_value": 0.87,
+        "weight": 1.2,
+        "contribution": 1.044,
+        "explanation": "ожидаемая конверсия 87.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.6504,
+        "normalized_value": 0.3496,
+        "weight": 1.3,
+        "contribution": 0.45448,
+        "explanation": "максимальная projected utilization 65.0%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 2,
+          "limit": 15
+        },
+        "normalized_value": 0.866667,
+        "weight": 0.5,
+        "contribution": 0.433333,
+        "explanation": "projected RPM 2/15"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 3252000.0,
+          "min": 3500000,
+          "max": 5000000
+        },
+        "normalized_value": 0.721257,
+        "weight": 1.4,
+        "contribution": 1.00976,
+        "explanation": "projected turnover 3252000.0, коридор 3500000–5000000"
+      },
+      "economy": {
+        "raw_value": 0.3,
+        "normalized_value": 0.2,
+        "weight": 0.7,
+        "contribution": 0.14,
+        "explanation": "маржинальный запас 0.3 п.п."
+      }
+    },
+    "eligible_pool": [
+      "vipay",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "vipay",
+        "combined_score": 0.719841,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 16.6667,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.766667,
+            "weight": 2.0,
+            "contribution": 1.533333,
+            "explanation": "projected count share 16.7% при цели 40.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 17.7474,
+              "target_pct": 40
+            },
+            "normalized_value": 0.777474,
+            "weight": 1.8,
+            "contribution": 1.399454,
+            "explanation": "projected volume share 17.7% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 1,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 1 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 52000.0,
+              "preferred_min": 10000,
+              "preferred_max": 100000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.87,
+            "normalized_value": 0.87,
+            "weight": 1.2,
+            "contribution": 1.044,
+            "explanation": "ожидаемая конверсия 87.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.6504,
+            "normalized_value": 0.3496,
+            "weight": 1.3,
+            "contribution": 0.45448,
+            "explanation": "максимальная projected utilization 65.0%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 15
+            },
+            "normalized_value": 0.866667,
+            "weight": 0.5,
+            "contribution": 0.433333,
+            "explanation": "projected RPM 2/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 3252000.0,
+              "min": 3500000,
+              "max": 5000000
+            },
+            "normalized_value": 0.721257,
+            "weight": 1.4,
+            "contribution": 1.00976,
+            "explanation": "projected turnover 3252000.0, коридор 3500000–5000000"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.7,
+            "contribution": 0.14,
+            "explanation": "маржинальный запас 0.3 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "quickpay",
+        "combined_score": 0.607804,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 83.3333,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.416667,
+            "weight": 2.0,
+            "contribution": 0.833333,
+            "explanation": "projected count share 83.3% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 94.8805,
+              "target_pct": 40
+            },
+            "normalized_value": 0.451195,
+            "weight": 1.8,
+            "contribution": 0.81215,
+            "explanation": "projected volume share 94.9% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 52000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.17225,
+            "normalized_value": 0.82775,
+            "weight": 1.3,
+            "contribution": 1.076075,
+            "explanation": "максимальная projected utilization 17.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1378000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7244,
+            "weight": 1.4,
+            "contribution": 1.01416,
+            "explanation": "projected turnover 1378000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 2
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 52000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 52000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3252000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 432000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          }
+        ],
+        "failures": []
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 52000,
+            "threshold": 500
+          },
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "52000 > limit_amount_max 50000",
+            "actual": 52000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2952000.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 172000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "amount_exceeds_limit",
+            "explanation": "52000 > limit_amount_max 50000",
+            "actual": 52000,
+            "threshold": 50000
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 52000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 52000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1378000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 102000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "sberbank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "vipay",
+          "volume_share": "vipay",
+          "cascade": "vipay",
+          "preferred_amount": "vipay",
+          "conversion": "vipay",
+          "load_safe": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3200000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 2
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_107",
+    "selected_provider": "payflow",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000",
+        "actual": 800,
+        "threshold": 1000
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "amount_below_minimum",
+        "details": "800 < limit_amount_min 1000",
+        "actual": 800,
+        "threshold": 1000
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.702518
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.702518,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 14.2857,
+          "target_pct": 35.0
+        },
+        "normalized_value": 0.792857,
+        "weight": 2.0,
+        "contribution": 1.585714,
+        "explanation": "projected count share 14.3% при цели 35.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 0.2723,
+          "target_pct": 20
+        },
+        "normalized_value": 0.802723,
+        "weight": 1.8,
+        "contribution": 1.444901,
+        "explanation": "projected volume share 0.3% при цели 20%"
+      },
+      "cascade": {
+        "raw_value": 2,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 2 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 800.0,
+          "preferred_min": 500,
+          "preferred_max": 35000
+        },
+        "normalized_value": 1.0,
+        "weight": 0.8,
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.91,
+        "normalized_value": 0.91,
+        "weight": 1.2,
+        "contribution": 1.092,
+        "explanation": "ожидаемая конверсия 91.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.966933,
+        "normalized_value": 0.033067,
+        "weight": 1.3,
+        "contribution": 0.042987,
+        "explanation": "максимальная projected utilization 96.7%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 1,
+          "limit": 10
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 1/10"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 2900800.0,
+          "min": 2950000,
+          "max": 3000000
+        },
+        "normalized_value": 0.705003,
+        "weight": 1.4,
+        "contribution": 0.987005,
+        "explanation": "projected turnover 2900800.0, коридор 2950000–3000000"
+      },
+      "economy": {
+        "raw_value": 0.5,
+        "normalized_value": 0.333333,
+        "weight": 0.7,
+        "contribution": 0.233333,
+        "explanation": "маржинальный запас 0.5 п.п."
+      }
+    },
+    "eligible_pool": [
+      "payflow"
+    ],
+    "ranking": [
+      {
+        "provider": "payflow",
+        "combined_score": 0.702518,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 14.2857,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.792857,
+            "weight": 2.0,
+            "contribution": 1.585714,
+            "explanation": "projected count share 14.3% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 0.2723,
+              "target_pct": 20
+            },
+            "normalized_value": 0.802723,
+            "weight": 1.8,
+            "contribution": 1.444901,
+            "explanation": "projected volume share 0.3% при цели 20%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 800.0,
+              "preferred_min": 500,
+              "preferred_max": 35000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.966933,
+            "normalized_value": 0.033067,
+            "weight": 1.3,
+            "contribution": 0.042987,
+            "explanation": "максимальная projected utilization 96.7%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 10
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 1/10"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2900800.0,
+              "min": 2950000,
+              "max": 3000000
+            },
+            "normalized_value": 0.705003,
+            "weight": 1.4,
+            "contribution": 0.987005,
+            "explanation": "projected turnover 2900800.0, коридор 2950000–3000000"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 1
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": false,
+            "code": "amount_below_minimum",
+            "explanation": "800 < limit_amount_min 1000",
+            "actual": 800,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 800,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3252800.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 380800.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "amount_below_minimum",
+            "explanation": "800 < limit_amount_min 1000",
+            "actual": 800,
+            "threshold": 1000
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 800,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 800,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2900800.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 120800.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "sberbank",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": []
+      },
+      "quickpay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": false,
+            "code": "amount_below_minimum",
+            "explanation": "800 < limit_amount_min 1000",
+            "actual": 800,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 800,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1326800.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 50800.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "sberbank",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 20
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "amount_below_minimum",
+            "explanation": "800 < limit_amount_min 1000",
+            "actual": 800,
+            "threshold": 1000
+          }
+        ]
+      }
+    },
+    "conflicts": [],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900000,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_108",
+    "selected_provider": "quickpay",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк raiffeisen отсутствует в include list",
+        "actual": "raiffeisen",
+        "threshold": [
+          "sberbank",
+          "tinkoff",
+          "vtb"
+        ]
+      },
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк raiffeisen отсутствует в include list",
+        "actual": "raiffeisen",
+        "threshold": [
+          "sberbank",
+          "alfa"
+        ]
+      },
+      {
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.723277
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.723277,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 62.5,
+          "target_pct": 25.0
+        },
+        "normalized_value": 0.625,
+        "weight": 2.0,
+        "contribution": 1.25,
+        "explanation": "projected count share 62.5% при цели 25.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 79.8094,
+          "target_pct": 40
+        },
+        "normalized_value": 0.601906,
+        "weight": 1.8,
+        "contribution": 1.083431,
+        "explanation": "projected volume share 79.8% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 3,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 3 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 42000.0,
+          "preferred_min": 50000,
+          "preferred_max": 200000
+        },
+        "normalized_value": 0.84,
+        "weight": 0.8,
+        "contribution": 0.672,
+        "explanation": "сумма вне предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.79,
+        "normalized_value": 0.79,
+        "weight": 1.2,
+        "contribution": 0.948,
+        "explanation": "ожидаемая конверсия 79.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.171,
+        "normalized_value": 0.829,
+        "weight": 1.3,
+        "contribution": 1.0777,
+        "explanation": "максимальная projected utilization 17.1%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 1,
+          "limit": 20
+        },
+        "normalized_value": 0.95,
+        "weight": 0.5,
+        "contribution": 0.475,
+        "explanation": "projected RPM 1/20"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 1368000.0,
+          "min": 1500000,
+          "max": 8000000
+        },
+        "normalized_value": 0.7264,
+        "weight": 1.4,
+        "contribution": 1.01696,
+        "explanation": "projected turnover 1368000.0, коридор 1500000–8000000"
+      },
+      "economy": {
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
+        "weight": 0.7,
+        "contribution": 0.326667,
+        "explanation": "маржинальный запас 0.7 п.п."
+      }
+    },
+    "eligible_pool": [
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "quickpay",
+        "combined_score": 0.723277,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 62.5,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.625,
+            "weight": 2.0,
+            "contribution": 1.25,
+            "explanation": "projected count share 62.5% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 79.8094,
+              "target_pct": 40
+            },
+            "normalized_value": 0.601906,
+            "weight": 1.8,
+            "contribution": 1.083431,
+            "explanation": "projected volume share 79.8% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 42000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.84,
+            "weight": 0.8,
+            "contribution": 0.672,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.171,
+            "normalized_value": 0.829,
+            "weight": 1.3,
+            "contribution": 1.0777,
+            "explanation": "максимальная projected utilization 17.1%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 20
+            },
+            "normalized_value": 0.95,
+            "weight": 0.5,
+            "contribution": 0.475,
+            "explanation": "projected RPM 1/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1368000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7264,
+            "weight": 1.4,
+            "contribution": 1.01696,
+            "explanation": "projected turnover 1368000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3294000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 422000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк raiffeisen отсутствует в include list",
+            "actual": "raiffeisen",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк raiffeisen отсутствует в include list",
+            "actual": "raiffeisen",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2942800.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 162000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк raiffeisen отсутствует в include list",
+            "actual": "raiffeisen",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк raiffeisen отсутствует в include list",
+            "actual": "raiffeisen",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 42000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1368000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 92000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "raiffeisen",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1326000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1368000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_109",
+    "selected_provider": "vipay",
+    "attempts": [
+      {
+        "provider": "payflow",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк vtb отсутствует в include list",
+        "actual": "vtb",
+        "threshold": [
+          "sberbank",
+          "alfa"
+        ]
+      },
+      {
+        "provider": "vipay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.733814
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_combined_score",
+        "details": "rank 2, score 0.603348",
+        "score": 0.603348
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.733814,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 22.2222,
+          "target_pct": 40.0
+        },
+        "normalized_value": 0.822222,
+        "weight": 2.0,
+        "contribution": 1.644444,
+        "explanation": "projected count share 22.2% при цели 40.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 17.9294,
+          "target_pct": 40
+        },
+        "normalized_value": 0.779294,
+        "weight": 1.8,
+        "contribution": 1.40273,
+        "explanation": "projected volume share 17.9% при цели 40%"
+      },
+      "cascade": {
+        "raw_value": 1,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 1 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 10000.0,
+          "preferred_min": 10000,
+          "preferred_max": 100000
+        },
+        "normalized_value": 1.0,
+        "weight": 0.8,
+        "contribution": 0.8,
+        "explanation": "сумма внутри предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.87,
+        "normalized_value": 0.87,
+        "weight": 1.2,
+        "contribution": 1.044,
+        "explanation": "ожидаемая конверсия 87.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.6524,
+        "normalized_value": 0.3476,
+        "weight": 1.3,
+        "contribution": 0.45188,
+        "explanation": "максимальная projected utilization 65.2%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 1,
+          "limit": 15
+        },
+        "normalized_value": 0.933333,
+        "weight": 0.5,
+        "contribution": 0.466667,
+        "explanation": "projected RPM 1/15"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 3262000.0,
+          "min": 3500000,
+          "max": 5000000
+        },
+        "normalized_value": 0.7204,
+        "weight": 1.4,
+        "contribution": 1.00856,
+        "explanation": "projected turnover 3262000.0, коридор 3500000–5000000"
+      },
+      "economy": {
+        "raw_value": 0.3,
+        "normalized_value": 0.2,
+        "weight": 0.7,
+        "contribution": 0.14,
+        "explanation": "маржинальный запас 0.3 п.п."
+      }
+    },
+    "eligible_pool": [
+      "vipay",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "vipay",
+        "combined_score": 0.733814,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 22.2222,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.822222,
+            "weight": 2.0,
+            "contribution": 1.644444,
+            "explanation": "projected count share 22.2% при цели 40.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 17.9294,
+              "target_pct": 40
+            },
+            "normalized_value": 0.779294,
+            "weight": 1.8,
+            "contribution": 1.40273,
+            "explanation": "projected volume share 17.9% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 1,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 1 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 10000.0,
+              "preferred_min": 10000,
+              "preferred_max": 100000
+            },
+            "normalized_value": 1.0,
+            "weight": 0.8,
+            "contribution": 0.8,
+            "explanation": "сумма внутри предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.87,
+            "normalized_value": 0.87,
+            "weight": 1.2,
+            "contribution": 1.044,
+            "explanation": "ожидаемая конверсия 87.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.6524,
+            "normalized_value": 0.3476,
+            "weight": 1.3,
+            "contribution": 0.45188,
+            "explanation": "максимальная projected utilization 65.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 15
+            },
+            "normalized_value": 0.933333,
+            "weight": 0.5,
+            "contribution": 0.466667,
+            "explanation": "projected RPM 1/15"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 3262000.0,
+              "min": 3500000,
+              "max": 5000000
+            },
+            "normalized_value": 0.7204,
+            "weight": 1.4,
+            "contribution": 1.00856,
+            "explanation": "projected turnover 3262000.0, коридор 3500000–5000000"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.7,
+            "contribution": 0.14,
+            "explanation": "маржинальный запас 0.3 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "quickpay",
+        "combined_score": 0.603348,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 66.6667,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.583333,
+            "weight": 2.0,
+            "contribution": 1.166667,
+            "explanation": "projected count share 66.7% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 80.3933,
+              "target_pct": 40
+            },
+            "normalized_value": 0.596067,
+            "weight": 1.8,
+            "contribution": 1.072921,
+            "explanation": "projected volume share 80.4% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 10000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.2,
+            "weight": 0.8,
+            "contribution": 0.16,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.17225,
+            "normalized_value": 0.82775,
+            "weight": 1.3,
+            "contribution": 1.076075,
+            "explanation": "максимальная projected utilization 17.2%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 2,
+              "limit": 20
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 2/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1378000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7244,
+            "weight": 1.4,
+            "contribution": 1.01416,
+            "explanation": "projected turnover 1378000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 2
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3262000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 390000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "vtb",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 15
+          }
+        ],
+        "failures": []
+      },
+      "payflow": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2910800.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 130000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк vtb отсутствует в include list",
+            "actual": "vtb",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк vtb отсутствует в include list",
+            "actual": "vtb",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          }
+        ]
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 10000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1378000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 60000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "vtb",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "vipay",
+          "volume_share": "vipay",
+          "cascade": "vipay",
+          "preferred_amount": "vipay",
+          "conversion": "vipay",
+          "load_safe": "quickpay",
+          "intensity": "vipay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1368000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3262000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1368000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 1
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  },
+  {
+    "operation_id": "op_110",
+    "selected_provider": "payflow",
+    "attempts": [
+      {
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "bank_not_in_list",
+        "details": "банк alfa отсутствует в include list",
+        "actual": "alfa",
+        "threshold": [
+          "sberbank",
+          "tinkoff",
+          "vtb"
+        ]
+      },
+      {
+        "provider": "payflow",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 24,
+        "sequence": 1,
+        "score": 0.718288
+      },
+      {
+        "provider": "quickpay",
+        "decision": "skipped",
+        "reason": "lower_combined_score",
+        "details": "rank 2, score 0.665011",
+        "score": 0.665011
+      }
+    ],
+    "simulated_result": "approved",
+    "latency_sec": 24,
+    "strategy": "balanced",
+    "score": 0.718288,
+    "score_breakdown": {
+      "count_share": {
+        "raw_value": {
+          "projected_pct": 20.0,
+          "target_pct": 35.0
+        },
+        "normalized_value": 0.85,
+        "weight": 2.0,
+        "contribution": 1.7,
+        "explanation": "projected count share 20.0% при цели 35.0%"
+      },
+      "volume_share": {
+        "raw_value": {
+          "projected_pct": 10.5754,
+          "target_pct": 20
+        },
+        "normalized_value": 0.905754,
+        "weight": 1.8,
+        "contribution": 1.630358,
+        "explanation": "projected volume share 10.6% при цели 20%"
+      },
+      "cascade": {
+        "raw_value": 2,
+        "normalized_value": 1.0,
+        "weight": 0.6,
+        "contribution": 0.6,
+        "explanation": "cascade priority 2 (меньше — раньше)"
+      },
+      "preferred_amount": {
+        "raw_value": {
+          "amount": 40000.0,
+          "preferred_min": 500,
+          "preferred_max": 35000
+        },
+        "normalized_value": 0.857143,
+        "weight": 0.8,
+        "contribution": 0.685714,
+        "explanation": "сумма вне предпочтительного диапазона"
+      },
+      "conversion": {
+        "raw_value": 0.91,
+        "normalized_value": 0.91,
+        "weight": 1.2,
+        "contribution": 1.092,
+        "explanation": "ожидаемая конверсия 91.0%"
+      },
+      "load_safe": {
+        "raw_value": 0.980267,
+        "normalized_value": 0.019733,
+        "weight": 1.3,
+        "contribution": 0.025653,
+        "explanation": "максимальная projected utilization 98.0%"
+      },
+      "intensity": {
+        "raw_value": {
+          "projected_rpm": 1,
+          "limit": 10
+        },
+        "normalized_value": 0.9,
+        "weight": 0.5,
+        "contribution": 0.45,
+        "explanation": "projected RPM 1/10"
+      },
+      "turnover_commitment": {
+        "raw_value": {
+          "projected": 2940800.0,
+          "min": 2950000,
+          "max": 3000000
+        },
+        "normalized_value": 0.700936,
+        "weight": 1.4,
+        "contribution": 0.98131,
+        "explanation": "projected turnover 2940800.0, коридор 2950000–3000000"
+      },
+      "economy": {
+        "raw_value": 0.5,
+        "normalized_value": 0.333333,
+        "weight": 0.7,
+        "contribution": 0.233333,
+        "explanation": "маржинальный запас 0.5 п.п."
+      }
+    },
+    "eligible_pool": [
+      "payflow",
+      "quickpay"
+    ],
+    "ranking": [
+      {
+        "provider": "payflow",
+        "combined_score": 0.718288,
+        "provider_priority": 2,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 20.0,
+              "target_pct": 35.0
+            },
+            "normalized_value": 0.85,
+            "weight": 2.0,
+            "contribution": 1.7,
+            "explanation": "projected count share 20.0% при цели 35.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 10.5754,
+              "target_pct": 20
+            },
+            "normalized_value": 0.905754,
+            "weight": 1.8,
+            "contribution": 1.630358,
+            "explanation": "projected volume share 10.6% при цели 20%"
+          },
+          "cascade": {
+            "raw_value": 2,
+            "normalized_value": 1.0,
+            "weight": 0.6,
+            "contribution": 0.6,
+            "explanation": "cascade priority 2 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 40000.0,
+              "preferred_min": 500,
+              "preferred_max": 35000
+            },
+            "normalized_value": 0.857143,
+            "weight": 0.8,
+            "contribution": 0.685714,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.91,
+            "normalized_value": 0.91,
+            "weight": 1.2,
+            "contribution": 1.092,
+            "explanation": "ожидаемая конверсия 91.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.980267,
+            "normalized_value": 0.019733,
+            "weight": 1.3,
+            "contribution": 0.025653,
+            "explanation": "максимальная projected utilization 98.0%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 10
+            },
+            "normalized_value": 0.9,
+            "weight": 0.5,
+            "contribution": 0.45,
+            "explanation": "projected RPM 1/10"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 2940800.0,
+              "min": 2950000,
+              "max": 3000000
+            },
+            "normalized_value": 0.700936,
+            "weight": 1.4,
+            "contribution": 0.98131,
+            "explanation": "projected turnover 2940800.0, коридор 2950000–3000000"
+          },
+          "economy": {
+            "raw_value": 0.5,
+            "normalized_value": 0.333333,
+            "weight": 0.7,
+            "contribution": 0.233333,
+            "explanation": "маржинальный запас 0.5 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "quickpay",
+        "combined_score": 0.665011,
+        "provider_priority": 3,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 60.0,
+              "target_pct": 25.0
+            },
+            "normalized_value": 0.65,
+            "weight": 2.0,
+            "contribution": 1.3,
+            "explanation": "projected count share 60.0% при цели 25.0%"
+          },
+          "volume_share": {
+            "raw_value": {
+              "projected_pct": 79.8341,
+              "target_pct": 40
+            },
+            "normalized_value": 0.601659,
+            "weight": 1.8,
+            "contribution": 1.082986,
+            "explanation": "projected volume share 79.8% при цели 40%"
+          },
+          "cascade": {
+            "raw_value": 3,
+            "normalized_value": 0.0,
+            "weight": 0.6,
+            "contribution": 0.0,
+            "explanation": "cascade priority 3 (меньше — раньше)"
+          },
+          "preferred_amount": {
+            "raw_value": {
+              "amount": 40000.0,
+              "preferred_min": 50000,
+              "preferred_max": 200000
+            },
+            "normalized_value": 0.8,
+            "weight": 0.8,
+            "contribution": 0.64,
+            "explanation": "сумма вне предпочтительного диапазона"
+          },
+          "conversion": {
+            "raw_value": 0.79,
+            "normalized_value": 0.79,
+            "weight": 1.2,
+            "contribution": 0.948,
+            "explanation": "ожидаемая конверсия 79.0%"
+          },
+          "load_safe": {
+            "raw_value": 0.176,
+            "normalized_value": 0.824,
+            "weight": 1.3,
+            "contribution": 1.0712,
+            "explanation": "максимальная projected utilization 17.6%"
+          },
+          "intensity": {
+            "raw_value": {
+              "projected_rpm": 1,
+              "limit": 20
+            },
+            "normalized_value": 0.95,
+            "weight": 0.5,
+            "contribution": 0.475,
+            "explanation": "projected RPM 1/20"
+          },
+          "turnover_commitment": {
+            "raw_value": {
+              "projected": 1408000.0,
+              "min": 1500000,
+              "max": 8000000
+            },
+            "normalized_value": 0.7184,
+            "weight": 1.4,
+            "contribution": 1.00576,
+            "explanation": "projected turnover 1408000.0, коридор 1500000–8000000"
+          },
+          "economy": {
+            "raw_value": 0.7,
+            "normalized_value": 0.466667,
+            "weight": 0.7,
+            "contribution": 0.326667,
+            "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 2
+      }
+    ],
+    "constraint_matrix": {
+      "vipay": {
+        "eligible": false,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 100000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 3302000.0,
+            "threshold": 5000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 5,
+            "threshold": 10
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 420000.0,
+            "threshold": 1000000
+          },
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк alfa отсутствует в include list",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.2,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 12,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          }
+        ],
+        "failures": [
+          {
+            "eligible": false,
+            "code": "bank_not_in_list",
+            "explanation": "банк alfa отсутствует в include list",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "tinkoff",
+              "vtb"
+            ]
+          }
+        ]
+      },
+      "payflow": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 500
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 50000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 2940800.0,
+            "threshold": 3000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 3,
+            "threshold": 8
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 160000.0,
+            "threshold": 500000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банк разрешён",
+            "actual": "alfa",
+            "threshold": [
+              "sberbank",
+              "alfa"
+            ]
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 1.0,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 5,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 10
+          }
+        ],
+        "failures": []
+      },
+      "quickpay": {
+        "eligible": true,
+        "checks": [
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "провайдер активен",
+            "actual": "active",
+            "threshold": "active"
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "минимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 1000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "максимум не задан или соблюдён",
+            "actual": 40000,
+            "threshold": 200000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "дневной лимит не задан или соблюдён",
+            "actual": 1408000.0,
+            "threshold": 8000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress count не задан или соблюдён",
+            "actual": 2,
+            "threshold": 15
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "лимит in-progress amount не задан или соблюдён",
+            "actual": 90000.0,
+            "threshold": 2000000
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "банковское ограничение не задано",
+            "actual": "alfa",
+            "threshold": []
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "маржинальное соглашение соблюдено",
+            "actual": 0.8,
+            "threshold": 1.5
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "есть доступные реквизиты",
+            "actual": 20,
+            "threshold": 1
+          },
+          {
+            "eligible": true,
+            "code": "eligible",
+            "explanation": "RPM limit не задан или соблюдён",
+            "actual": 1,
+            "threshold": 20
+          }
+        ],
+        "failures": []
+      }
+    },
+    "conflicts": [
+      {
+        "code": "policy_winners_disagree",
+        "winners": {
+          "count_share": "payflow",
+          "volume_share": "payflow",
+          "cascade": "payflow",
+          "preferred_amount": "payflow",
+          "conversion": "payflow",
+          "load_safe": "quickpay",
+          "intensity": "quickpay",
+          "turnover_commitment": "quickpay",
+          "economy": "quickpay"
+        },
+        "resolution": "weighted combined score and deterministic tie-break"
+      }
+    ],
+    "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
+    "state_before": {
+      "vipay": {
+        "daily_approved_amount": 3262000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1368000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "state_after": {
+      "vipay": {
+        "daily_approved_amount": 3262000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 1
+      },
+      "payflow": {
+        "daily_approved_amount": 2940800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 1
+      },
+      "quickpay": {
+        "daily_approved_amount": 1368000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 0
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    },
+    "fallback_used": false,
+    "decision_time_ms": 0.0
+  }
+]
