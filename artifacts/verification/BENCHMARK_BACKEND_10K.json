@@ -1,0 +1,20 @@
+{
+  "operations": 10000,
+  "external_providers": 20,
+  "history_rows": 100000,
+  "seconds": 11.77,
+  "operations_per_second": 849.64,
+  "rss_after_kib": 1188320,
+  "rpm_100000_seconds": 0.371,
+  "invariant_checks": 933357,
+  "seed": 42,
+  "ruby": "ruby 3.4.10 (2026-06-30 revision 2b0b7728dc) +PRISM [arm64-darwin25]",
+  "cpu": "Apple M4",
+  "ram_bytes": 17179869184,
+  "daily_state_dates": [
+    "2026-07-30"
+  ],
+  "note": "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately",
+  "peak_rss_bytes": 1245577216,
+  "measured_on": "2026-09-05"
+}

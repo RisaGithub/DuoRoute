@@ -2,12 +2,22 @@
 
 module DuoRoute
   class Configuration
+    def self.copy(value)
+      case value
+      when Hash then value.transform_values { |item| copy(item) }
+      when Array then value.map { |item| copy(item) }
+      when String then value.dup
+      else value
+      end
+    end
+
     def self.merge(base, changes)
       base.merge(changes) { |key, old, value| key != "weights" && old.is_a?(Hash) && value.is_a?(Hash) ? merge(old, value) : value }
     end
 
     def self.resolve(config, strategy:, settings: [])
       fail!("config", "ожидается объект") unless config.is_a?(Hash)
+      config = copy(config)
       validate_shape!(config)
       if config["resolved_strategy"] == strategy
         result = JSON.parse(JSON.generate(config))
@@ -62,6 +72,10 @@ module DuoRoute
         "calibration" => %w[enabled minimum_samples prior_strength]
       }
       schemas.each { |key, allowed| keys!(config[key], allowed, key) if config.key?(key) }
+      routing = config.fetch("routing", {})
+      if routing.key?("fallback_provider") && (!routing["fallback_provider"].is_a?(String) || routing["fallback_provider"].strip.empty?)
+        fail!("routing.fallback_provider", "ожидается непустая строка")
+      end
       overrides = config.fetch("provider_overrides", {})
       fail!("provider_overrides", "ожидается объект") unless overrides.is_a?(Hash)
       allowed_provider = Validation::InputValidator::PROVIDER_REQUIRED + Validation::InputValidator::NUMERIC_FIELDS + %w[preferred_amount_min preferred_amount_max]
@@ -82,8 +96,10 @@ module DuoRoute
       fail!("calibration.enabled", "ожидается boolean") if calibration.key?("enabled") && ![ true, false ].include?(calibration["enabled"])
       %w[minimum_samples prior_strength].each do |key|
         value = calibration[key]
-        fail!("calibration.#{key}", "ожидается положительное число") if value && (!value.is_a?(Numeric) || !value.finite? || value <= 0)
+        fail!("calibration.#{key}", "ожидается положительное число") if calibration.key?(key) && (!value.is_a?(Numeric) || !value.finite? || value <= 0)
       end
+      minimum = calibration["minimum_samples"]
+      fail!("calibration.minimum_samples", "ожидается целое число") if minimum && !minimum.is_a?(Integer)
     end
 
     def self.fail!(path, message)

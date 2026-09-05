@@ -56,12 +56,13 @@ class RunSelectionTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs
     run.reload
     assert_equal "completed", run.status, run.error_message
-    repeated = DuoRoute::Runner.new(providers_data: run.providers, operations: run.operations, config: run.config, preset: run.preset, seed: run.seed).call
+    repeated = DuoRoute::Runner.new(providers_data: run.providers, operations: run.operations, config: run.config, preset: run.preset, seed: run.seed, history: DuoRoute::Input::Loader.csv_string(run.history_csv)).call
     assert_equal run.decisions, repeated.decisions
     Dir.mktmpdir do |dir|
       paths = { providers: run.providers_json, operations: run.operations_json, config: run.config_json }
       paths.each { |name, content| File.write("#{dir}/#{name}.json", content) }
-      args = [ "route", "--providers", "#{dir}/providers.json", "--operations", "#{dir}/operations.json", "--config", "#{dir}/config.json", "--strategy", run.preset, "--seed", run.seed.to_s, "--quiet", "--decisions", "#{dir}/decisions.json", "--report", "#{dir}/report.json" ]
+      File.write("#{dir}/history.csv", run.history_csv)
+      args = [ "route", "--history", "#{dir}/history.csv", "--providers", "#{dir}/providers.json", "--operations", "#{dir}/operations.json", "--config", "#{dir}/config.json", "--strategy", run.preset, "--seed", run.seed.to_s, "--quiet", "--decisions", "#{dir}/decisions.json", "--report", "#{dir}/report.json" ]
       assert_equal 0, DuoRoute::CLI::App.new(args, out: StringIO.new, err: StringIO.new).run
       assert_equal run.decisions, JSON.parse(File.read("#{dir}/decisions.json"))
     end

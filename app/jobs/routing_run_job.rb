@@ -5,7 +5,9 @@ class RoutingRunJob < ApplicationJob
 
   def perform(run_id)
     run = RoutingRun.find(run_id)
-    run.update!(status: "running", started_at: Time.current, last_event: "Проверка входных данных")
+    claimed = RoutingRun.where(id: run_id, status: "queued").update_all(status: "running", started_at: Time.current, last_event: "Проверка входных данных")
+    return unless claimed == 1
+    run.reload
     config = run.config
     config["routing"] ||= {}
     config["routing"]["timeout_mode"] = run.timeout_mode

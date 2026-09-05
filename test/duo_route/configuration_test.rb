@@ -27,7 +27,7 @@ class ConfigurationTest < ActiveSupport::TestCase
   end
 
   test "unknown settings types ranges and priorities are rejected" do
-    [ "simulation.typo=1", "routing.timeout_mode=no", "provider_overrides.alpha.conversion_24h=2", "presets.balanced.weights.load_safe=-1", 'presets.balanced.policy_priorities=["typo"]', "simulation.minimum_samples=0", "simulation.failure_expired_share=2", "simulation.providers=[]", "routing=oops" ].each do |setting|
+    [ "simulation.typo=1", "routing.timeout_mode=no", "provider_overrides.alpha.conversion_24h=2", "presets.balanced.weights.load_safe=-1", 'presets.balanced.policy_priorities=["typo"]', "simulation.minimum_samples=0", "simulation.failure_expired_share=2", "simulation.providers=[]", "routing=oops", "routing.fallback_provider=null", "calibration.prior_strength=null", "calibration.minimum_samples=0.5" ].each do |setting|
       assert_raises(DuoRoute::InputError, setting) do
         DuoRoute::Runner.new(providers_data:, operations: [ operation ], config:, settings: [ setting ]).validate!
       end

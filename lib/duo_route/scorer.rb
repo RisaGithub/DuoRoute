@@ -3,8 +3,8 @@
 module DuoRoute
   class Scorer
     def initialize(weights:, policy_priorities: nil, registry: Policies::Registry.new)
-      @weights = weights.transform_values(&:to_f)
-      @policy_priorities = policy_priorities || @weights.keys
+      @weights = weights.transform_values(&:to_f).select { |_, weight| weight.positive? }
+      @policy_priorities = (policy_priorities || @weights.keys) & @weights.keys
       @policies = registry.build(@weights.keys)
     end
 

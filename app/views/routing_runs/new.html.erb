@@ -6,7 +6,7 @@
 
 <%= form_with url: runs_path, multipart: true, class: "wizard", data: { controller: "config", config_catalog_value: @strategy_catalog.to_json, config_modes_value: @mode_defaults.to_json } do |form| %>
   <section class="card panel">
-    <div class="section-head"><div><p class="step">01 · Настройки</p><h2><%= icon_label("Стратегия и симуляция") %></h2></div><span class="pill pill--info">Повторяемый результат</span></div>
+    <div class="section-head"><div><p class="step" aria-label="Шаг 1">01</p><h2><%= icon_label("Стратегия и симуляция") %></h2></div><span class="pill pill--info">Повторяемый результат</span></div>
     <div class="form-grid form-grid--4">
       <label class="field"><span><%= icon_label("Стратегия") %></span><%= select_tag :preset, options_for_select(@strategy_catalog.map { |key, row| [row["title"], key] } + [["Сбалансированная комбинация", "balanced"], ["Полностью пользовательская настройка", "custom"]], params[:preset] || "balanced"), class: "select", data: { action: "change->config#strategy", config_target: "preset" } %></label>
       <label class="field"><span><%= icon_label("При таймауте") %></span><%= select_tag :timeout_mode, options_for_select([["Перейти к резервному", "fallback_on_timeout"], ["Дождаться статуса", "hold_until_status"]], params[:timeout_mode] || "fallback_on_timeout"), class: "select" %></label>
@@ -16,7 +16,7 @@
     <p class="selection-note" data-config-target="description"></p>
     <details class="manual" <%= "open" if params[:settings].present? || params[:custom_weights] == "1" %>><summary>Расширенные параметры <span class="hint">· переопределения и веса факторов</span></summary>
     <label class="field"><span><%= icon_label("Изменения для этого запуска: по одному path=value на строку") %></span><%= text_area_tag :settings, params[:settings] || @strategy_catalog.dig(params[:preset], "parameters", "provider_overrides")&.flat_map { |name, fields| fields.map { |key, value| "provider_overrides.#{name}.#{key}=#{value.to_json}" } }&.join("\n"), class: "code-input", rows: 8, data: { config_target: "settings" }, placeholder: "provider_overrides.vipay.traffic_percentage=50" %></label>
-    <p class="hint">Все параметры доступны в YAML/JSON в разделе исходных данных или здесь: provider_overrides.NAME (traffic_percentage, volume_share_pct, priority, preferred_amount_min/max, conversion_24h, requests_per_minute_limit, daily_turnover_min/max); presets.NAME.policy_priorities — массив порядка факторов; routing.fallback_provider; simulation.minimum_samples; simulation.latency_method (mean/median); simulation.failure_expired_share — доля Expired среди неуспешных ответов. В custom: simulation.providers.NAME.approved_rate, rejected_rate, expired_rate (доли 0–1, сумма 1), average_latency_sec, latency_spread_sec. Только Approval: остаток делится согласно failure_expired_share. Настройки проверяются сервером.</p>
+    <p class="hint">Параметры можно задать загружаемым YAML/JSON или здесь: provider_overrides.NAME (traffic_percentage, volume_share_pct, priority, preferred_amount_min/max, conversion_24h, requests_per_minute_limit, daily_turnover_min/max); presets.NAME.policy_priorities — массив порядка факторов; routing.fallback_provider; simulation.minimum_samples; simulation.latency_method (mean/median); simulation.failure_expired_share — доля Expired среди неуспешных ответов. В custom: simulation.providers.NAME.approved_rate, rejected_rate, expired_rate (доли 0–1, сумма 1), average_latency_sec, latency_spread_sec. Только Approval: остаток делится согласно failure_expired_share. Настройки проверяются сервером.</p>
     <div class="weight-head"><label class="check"><%= check_box_tag :custom_weights, "1", params[:custom_weights] == "1" %><strong>Переопределить preset этими весами</strong></label><span>Σ <b data-config-target="sum">0</b></span></div>
     <div class="weight-grid">
       <% DuoRoute::Validation::InputValidator::POLICY_NAMES.each do |policy| %>
@@ -26,12 +26,12 @@
     <p class="alert alert--error" data-config-target="warning" hidden>Все policies выключены: сумма весов должна быть больше нуля.</p>
     <div class="formula">combined = Σ(normalized policy score × weight) / Σ(active weights)</div>
     <p class="hint">Веса применяются при включённом переопределении. Отсутствующее optional-поле отключает только свою policy. Tie-break: policy priority → provider priority → payment_system.</p>
-    <div class="toolbar"><button type="button" class="btn" data-action="config#save"><%= icon_label("Сохранить конфигурацию локально") %></button><button type="button" class="btn" data-action="config#restore"><%= icon_label("Восстановить") %></button><button type="button" class="btn" data-action="config#download"><%= icon_label("Скачать YAML") %></button></div>
+    <div class="toolbar"><button type="button" class="btn" data-action="config#download"><%= icon_label("Скачать YAML") %></button></div>
     </details>
   </section>
 
   <section class="card panel run-inputs">
-    <div class="section-head"><div><p class="step">02 · Данные</p><h2><%= icon_label("Входные данные") %></h2><p class="hint">Готовый пример: 10 операций, провайдеры и история уже заполнены. Загруженный файл заменяет соответствующее текстовое поле.</p></div></div>
+    <div class="section-head"><div><p class="step" aria-label="Шаг 2">02</p><h2><%= icon_label("Входные данные") %></h2><p class="hint">Эталонный пример: 10 операций, провайдеры и история. Исходные данные доступны только для чтения. Свои файлы можно загрузить отдельно для этого запуска.</p></div></div>
     <div class="form-grid form-grid--2">
       <label class="field"><span><%= icon_label("Название запуска") %></span><%= text_field_tag :name, params[:name], class: "input", placeholder: "Например, проверка распределения" %></label>
     </div>
@@ -44,13 +44,13 @@
       <label class="field"><span><%= icon_label("Scripted outcomes · optional") %></span><%= file_field_tag :outcomes_file, accept: ".json,application/json", class: "file" %></label>
     </div>
     </details>
-    <details class="manual" <%= "open" if @issues.present? %>><summary><%= icon_label("Просмотреть и редактировать исходные данные", "settings") %></summary>
+    <details class="manual" <%= "open" if @issues.present? %>><summary><%= icon_label("Просмотреть эталонные исходные данные", "settings") %></summary>
       <div class="form-grid form-grid--2">
-        <label class="field"><span><%= icon_label("providers.json") %></span><%= text_area_tag :providers_text, @defaults[:providers], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span><%= icon_label("operations.json") %></span><%= text_area_tag :operations_text, @defaults[:operations], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span><%= icon_label("routing config") %></span><%= text_area_tag :config_text, @defaults[:config], class: "code-input", rows: 12, spellcheck: false, data: { config_target: "config" } %></label>
-        <label class="field"><span><%= icon_label("history.csv · optional") %></span><%= text_area_tag :history_text, @defaults[:history], class: "code-input", rows: 12, spellcheck: false %></label>
-        <label class="field"><span><%= icon_label("outcomes.json · scripted only") %></span><%= text_area_tag :outcomes_text, @defaults[:outcomes], class: "code-input", rows: 10, spellcheck: false %></label>
+        <label class="field"><span><%= icon_label("providers.json") %></span><%= text_area_tag :providers_text, @defaults[:providers], class: "code-input", rows: 12, spellcheck: false, readonly: true %></label>
+        <label class="field"><span><%= icon_label("operations.json") %></span><%= text_area_tag :operations_text, @defaults[:operations], class: "code-input", rows: 12, spellcheck: false, readonly: true %></label>
+        <label class="field"><span><%= icon_label("routing config") %></span><%= text_area_tag :config_text, @defaults[:config], class: "code-input", rows: 12, spellcheck: false, readonly: true, data: { config_target: "config" } %></label>
+        <label class="field"><span><%= icon_label("history.csv · optional") %></span><%= text_area_tag :history_text, @defaults[:history], class: "code-input", rows: 12, spellcheck: false, readonly: true %></label>
+        <label class="field"><span><%= icon_label("outcomes.json · scripted only") %></span><%= text_area_tag :outcomes_text, @defaults[:outcomes], class: "code-input", rows: 10, spellcheck: false, readonly: true %></label>
       </div>
     </details>
   </section>

@@ -22,13 +22,23 @@ class AboutTest < ActionDispatch::IntegrationTest
   end
 
   test "documentation serves only allowlisted repository documents as escaped text" do
+    assert_equal %w[cli web criteria_compliance architecture algorithm], AboutController::DOCUMENTS.keys
     AboutController::DOCUMENTS.each do |name, (_title, path)|
       get product_document_path(name)
       assert_response :success
       assert_equal Rails.root.join(path).read, Nokogiri::HTML(response.body).at_css(".product-doc pre").text
     end
-    get product_document_path("credentials")
-    assert_response :not_found
+    %w[credentials readme formats final ../README.md %2e%2e%2fconfig/master.key].each do |name|
+      get product_document_path(name)
+      assert_response :not_found
+    end
+    get about_path
+    links = Nokogiri::HTML(response.body).css(".product-doc-links a").map { |link| link["href"] }
+    assert_equal AboutController::DOCUMENTS.keys.map { |name| product_document_path(name) }, links
+    Nokogiri::HTML(response.body).css('a[href^="/about/docs/"]').each do |link|
+      get link["href"]
+      assert_response :success
+    end
   end
 
   test "public JSON excerpts agree with a fresh scripted demo" do

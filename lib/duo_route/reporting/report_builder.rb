@@ -22,11 +22,15 @@ module DuoRoute
         turnover = turnover_status
         recommendation_details = RecommendationEngine.new(distribution:, volume_distribution: volumes,
           utilization:, provider_performance: performance, turnover:).call
+        exceptions = configuration_exceptions
+        exceptions.each do |exception|
+          recommendation_details << { "severity" => "warning", "provider" => exception["provider"], "evidence" => exception["explanation"], "rule_parameter" => exception["metric"], "proposed_action" => exception["recommendation"], "rationale" => "hard constraints имеют приоритет" }
+        end
         {
           "schema_version" => SCHEMA_VERSION,
           "period" => period,
           "total_operations" => @operations.length,
-          "total_amount" => number(@operations.sum { |operation| operation["amount"] }),
+          "total_amount" => number(Money.sum(@operations.map { |operation| operation["amount"] })),
           "distribution" => distribution,
           "volume_distribution" => volumes,
           "results" => @decisions.map { |decision| decision["simulated_result"] }.tally,
@@ -35,10 +39,12 @@ module DuoRoute
           "average_latency_sec" => average(@decisions.map { |decision| decision["latency_sec"] }),
           "skip_reasons" => skip_reasons,
           "provider_performance" => performance,
-          "projected_daily_utilization" => utilization.transform_values { |row| row.slice("daily_used", "daily_limit", "daily_utilization_pct") },
+          "projected_daily_utilization" => utilization.transform_values { |row| row.slice("daily_used", "daily_limit", "daily_utilization_pct").merge("used" => row["daily_used"], "limit" => row["daily_limit"], "utilization_pct" => row["daily_utilization_pct"]) },
           "capacity_utilization" => utilization,
           "turnover_commitments" => turnover,
-          "target_exceptions" => target_exceptions(distribution, volumes),
+          "daily_state_history" => @state.daily_history.merge(@state.day.iso8601 => @state.snapshot),
+          "daily_state_date" => @state.day.iso8601,
+          "target_exceptions" => target_exceptions(distribution, volumes) + exceptions,
           "history_analytics" => HistoryAnalyzer.new(@history).call,
           "recommendations" => recommendation_details.map { |item| "#{item['provider']}: #{item['proposed_action']} (#{item['evidence']})" },
           "recommendation_details" => recommendation_details,
@@ -59,11 +65,11 @@ module DuoRoute
       end
 
       def volume_distribution
-        total = @operations.sum { |operation| operation["amount"] }.to_f
-        amounts = Hash.new(0.0)
+        total = Money.sum(@operations.map { |operation| operation["amount"] })
+        amounts = Hash.new(BigDecimal("0"))
         @decisions.each do |decision|
           operation = @operations_by_id.fetch(decision["operation_id"])
-          amounts[decision["selected_provider"]] += operation["amount"]
+          amounts[decision["selected_provider"]] += Money.decimal(operation["amount"])
         end
         @providers.to_h do |provider|
           name = provider["payment_system"]
@@ -118,7 +124,7 @@ module DuoRoute
           min = provider["daily_turnover_min"]
           max = provider["daily_turnover_max"]
           status = if min && actual < min then "below_minimum" elsif max && actual > max then "above_maximum" else "within_commitment" end
-          [ provider["payment_system"], { "actual" => actual, "minimum" => min, "maximum" => max, "status" => status } ]
+          [ provider["payment_system"], { "actual" => actual, "minimum" => min, "maximum" => max, "status" => status, "hard_limit" => provider["daily_amount_limit"], "provider_status" => provider["status"] } ]
         end
       end
 
@@ -127,13 +133,40 @@ module DuoRoute
           next unless row["deviation_pp"].abs >= 10
           blockers = @decisions.flat_map { |decision| decision["attempts"] }.select { |attempt| attempt["provider"] == provider && attempt["decision"] == "skipped" }.map { |attempt| attempt["reason"] }.tally
           { "provider" => provider, "metric" => "count_share", "deviation_pp" => row["deviation_pp"],
-            "explanation" => blockers.empty? ? "weighted soft goals selected alternatives" : "hard/fallback events constrained target",
+            "explanation" => (blockers.keys & (ReasonCodes::HARD + %w[provider_rejected provider_expired provider_expired_status_rejected])).empty? ? "weighted soft goals selected alternatives" : "hard/fallback events constrained target",
             "evidence" => blockers }
         end + volumes.filter_map do |provider, row|
           next if row["deviation_pp"].nil? || row["deviation_pp"].abs < 10
           { "provider" => provider, "metric" => "volume_share", "deviation_pp" => row["deviation_pp"],
             "explanation" => "online projected scoring cannot guarantee an exact share on a short queue" }
         end
+      end
+
+      def configuration_exceptions
+        exceptions = []
+        external = @providers.reject { |provider| provider["payment_system"] == "spacepayments" }
+        volumes = external.filter_map { |provider| provider["volume_share_pct"] }
+        if volumes.any? && (volumes.sum - 100).abs > 0.001
+          exceptions << { "provider" => "external_pool", "metric" => "volume_share", "explanation" => "Сумма заданных volume_share_pct #{volumes.sum}%: полный набор целей не равен 100%", "recommendation" => "Согласовать доли объёма всех внешних провайдеров; автоматической нормализации нет" }
+        end
+        external.each do |provider|
+          name = provider["payment_system"]
+          if provider["status"] != "active" && provider["traffic_percentage"].positive?
+            exceptions << { "provider" => name, "metric" => "count_share", "explanation" => "Цель #{provider['traffic_percentage']}% назначена провайдеру со статусом #{provider['status']}", "recommendation" => "Восстановить доступность или согласовать перераспределение целевых долей" }
+          end
+          min, limit = provider.values_at("daily_turnover_min", "daily_amount_limit")
+          if min && limit && min > limit
+            exceptions << { "provider" => name, "metric" => "daily_turnover_min", "explanation" => "Минимальный оборот #{min} больше hard limit #{limit}", "recommendation" => "Согласовать меньший минимум или повышение дневного лимита" }
+          end
+          %w[daily_approved_amount in_progress_count in_progress_amount].each do |field|
+            limit_key = field == "daily_approved_amount" ? "daily_amount_limit" : "#{field}_limit"
+            limit = provider[limit_key]
+            if limit && provider[field] > limit
+              exceptions << { "provider" => name, "metric" => field, "explanation" => "Snapshot #{field}=#{provider[field]} уже выше #{limit_key}=#{limit}", "recommendation" => "Проверить исходный snapshot и дождаться освобождения ёмкости; счётчик не обнуляется автоматически" }
+            end
+          end
+        end
+        exceptions
       end
 
       def period
@@ -144,7 +177,7 @@ module DuoRoute
       def percentage(value, total) = total.to_f.zero? ? 0.0 : (value.to_f / total * 100).round(2)
       def average(values) = values.empty? ? 0.0 : (values.sum.to_f / values.length).round(2)
       def util(value, limit) = limit.nil? || limit.to_f.zero? ? nil : percentage(value, limit)
-      def number(value) = value.to_f == value.to_i ? value.to_i : value.to_f.round(2)
+      def number(value) = Money.number(value)
     end
   end
 end

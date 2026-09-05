@@ -6,8 +6,8 @@ module DuoRoute
       MAX_BYTES = 128 * 1024 * 1024
 
       class << self
-        def json_file(path)
-          parse_json(read(path), path)
+        def json_file(path, max_bytes: MAX_BYTES)
+          parse_json(read(path, max_bytes:), path)
         end
 
         def json_string(content, label: "input")
@@ -40,37 +40,64 @@ module DuoRoute
 
         private
 
-        def read(path)
+        def read(path, max_bytes: MAX_BYTES)
           raise InputError, [ issue(path, "file_not_found", "файл не найден") ] unless File.file?(path)
-          raise InputError, [ issue(path, "file_too_large", "файл больше #{MAX_BYTES} байт") ] if File.size(path) > MAX_BYTES
+          raise InputError, [ issue(path, "file_too_large", "файл больше #{MAX_BYTES} байт") ] if File.size(path) > max_bytes
 
-          File.read(path, encoding: "UTF-8")
-        rescue Encoding::InvalidByteSequenceError
+          content = File.read(path, max_bytes + 1, encoding: "UTF-8")
+          ensure_size!(content, path, max_bytes:)
+          content
+        rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
           raise InputError, [ issue(path, "invalid_encoding", "ожидается UTF-8") ]
         end
 
-        def ensure_size!(content, label)
-          raise InputError, [ issue(label, "file_too_large", "данные больше #{MAX_BYTES} байт") ] if content.bytesize > MAX_BYTES
+        def ensure_size!(content, label, max_bytes: MAX_BYTES)
+          raise InputError, [ issue(label, "invalid_encoding", "ожидается UTF-8") ] unless content.dup.force_encoding(Encoding::UTF_8).valid_encoding?
+          raise InputError, [ issue(label, "empty_file", "файл пуст") ] if content.strip.empty?
+          raise InputError, [ issue(label, "file_too_large", "данные больше #{MAX_BYTES} байт") ] if content.bytesize > max_bytes
         end
 
         def parse_json(content, label)
-          JSON.parse(content)
+          json_numbers(JSON.parse(content, decimal_class: BigDecimal), label)
         rescue JSON::ParserError => e
-          raise InputError, [ issue(label, "malformed_json", e.message) ]
+          raise InputError, [ issue(label, "malformed_json", "некорректный JSON") ]
+        end
+
+        def json_numbers(value, path)
+          case value
+          when BigDecimal
+            begin
+              Money.number(value)
+            rescue Error
+              raise InputError, [ issue(path, "unsupported_precision", "число нельзя точно представить текущим JSON-интерфейсом") ]
+            end
+          when Hash then value.transform_keys(&:to_s).to_h { |key, item| [ key, json_numbers(item, "#{path}.#{key}") ] }
+          when Array then value.map.with_index { |item, index| json_numbers(item, "#{path}[#{index}]") }
+          else value
+          end
         end
 
         def parse_yaml(content, label)
           value = YAML.safe_load(content, permitted_classes: [], permitted_symbols: [], aliases: false)
-          value || {}
+          value
         rescue Psych::Exception => e
           raise InputError, [ issue(label, "malformed_yaml", e.message) ]
         end
 
         def parse_csv(content, label)
-          CSV.parse(content, headers: true).map.with_index(2) do |row, line|
-            raise CSV::MalformedCSVError, "пустое имя столбца, строка #{line}" if row.headers.any?(&:nil?)
-
-            row.to_h.merge("_line" => line)
+          rows = CSV.parse(content)
+          headers = rows.shift
+          unless headers && headers.all? { |name| name.is_a?(String) && !name.strip.empty? } && headers.uniq == headers
+            raise InputError, [ issue(label, "invalid_csv_headers", "заголовки должны быть непустыми и уникальными") ]
+          end
+          required = %w[operation_id created_at amount bank payment_system status latency_sec]
+          missing = required - headers
+          raise InputError, [ issue(label, "missing_csv_headers", "отсутствуют столбцы: #{missing.join(', ')}") ] if missing.any?
+          rows.map.with_index(2) do |row, line|
+            unless row.length == headers.length
+              raise InputError, [ issue("#{label}[#{line}]", "csv_column_count", "ожидалось #{headers.length} столбцов, получено #{row.length}") ]
+            end
+            headers.zip(row).to_h.merge("_line" => line)
           end
         rescue CSV::MalformedCSVError => e
           raise InputError, [ issue(label, "malformed_csv", e.message) ]

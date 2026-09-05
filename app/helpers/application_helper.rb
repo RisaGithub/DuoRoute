@@ -9,7 +9,7 @@ module ApplicationHelper
 
   def policy_title(name)
     entry = DuoRoute::StrategyCatalog.all.values.find { |strategy| strategy["policies"].include?(name) }
-    entry ? entry["title"] : { "load_safe" => "Свободная загрузка", "economy" => "Маржинальный запас" }.fetch(name, name)
+    entry ? entry["title"] : { "load_safe" => "Свободная загрузка", "economy" => "Маржинальный запас", "latency" => "Задержка ответа" }.fetch(name, name)
   end
 
   def money(value)

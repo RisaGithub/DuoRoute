@@ -24,7 +24,7 @@ module DuoRoute
 
     def call(manifest: {})
       started = monotonic
-      state = State::Store.new(@providers)
+      state = State::Store.new(@providers, snapshot_at: @providers_data.fetch("snapshot_at"))
       decisions = @operations.map.with_index do |operation, index|
         @progress&.call(index, @operations.length, operation["operation_id"])
         route_operation(operation, state)
@@ -43,6 +43,7 @@ module DuoRoute
 
     def route_operation(operation, state)
       at = Time.iso8601(operation["created_at"])
+      state.advance(at)
       before = state.snapshot(at:)
       external = @providers.reject { |provider| [ @fallback_name, "spacepayments" ].include?(provider["payment_system"]) }
       fallback = @providers.find { |provider| provider["payment_system"] == @fallback_name }
@@ -92,7 +93,11 @@ module DuoRoute
         if outcome.result == "approved"
           state.commit(fallback["payment_system"], operation["amount"])
         elsif outcome.result == "expired" && @timeout_mode == "hold_until_status"
-          state.commit(fallback["payment_system"], operation["amount"]) if outcome.status_check_result == "approved"
+          if outcome.status_check_result == "approved"
+            state.commit(fallback["payment_system"], operation["amount"])
+          elsif outcome.status_check_result == "rejected"
+            state.rollback(fallback["payment_system"], operation["amount"])
+          end
         else
           state.rollback(fallback["payment_system"], operation["amount"])
         end
@@ -130,6 +135,9 @@ module DuoRoute
     def perform(provider, operation, state, attempt)
       state.reserve(provider["payment_system"], operation["amount"], Time.iso8601(operation["created_at"]))
       @simulator.call(operation:, provider:, attempt:)
+    rescue StandardError
+      state.rollback(provider["payment_system"], operation["amount"])
+      raise
     end
 
     def hard_failure_attempts(providers, evaluations)

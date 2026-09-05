@@ -82,7 +82,9 @@ module DuoRoute
       def call(provider:, **)
         value = provider["effective_conversion"] || provider["conversion_24h"]
         return nil if value.nil?
-        result(value, value, "ожидаемая конверсия #{(value * 100).round(1)}%")
+        raw = { "value" => value, "source" => provider["effective_conversion"] ? "calibrated_history" : "provider_snapshot",
+          "calibration" => provider["conversion_calibration"] }.compact
+        result(raw, value, "ожидаемая конверсия #{(value * 100).round(1)}%; #{raw['source']}")
       end
     end
 
@@ -139,9 +141,21 @@ module DuoRoute
       end
     end
 
+    class Latency < Base
+      def initialize = super("latency")
+      def call(provider:, context:, **)
+        latency = provider["avg_latency_sec"]
+        return nil if latency.nil?
+        values = context.fetch(:providers).filter_map { |item| item["avg_latency_sec"] }
+        maximum = values.max
+        result(latency, maximum.zero? ? 1 : 1 - latency.to_f / maximum,
+          "latency #{latency} с; максимум допустимого пула #{maximum} с")
+      end
+    end
+
     class Registry
       TYPES = [ CountShare, VolumeShare, Cascade, PreferredAmount, Conversion, LoadSafe,
-        Intensity, TurnoverCommitment, Economy ].to_h { |type| [ type.new.name, type ] }.freeze
+        Intensity, TurnoverCommitment, Economy, Latency ].to_h { |type| [ type.new.name, type ] }.freeze
 
       def build(names)
         names.filter_map { |name| TYPES[name]&.new }

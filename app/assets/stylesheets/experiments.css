@@ -37,6 +37,11 @@
 .strategy-row__editor[open] > summary { margin-bottom: 16px; }
 .strategy-row:target .strategy-row__editor > summary { color: var(--cyan); }
 .wizard .code-input { max-height: 300px; }
+.wizard > *, .wizard .manual { min-width: 0; }
+.wizard .section-head { flex-wrap: wrap; }
+.wizard .section-head > div:has(> .step) { row-gap: 8px; }
+.wizard .step { grid-row: 1; align-self: start; white-space: nowrap; }
+.wizard .hint, .wizard .selection-note { overflow-wrap: anywhere; }
 .wizard__actions { padding: 18px 20px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius); }
 @media (max-width: 1050px) { .choice-grid, .choice-grid--4 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width: 740px) { .choice-grid, .choice-grid--4, .generator-parameters { grid-template-columns: minmax(0,1fr); } .experiment-actions { flex-wrap: wrap; gap: 14px; } .experiment-actions > .btn, .experiment-actions .toolbar { width: 100%; } .experiment-actions .toolbar .btn { flex: 1 1 160px; } .generator-parameters { gap: 12px; } }

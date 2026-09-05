@@ -33,6 +33,8 @@ module DuoRoute
         end
         @turnover.each do |provider, row|
           next unless row["minimum"] && row["actual"] < row["minimum"]
+          next if row["provider_status"] && row["provider_status"] != "active"
+          next if row["hard_limit"] && row["minimum"] > row["hard_limit"]
           details << detail("info", provider, "дефицит #{(row['minimum'] - row['actual']).round(2)}",
             "daily_turnover_min", row["minimum"], "увеличить turnover_commitment weight", "минимальный оборот пока не достигнут")
         end

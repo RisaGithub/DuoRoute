@@ -29,7 +29,7 @@ module DuoRoute
     class AmountMinimum < Base
       def call(provider:, operation:, **)
         limit = provider["limit_amount_min"]
-        return pass("минимум не задан или соблюдён", actual: operation["amount"], threshold: limit) if limit.nil? || operation["amount"] >= limit
+        return pass("минимум не задан или соблюдён", actual: operation["amount"], threshold: limit) if limit.nil? || Money.decimal(operation["amount"]) >= Money.decimal(limit)
         fail("amount_below_minimum", "#{operation['amount']} < limit_amount_min #{limit}", actual: operation["amount"], threshold: limit)
       end
     end
@@ -37,7 +37,7 @@ module DuoRoute
     class AmountMaximum < Base
       def call(provider:, operation:, **)
         limit = provider["limit_amount_max"]
-        return pass("максимум не задан или соблюдён", actual: operation["amount"], threshold: limit) if limit.nil? || operation["amount"] <= limit
+        return pass("максимум не задан или соблюдён", actual: operation["amount"], threshold: limit) if limit.nil? || Money.decimal(operation["amount"]) <= Money.decimal(limit)
         fail("amount_exceeds_limit", "#{operation['amount']} > limit_amount_max #{limit}", actual: operation["amount"], threshold: limit)
       end
     end
@@ -45,8 +45,8 @@ module DuoRoute
     class DailyAmount < Base
       def call(provider:, operation:, state:, **)
         limit = provider["daily_amount_limit"]
-        projected = state.for(provider["payment_system"])["daily_approved_amount"] + operation["amount"]
-        return pass("дневной лимит не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= limit
+        projected = state.for(provider["payment_system"])["daily_approved_amount"] + Money.decimal(operation["amount"])
+        return pass("дневной лимит не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= Money.decimal(limit)
         fail("daily_amount_limit_exceeded", "projected daily #{projected} > #{limit}", actual: projected, threshold: limit)
       end
     end
@@ -55,7 +55,7 @@ module DuoRoute
       def call(provider:, state:, **)
         limit = provider["in_progress_count_limit"]
         projected = state.for(provider["payment_system"])["in_progress_count"] + 1
-        return pass("лимит in-progress count не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= limit
+        return pass("лимит in-progress count не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= Money.decimal(limit)
         fail("in_progress_count_limit_exceeded", "projected in-progress count #{projected} > #{limit}", actual: projected, threshold: limit)
       end
     end
@@ -63,8 +63,8 @@ module DuoRoute
     class InProgressAmount < Base
       def call(provider:, operation:, state:, **)
         limit = provider["in_progress_amount_limit"]
-        projected = state.for(provider["payment_system"])["in_progress_amount"] + operation["amount"]
-        return pass("лимит in-progress amount не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= limit
+        projected = state.for(provider["payment_system"])["in_progress_amount"] + Money.decimal(operation["amount"])
+        return pass("лимит in-progress amount не задан или соблюдён", actual: projected, threshold: limit) if limit.nil? || projected <= Money.decimal(limit)
         fail("in_progress_amount_limit_exceeded", "projected in-progress amount #{projected} > #{limit}", actual: projected, threshold: limit)
       end
     end
@@ -86,7 +86,7 @@ module DuoRoute
       def call(provider:, **)
         actual = provider["provider_margin_pct"]
         threshold = provider["merchant_margin_pct"]
-        return pass("маржинальное соглашение соблюдено", actual:, threshold:) if provider["allow_negative_agreement"] || actual <= threshold
+        return pass("маржинальное соглашение соблюдено", actual:, threshold:) if provider["allow_negative_agreement"] || Money.decimal(actual) <= Money.decimal(threshold)
         fail("negative_margin_not_allowed", "provider margin #{actual}% > merchant margin #{threshold}%", actual:, threshold:)
       end
     end

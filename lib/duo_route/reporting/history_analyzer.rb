@@ -13,7 +13,7 @@ module DuoRoute
           latencies = rows.filter_map { |row| Float(row["latency_sec"], exception: false) }
           {
             "operations" => rows.length,
-            "amount" => rows.sum { |row| row["amount"].to_f }.round(2),
+            "amount" => Money.number(Money.sum(rows.map { |row| row["amount"] })),
             "approved" => approved,
             "empirical_conversion" => rows.empty? ? 0 : (approved.to_f / rows.length).round(6),
             "average_latency_sec" => latencies.empty? ? 0 : (latencies.sum / latencies.length).round(2),
@@ -26,11 +26,13 @@ module DuoRoute
         analytics = call
         providers.map do |provider|
           stats = analytics[provider["payment_system"]]
-          next provider unless stats && stats["operations"] >= minimum_samples
-          n = stats["operations"]
+          n = stats ? stats["operations"] : 0
+          unless n >= minimum_samples
+            next provider.merge("conversion_calibration" => { "source" => "provider_snapshot", "snapshot" => provider["conversion_24h"], "samples" => n, "minimum_samples" => minimum_samples, "prior_strength" => prior_strength, "reason" => "history_below_minimum_samples" })
+          end
           blended = ((provider["conversion_24h"] * prior_strength) + (stats["empirical_conversion"] * n)) / (prior_strength + n)
           provider.merge("effective_conversion" => blended.round(6), "conversion_calibration" => {
-            "snapshot" => provider["conversion_24h"], "empirical" => stats["empirical_conversion"], "samples" => n,
+            "source" => "calibrated_history", "minimum_samples" => minimum_samples, "snapshot" => provider["conversion_24h"], "empirical" => stats["empirical_conversion"], "samples" => n,
             "prior_strength" => prior_strength
           })
         end

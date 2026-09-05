@@ -16,26 +16,24 @@ calibration:
 provider_overrides: {}
 presets:
   balanced:
+    weights:
+      count_share: 2
+      volume_share: 2
+      conversion: 4
+      load_safe: 2
+      intensity: 2
+      turnover_commitment: 2
+      latency: 1
+      economy: 0.5
     policy_priorities:
     - count_share
     - volume_share
-    - turnover_commitment
     - conversion
     - load_safe
-    - cascade
-    - preferred_amount
     - intensity
+    - turnover_commitment
+    - latency
     - economy
-    weights:
-      count_share: 2.0
-      volume_share: 1.8
-      cascade: 0.6
-      preferred_amount: 0.8
-      conversion: 1.2
-      load_safe: 1.3
-      intensity: 0.5
-      turnover_commitment: 1.4
-      economy: 0.7
   conversion_first:
     policy_priorities:
     - conversion

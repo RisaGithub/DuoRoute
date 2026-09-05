@@ -2,10 +2,11 @@
 
 class AboutController < ApplicationController
   DOCUMENTS = {
-    "readme" => [ "Руководство DuoRoute", "README.md" ],
-    "algorithm" => [ "Алгоритм маршрутизации", "docs/ALGORITHM.md" ],
-    "formats" => [ "Входные и выходные форматы", "docs/INPUT_OUTPUT.md" ],
-    "final" => [ "Финальная очередь", "docs/STOPCODE_CHECKLIST.md" ]
+    "cli" => [ "CLI", "docs/CLI.md" ],
+    "web" => [ "Web-интерфейс", "docs/WEB.md" ],
+    "criteria_compliance" => [ "Соответствие критериям", "docs/CRITERIA_COMPLIANCE.md" ],
+    "architecture" => [ "Архитектура", "docs/ARCHITECTURE.md" ],
+    "algorithm" => [ "Алгоритм", "docs/ALGORITHM.md" ]
   }.freeze
 
   def show

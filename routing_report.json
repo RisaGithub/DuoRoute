@@ -5,22 +5,22 @@
   "total_amount": 385800,
   "distribution": {
     "vipay": {
-      "count": 2,
-      "share_pct": 20.0,
+      "count": 1,
+      "share_pct": 10.0,
       "target_pct": 40.0,
-      "deviation_pp": -20.0
+      "deviation_pp": -30.0
     },
     "payflow": {
-      "count": 3,
-      "share_pct": 30.0,
+      "count": 1,
+      "share_pct": 10.0,
       "target_pct": 35.0,
-      "deviation_pp": -5.0
+      "deviation_pp": -25.0
     },
     "quickpay": {
-      "count": 4,
-      "share_pct": 40.0,
+      "count": 7,
+      "share_pct": 70.0,
       "target_pct": 25.0,
-      "deviation_pp": 15.0
+      "deviation_pp": 45.0
     },
     "spacepayments": {
       "count": 1,
@@ -31,22 +31,22 @@
   },
   "volume_distribution": {
     "vipay": {
-      "amount": 62000,
-      "share_pct": 16.07,
+      "amount": 52000,
+      "share_pct": 13.48,
       "target_pct": 50,
-      "deviation_pp": -33.93
+      "deviation_pp": -36.52
     },
     "payflow": {
-      "amount": 88800,
-      "share_pct": 23.02,
+      "amount": 800,
+      "share_pct": 0.21,
       "target_pct": 25,
-      "deviation_pp": -1.98
+      "deviation_pp": -24.79
     },
     "quickpay": {
-      "amount": 220000,
-      "share_pct": 57.02,
+      "amount": 318000,
+      "share_pct": 82.43,
       "target_pct": 25,
-      "deviation_pp": 32.02
+      "deviation_pp": 57.43
     },
     "spacepayments": {
       "amount": 15000,
@@ -71,34 +71,34 @@
   },
   "provider_performance": {
     "vipay": {
-      "attempts": 4,
-      "approved": 2,
-      "success_rate_pct": 50.0,
-      "average_latency_sec": 96.5,
+      "attempts": 3,
+      "approved": 1,
+      "success_rate_pct": 33.33,
+      "average_latency_sec": 120.67,
       "results": {
         "rejected": 1,
         "expired": 1,
-        "approved": 2
+        "approved": 1
       }
     },
     "payflow": {
-      "attempts": 4,
-      "approved": 3,
-      "success_rate_pct": 75.0,
-      "average_latency_sec": 25.75,
+      "attempts": 2,
+      "approved": 1,
+      "success_rate_pct": 50.0,
+      "average_latency_sec": 27.5,
       "results": {
         "rejected": 1,
-        "approved": 3
+        "approved": 1
       }
     },
     "quickpay": {
-      "attempts": 5,
-      "approved": 4,
-      "success_rate_pct": 80.0,
-      "average_latency_sec": 23.0,
+      "attempts": 8,
+      "approved": 7,
+      "success_rate_pct": 87.5,
+      "average_latency_sec": 23.38,
       "results": {
         "rejected": 1,
-        "approved": 4
+        "approved": 7
       }
     },
     "spacepayments": {
@@ -113,32 +113,44 @@
   },
   "projected_daily_utilization": {
     "vipay": {
-      "daily_used": 3262000,
+      "daily_used": 3252000,
       "daily_limit": 5000000,
-      "daily_utilization_pct": 65.24
+      "daily_utilization_pct": 65.04,
+      "used": 3252000,
+      "limit": 5000000,
+      "utilization_pct": 65.04
     },
     "payflow": {
-      "daily_used": 2988800,
+      "daily_used": 2900800,
       "daily_limit": 3000000,
-      "daily_utilization_pct": 99.63
+      "daily_utilization_pct": 96.69,
+      "used": 2900800,
+      "limit": 3000000,
+      "utilization_pct": 96.69
     },
     "quickpay": {
-      "daily_used": 1320000,
+      "daily_used": 1418000,
       "daily_limit": 8000000,
-      "daily_utilization_pct": 16.5
+      "daily_utilization_pct": 17.72,
+      "used": 1418000,
+      "limit": 8000000,
+      "utilization_pct": 17.72
     },
     "spacepayments": {
       "daily_used": 15000,
       "daily_limit": null,
-      "daily_utilization_pct": null
+      "daily_utilization_pct": null,
+      "used": 15000,
+      "limit": null,
+      "utilization_pct": null
     }
   },
   "capacity_utilization": {
     "vipay": {
       "daily_start": 3200000,
-      "daily_used": 3262000,
+      "daily_used": 3252000,
       "daily_limit": 5000000,
-      "daily_utilization_pct": 65.24,
+      "daily_utilization_pct": 65.04,
       "in_progress_count_start": 4,
       "in_progress_count_end": 4,
       "in_progress_count_limit": 10,
@@ -147,14 +159,14 @@
       "in_progress_amount_end": 380000,
       "in_progress_amount_limit": 1000000,
       "in_progress_amount_utilization_pct": 38.0,
-      "requests_last_minute": 1,
+      "requests_last_minute": 0,
       "rpm_limit": 7
     },
     "payflow": {
       "daily_start": 2900000,
-      "daily_used": 2988800,
+      "daily_used": 2900800,
       "daily_limit": 3000000,
-      "daily_utilization_pct": 99.63,
+      "daily_utilization_pct": 96.69,
       "in_progress_count_start": 2,
       "in_progress_count_end": 2,
       "in_progress_count_limit": 8,
@@ -163,14 +175,14 @@
       "in_progress_amount_end": 120000,
       "in_progress_amount_limit": 500000,
       "in_progress_amount_utilization_pct": 24.0,
-      "requests_last_minute": 1,
+      "requests_last_minute": 0,
       "rpm_limit": 15
     },
     "quickpay": {
       "daily_start": 1100000,
-      "daily_used": 1320000,
+      "daily_used": 1418000,
       "daily_limit": 8000000,
-      "daily_utilization_pct": 16.5,
+      "daily_utilization_pct": 17.72,
       "in_progress_count_start": 1,
       "in_progress_count_end": 1,
       "in_progress_count_limit": 15,
@@ -179,7 +191,7 @@
       "in_progress_amount_end": 50000,
       "in_progress_amount_limit": 2000000,
       "in_progress_amount_utilization_pct": 2.5,
-      "requests_last_minute": 0,
+      "requests_last_minute": 2,
       "rpm_limit": 20
     },
     "spacepayments": {
@@ -195,58 +207,108 @@
       "in_progress_amount_end": 0,
       "in_progress_amount_limit": null,
       "in_progress_amount_utilization_pct": null,
-      "requests_last_minute": 1,
+      "requests_last_minute": 0,
       "rpm_limit": null
     }
   },
   "turnover_commitments": {
     "vipay": {
-      "actual": 3262000,
+      "actual": 3252000,
       "minimum": null,
       "maximum": 5000000,
-      "status": "within_commitment"
+      "status": "within_commitment",
+      "hard_limit": 5000000,
+      "provider_status": "active"
     },
     "payflow": {
-      "actual": 2988800,
+      "actual": 2900800,
       "minimum": 2000000,
       "maximum": null,
-      "status": "within_commitment"
+      "status": "within_commitment",
+      "hard_limit": 3000000,
+      "provider_status": "active"
     },
     "quickpay": {
-      "actual": 1320000,
+      "actual": 1418000,
       "minimum": null,
       "maximum": null,
-      "status": "within_commitment"
+      "status": "within_commitment",
+      "hard_limit": 8000000,
+      "provider_status": "active"
     },
     "spacepayments": {
       "actual": 15000,
       "minimum": null,
       "maximum": null,
-      "status": "within_commitment"
+      "status": "within_commitment",
+      "hard_limit": null,
+      "provider_status": "active"
     }
   },
+  "daily_state_history": {
+    "2026-07-30": {
+      "vipay": {
+        "daily_approved_amount": 3252000,
+        "in_progress_count": 4,
+        "in_progress_amount": 380000,
+        "requests_last_minute": 0
+      },
+      "payflow": {
+        "daily_approved_amount": 2900800,
+        "in_progress_count": 2,
+        "in_progress_amount": 120000,
+        "requests_last_minute": 0
+      },
+      "quickpay": {
+        "daily_approved_amount": 1418000,
+        "in_progress_count": 1,
+        "in_progress_amount": 50000,
+        "requests_last_minute": 2
+      },
+      "spacepayments": {
+        "daily_approved_amount": 15000,
+        "in_progress_count": 0,
+        "in_progress_amount": 0,
+        "requests_last_minute": 0
+      }
+    }
+  },
+  "daily_state_date": "2026-07-30",
   "target_exceptions": [
     {
       "provider": "vipay",
       "metric": "count_share",
-      "deviation_pp": -20.0,
+      "deviation_pp": -30.0,
       "explanation": "hard/fallback events constrained target",
       "evidence": {
         "provider_rejected": 1,
         "bank_not_in_list": 4,
         "amount_exceeds_limit": 1,
         "provider_expired": 1,
-        "amount_below_minimum": 1
+        "amount_below_minimum": 1,
+        "lower_combined_score": 1
+      }
+    },
+    {
+      "provider": "payflow",
+      "metric": "count_share",
+      "deviation_pp": -25.0,
+      "explanation": "hard/fallback events constrained target",
+      "evidence": {
+        "provider_rejected": 1,
+        "lower_combined_score": 2,
+        "amount_exceeds_limit": 2,
+        "bank_not_in_list": 4
       }
     },
     {
       "provider": "quickpay",
       "metric": "count_share",
-      "deviation_pp": 15.0,
+      "deviation_pp": 45.0,
       "explanation": "hard/fallback events constrained target",
       "evidence": {
         "provider_rejected": 1,
-        "lower_combined_score": 4,
+        "lower_combined_score": 1,
         "amount_below_minimum": 1
       }
     },
@@ -260,20 +322,26 @@
     {
       "provider": "vipay",
       "metric": "volume_share",
-      "deviation_pp": -33.93,
+      "deviation_pp": -36.52,
+      "explanation": "online projected scoring cannot guarantee an exact share on a short queue"
+    },
+    {
+      "provider": "payflow",
+      "metric": "volume_share",
+      "deviation_pp": -24.79,
       "explanation": "online projected scoring cannot guarantee an exact share on a short queue"
     },
     {
       "provider": "quickpay",
       "metric": "volume_share",
-      "deviation_pp": 32.02,
+      "deviation_pp": 57.43,
       "explanation": "online projected scoring cannot guarantee an exact share on a short queue"
     }
   ],
   "history_analytics": {
     "vipay": {
       "operations": 41,
-      "amount": 1219000.0,
+      "amount": 1219000,
       "approved": 32,
       "empirical_conversion": 0.780488,
       "average_latency_sec": 87.29,
@@ -285,7 +353,7 @@
     },
     "quickpay": {
       "operations": 40,
-      "amount": 1885000.0,
+      "amount": 1885000,
       "approved": 27,
       "empirical_conversion": 0.675,
       "average_latency_sec": 129.98,
@@ -297,7 +365,7 @@
     },
     "payflow": {
       "operations": 19,
-      "amount": 287500.0,
+      "amount": 287500,
       "approved": 9,
       "empirical_conversion": 0.473684,
       "average_latency_sec": 278.05,
@@ -309,16 +377,17 @@
     }
   },
   "recommendations": [
-    "payflow: снизить вес/долю или поднять лимит после согласования (daily utilization 99.63%)",
-    "vipay: повысить count_share или устранить hard-исключения (count deviation -20.0 п.п.)",
-    "quickpay: снизить count_share/проверить недоступность альтернатив (count deviation 15.0 п.п.)",
-    "vipay: понизить effective conversion до проверки канала (success 50.0% на 4 попытках)"
+    "payflow: снизить вес/долю или поднять лимит после согласования (daily utilization 96.69%)",
+    "vipay: повысить count_share или устранить hard-исключения (count deviation -30.0 п.п.)",
+    "payflow: повысить count_share или устранить hard-исключения (count deviation -25.0 п.п.)",
+    "quickpay: снизить count_share/проверить недоступность альтернатив (count deviation 45.0 п.п.)",
+    "vipay: понизить effective conversion до проверки канала (success 33.33% на 3 попытках)"
   ],
   "recommendation_details": [
     {
       "severity": "warning",
       "provider": "payflow",
-      "evidence": "daily utilization 99.63%",
+      "evidence": "daily utilization 96.69%",
       "rule_parameter": "traffic_percentage",
       "current_value": 35.0,
       "proposed_action": "снизить вес/долю или поднять лимит после согласования",
@@ -327,35 +396,44 @@
     {
       "severity": "info",
       "provider": "vipay",
-      "evidence": "count deviation -20.0 п.п.",
+      "evidence": "count deviation -30.0 п.п.",
       "rule_parameter": "traffic_percentage",
       "current_value": 40.0,
       "proposed_action": "повысить count_share или устранить hard-исключения",
-      "rationale": "фактическая доля 20.0% заметно отличается от цели"
+      "rationale": "фактическая доля 10.0% заметно отличается от цели"
+    },
+    {
+      "severity": "info",
+      "provider": "payflow",
+      "evidence": "count deviation -25.0 п.п.",
+      "rule_parameter": "traffic_percentage",
+      "current_value": 35.0,
+      "proposed_action": "повысить count_share или устранить hard-исключения",
+      "rationale": "фактическая доля 10.0% заметно отличается от цели"
     },
     {
       "severity": "info",
       "provider": "quickpay",
-      "evidence": "count deviation 15.0 п.п.",
+      "evidence": "count deviation 45.0 п.п.",
       "rule_parameter": "traffic_percentage",
       "current_value": 25.0,
       "proposed_action": "снизить count_share/проверить недоступность альтернатив",
-      "rationale": "фактическая доля 40.0% заметно отличается от цели"
+      "rationale": "фактическая доля 70.0% заметно отличается от цели"
     },
     {
       "severity": "warning",
       "provider": "vipay",
-      "evidence": "success 50.0% на 4 попытках",
+      "evidence": "success 33.33% на 3 попытках",
       "rule_parameter": "conversion weight",
-      "current_value": 50.0,
+      "current_value": 33.33,
       "proposed_action": "понизить effective conversion до проверки канала",
       "rationale": "наблюдаемая успешность ниже 60%"
     }
   ],
   "reproducibility": {
-    "providers_sha256": "d5b5ebc61cb5a2599202be8765813337b49d75c3e7b2501501adf1330aa90e1e",
+    "providers_sha256": "01cf7dce518f527df95f5c251d45ff216240fd133ac1fd20ee3b6c8661ff8285",
     "operations_sha256": "a11ca7bdd1eb16dedf2b73d5042ab3da8aad7e37f0b9814722c40a797eeb2707",
-    "config_sha256": "8454de0ff38cb430e62d3c4f89189aed0ab99f70f46433a66a7524b1d130c060",
+    "config_sha256": "b138d2d55dcbe84a4507fb0a8b0af5426e7bba141b1953292ebae14eeadd147b",
     "history_sha256": "ab69a3ff6ea8bd410f1a5d89a1f5a6f3441aa0d75a8295c6ceea1c0637294391",
     "outcomes_sha256": "769a8b459f02a67cdba9d5b275c17b864c44c9a00d6a3047195ca1f872ee45a0",
     "resolved_configuration": {
@@ -406,28 +484,26 @@
       },
       "presets": {
         "balanced": {
+          "weights": {
+            "count_share": 2,
+            "volume_share": 2,
+            "conversion": 4,
+            "load_safe": 2,
+            "intensity": 2,
+            "turnover_commitment": 2,
+            "latency": 1,
+            "economy": 0.5
+          },
           "policy_priorities": [
             "count_share",
             "volume_share",
-            "turnover_commitment",
             "conversion",
             "load_safe",
-            "cascade",
-            "preferred_amount",
             "intensity",
+            "turnover_commitment",
+            "latency",
             "economy"
-          ],
-          "weights": {
-            "count_share": 2.0,
-            "volume_share": 1.8,
-            "cascade": 0.6,
-            "preferred_amount": 0.8,
-            "conversion": 1.2,
-            "load_safe": 1.3,
-            "intensity": 0.5,
-            "turnover_commitment": 1.4,
-            "economy": 0.7
-          }
+          ]
         },
         "conversion_first": {
           "policy_priorities": [
@@ -511,28 +587,26 @@
           ]
         },
         "custom": {
+          "weights": {
+            "count_share": 2,
+            "volume_share": 2,
+            "conversion": 4,
+            "load_safe": 2,
+            "intensity": 2,
+            "turnover_commitment": 2,
+            "latency": 1,
+            "economy": 0.5
+          },
           "policy_priorities": [
             "count_share",
             "volume_share",
-            "turnover_commitment",
             "conversion",
             "load_safe",
-            "cascade",
-            "preferred_amount",
             "intensity",
+            "turnover_commitment",
+            "latency",
             "economy"
-          ],
-          "weights": {
-            "count_share": 2.0,
-            "volume_share": 1.8,
-            "cascade": 0.6,
-            "preferred_amount": 0.8,
-            "conversion": 1.2,
-            "load_safe": 1.3,
-            "intensity": 0.5,
-            "turnover_commitment": 1.4,
-            "economy": 0.7
-          }
+          ]
         }
       },
       "resolved_strategy": "balanced",
@@ -557,28 +631,26 @@
         "provider_overrides": {},
         "presets": {
           "balanced": {
+            "weights": {
+              "count_share": 2,
+              "volume_share": 2,
+              "conversion": 4,
+              "load_safe": 2,
+              "intensity": 2,
+              "turnover_commitment": 2,
+              "latency": 1,
+              "economy": 0.5
+            },
             "policy_priorities": [
               "count_share",
               "volume_share",
-              "turnover_commitment",
               "conversion",
               "load_safe",
-              "cascade",
-              "preferred_amount",
               "intensity",
+              "turnover_commitment",
+              "latency",
               "economy"
-            ],
-            "weights": {
-              "count_share": 2.0,
-              "volume_share": 1.8,
-              "cascade": 0.6,
-              "preferred_amount": 0.8,
-              "conversion": 1.2,
-              "load_safe": 1.3,
-              "intensity": 0.5,
-              "turnover_commitment": 1.4,
-              "economy": 0.7
-            }
+            ]
           },
           "conversion_first": {
             "policy_priorities": [
@@ -662,28 +734,26 @@
             ]
           },
           "custom": {
+            "weights": {
+              "count_share": 2,
+              "volume_share": 2,
+              "conversion": 4,
+              "load_safe": 2,
+              "intensity": 2,
+              "turnover_commitment": 2,
+              "latency": 1,
+              "economy": 0.5
+            },
             "policy_priorities": [
               "count_share",
               "volume_share",
-              "turnover_commitment",
               "conversion",
               "load_safe",
-              "cascade",
-              "preferred_amount",
               "intensity",
+              "turnover_commitment",
+              "latency",
               "economy"
-            ],
-            "weights": {
-              "count_share": 2.0,
-              "volume_share": 1.8,
-              "cascade": 0.6,
-              "preferred_amount": 0.8,
-              "conversion": 1.2,
-              "load_safe": 1.3,
-              "intensity": 0.5,
-              "turnover_commitment": 1.4,
-              "economy": 0.7
-            }
+            ]
           }
         },
         "settings": []
@@ -724,11 +794,13 @@
         "seed": 42
       }
     },
+    "history_cutoff": "2026-07-30T09:00:00+03:00",
+    "excluded_future_history_rows": 0,
     "seed": 42,
     "schema_version": "1.0",
     "app_version": "1.0.0",
     "ruby_version": "3.4.10",
-    "duration_ms": 6.777,
+    "duration_ms": 6.12,
     "preset": "balanced",
     "timeout_mode": "fallback_on_timeout"
   },

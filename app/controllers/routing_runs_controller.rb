@@ -22,7 +22,7 @@ class RoutingRunsController < ApplicationController
     providers_text = input_content(:providers_file, :providers_text, default_inputs[:providers])
     operations_text = input_content(:operations_file, :operations_text, default_inputs[:operations])
     config_text = input_content(:config_file, :config_text, default_inputs[:config])
-    history_text = optional_content(:history_file, :history_text)
+    history_text = params.key?(:history_file) || params.key?(:history_text) ? optional_content(:history_file, :history_text) : default_inputs[:history]
     outcomes_text = optional_content(:outcomes_file, :outcomes_text)
     providers = DuoRoute::Input::Loader.json_string(providers_text, label: "providers upload")
     operations = DuoRoute::Input::Loader.json_string(operations_text, label: "operations upload")
@@ -54,7 +54,7 @@ class RoutingRunsController < ApplicationController
     RoutingRunJob.perform_later(run.id)
     redirect_to run_path(run)
   rescue DuoRoute::InputError => e
-    @defaults = { providers: providers_text, operations: operations_text, config: config_text, history: history_text, outcomes: outcomes_text }
+    @defaults = default_inputs
     set_weight_defaults
     @issues = e.issues
     render :new, status: :unprocessable_entity
@@ -119,7 +119,11 @@ class RoutingRunsController < ApplicationController
 
   def optional_content(file_key, text_key)
     upload = params[file_key]
-    return params[text_key].to_s if upload.blank?
+    if upload.blank?
+      content = params[text_key].to_s
+      raise DuoRoute::InputError, [ DuoRoute::ValidationIssue.new(path: text_key.to_s, code: "file_too_large", message: "лимит #{MAX_UPLOAD} байт") ] if content.bytesize > MAX_UPLOAD
+      return content
+    end
     raise DuoRoute::InputError, [ DuoRoute::ValidationIssue.new(path: file_key.to_s, code: "file_too_large", message: "лимит #{MAX_UPLOAD} байт") ] if upload.size > MAX_UPLOAD
     upload.read.force_encoding("UTF-8")
   end

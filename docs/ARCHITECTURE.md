@@ -1,36 +1,101 @@
 # Архитектура DuoRoute
 
-## Границы
+## Оглавление
 
-`lib/duo_route` — единственный источник бизнес-логики. Он использует Ruby stdlib/default gems (`json`, `csv`, `yaml`, `digest`, `time`), не знает об ActiveRecord, HTTP и Rails. На вход получает Ruby Hash/Array, на выходе возвращает `RunResult(decisions, report, manifest)`.
+- [Границы и поток данных](#boundaries)
+- [Компоненты](#components)
+- [Состояние и симулятор](#state)
+- [Хранение и запись](#persistence)
+- [Безопасность](#security)
+- [Структура каталогов](#structure)
 
-CLI (`DuoRoute::CLI::App`) только разбирает flags, загружает файлы, вызывает `Runner`, проверяет выход и атомарно записывает JSON. Rails-контроллеры только принимают данные, ограничивают upload и создают `RoutingRun`; `RoutingRunJob` вызывает тот же `Runner` и обновляет progress.
+<a id="boundaries"></a>
+## Границы и поток данных
 
-## Поток данных
+[lib/duo_route](../lib/duo_route) — независимое Ruby-ядро, единственный источник бизнес-логики. Оно использует стандартные библиотеки JSON, CSV, YAML, Digest, Time, BigDecimal; не зависит от Rails, HTTP и базы. Принимает Hash/Array и возвращает `RunResult(decisions, report, manifest)`.
 
-1. `Input::Loader` читает UTF-8 JSON/CSV или YAML через `YAML.safe_load`, ограничивает размер.
-2. `Validation::InputValidator` накапливает все нарушения с `path`, `code`, `message`.
-3. `Runner` применяет config overrides и, только при явном opt-in, history calibration.
-4. `Engine` сортирует операции по `created_at`, сохраняя исходный порядок равных timestamps.
-5. `Constraints::Registry` вызывает десять независимых hard checks и сохраняет полную матрицу.
-6. `Scorer` через `Policies::Registry` считает projected normalized scores и детерминированно ранжирует pool.
-7. `State::Store` ведёт daily/in-progress, финальные count/volume и sliding 60-second RPM.
-8. Simulator возвращает `Outcome`; engine выполняет commit/rollback/cascade/fallback.
-9. `ReportBuilder` и `RecommendationEngine` строят аналитику и предложения с числовым evidence.
-10. `OutputValidator` проверяет обязательный контракт до записи.
+```text
+providers + operations + config + history/outcomes
+  → Loader → Configuration → InputValidator
+  → Runner → Engine
+    → Constraints → Scorer → State → Simulator
+    → повторная попытка или резерв при отказе
+  → ReportBuilder + RecommendationEngine → OutputValidator
+  → CLI: JSON-файлы / Rails: запись запуска в SQLite
+```
 
-## Dependency injection
+`DuoRoute::CLI::App` разбирает параметры, читает входы, вызывает Runner и записывает результат. Rails-контроллеры принимают upload/text, проверяют размер и данные, создают RoutingRun. `RoutingRunJob` вызывает тот же Runner и сохраняет прогресс. Альтернативной маршрутизации в адаптерах нет.
 
-Engine принимает simulator, constraint registry, progress callback и clock. Scorer принимает registry policies. Это позволяет тестировать сценарии без сети, времени ожидания и случайного выбора маршрута.
+<a id="components"></a>
+## Компоненты ядра
 
-## Web persistence
+| Компонент | Ответственность |
+|---|---|
+| Input::Loader | Ограниченное чтение UTF-8 JSON/YAML/CSV |
+| Configuration, StrategyCatalog | Проверка настроек; каталог семи стратегий; объединение исходных значений, стратегии и изменений |
+| Validation::InputValidator | Все ошибки с path/code/message до расчёта |
+| Runner | Глубокая копия входов, изменения параметров, отсечение будущей истории, выбор симулятора, проверка результата |
+| Engine | Стабильная сортировка очереди; ограничения → оценка → попытки → результат |
+| Constraints::Registry | Десять обязательных проверок и полная матрица допуска |
+| Policies::Registry, Scorer | Формулы целей, веса, нормированная оценка и фиксированное правило равенства |
+| State::Store, Money | Резервы, точные суммы, число и объём итоговых маршрутов, дни, окно RPM |
+| Simulation::Profile, Seeded, Scripted | Профили ответов и времени, вероятностные либо точные результаты |
+| Reporting::ReportBuilder, HistoryAnalyzer | Распределение, успешность, лимиты, история и исключения целей |
+| Reporting::RecommendationEngine | Рекомендации по явным правилам с числовым основанием |
+| ReasonCodes, Reporting::OutputValidator | Допустимые причины; структура, покрытие и согласованность результатов |
+| Evaluation::DefaultStrategy | Отдельное сравнение кандидатов; его данные не участвуют в текущем выборе |
 
-Одна SQLite-таблица `routing_runs` хранит immutable input payloads, config, seed, status/progress и готовые artifacts. Ошибка нового run меняет только его строку. Старые результаты не перезаписываются. Active Job использует in-process `:async` adapter в development; Redis не нужен. Progress endpoint опрашивается Stimulus-контроллером.
+Новая обязательная проверка реализует `call(provider:, operation:, state:)` и регистрируется в `Constraints::Registry::DEFAULTS`. Новая политика возвращает `Policies::Score`, добавляется в `Policies::Registry::TYPES` и включается весом. Engine принимает реестр ограничений, симулятор, callback прогресса и часы; Scorer — реестр политик. Эти зависимости можно подменять в тестах.
 
-## Расширение
+<a id="state"></a>
+## Состояние и интерфейс симулятора
 
-Новая hard-проверка реализует `call(provider:, operation:, state:)` и добавляется в `Constraints::Registry::DEFAULTS`. Новая soft policy возвращает `Policies::Score`, регистрируется в `Policies::Registry::TYPES` и включается весом в config. Simulator должен реализовать `call(operation:, provider:, attempt:)`.
+Состояние принадлежит одному последовательному Engine, не разделяется между рабочими процессами. `reserve` занимает число/сумму in-progress и добавляет вызов в RPM. `commit` освобождает резерв и увеличивает одобренный оборот; `rollback` освобождает только собственный резерв. Повторный commit без reserve отклоняется; повторный rollback не уменьшает исходную занятость снимка.
 
-## Единые стратегии и конфигурация
+Смена суток UTC и дневные состояния сохраняются в daily_state_history. RPM использует окно 60 секунд. Денежные счётчики используют BigDecimal; Money проверяет отсутствие потери точности на границе числового JSON. Подробная временная модель и формулы — в [алгоритме](ALGORITHM.md#state).
 
-`StrategyCatalog` загружает и проверяет `config/routing/strategies.yml`. `Configuration` применяет общие настройки, параметры выбранной стратегии и пользовательские изменения. Web и CLI используют этот же объект перед `Runner`. Итоговый snapshot сохраняется в config_json и Manifest, включая seed; повторная обработка resolved-конфигурации не читает новые глобальные значения. `Simulation::Profile` вычисляет вероятности и параметры времени из истории, snapshot либо пользовательских значений. `Seeded` использует эти профили. `Scripted` обслуживает точные сценарии. Выбор run_id ограничен завершёнными запусками; данные других запусков не подмешиваются.
+Контракт симулятора: `call(operation:, provider:, attempt:)` возвращает `Simulation::Outcome(result, latency_sec, status_check_result)`. Profile один раз группирует завершённую историю до snapshot по провайдерам; Seeded получает повторяемые значения из хеша, Scripted — точные ответы. Реальных API провайдеров нет.
+
+<a id="persistence"></a>
+## Хранение Web и запись CLI
+
+SQLite-таблица `routing_runs` хранит входы, итоговую конфигурацию, seed, статус, прогресс и готовые результаты. Изменение настроек не пересчитывает завершённые записи. Задание условным UPDATE захватывает только queued-запись: повторная доставка не перезаписывает completed. В development используется Active Job `:async` в процессе сервера; прогресс опрашивает Stimulus. Аварийно прерванные задания автоматически не возобновляются.
+
+`strategy_settings` отдельно хранит параметры стратегий, изменённые в Web. `StrategySetting` применяет их в Rails-адаптере; CLI не читает эту таблицу. Сохранённая разрешённая конфигурация содержит уже применённые значения; повторное чтение не подмешивает новые глобальные настройки. Обзор и Провайдеры выбирают завершённый run_id, входы разных запусков не смешиваются.
+
+Manifest содержит параметры, seed, версии, SHA-256, источник симуляции и сведения об истории. Полное объяснение очереди хранится в памяти. Runner проверяет результат для обоих адаптеров; CLI дополнительно проверяет сериализованные временные JSON перед публикацией.
+
+Запись CLI: сериализация → временные файлы 0600 → flush/fsync → проверка JSON → резервные копии → rename под flock → очистка. При обычной ошибке прежний набор восстанавливается. Final проверяет свободное место и пишет служебные файлы в `tmp/final_audit`; два конкурсных имени фиксированы. Единой атомарной транзакции двух имён при SIGKILL/потере питания нет.
+
+<a id="security"></a>
+## Безопасность
+
+Loader ограничивает чтение 128 MiB, проверяет UTF-8, использует безопасный YAML без объектов и aliases. Rails ограничивает upload/text 10 MiB и фильтрует чувствительные параметры; интерфейс маскирует телефоны. `AboutController::DOCUMENTS` и выбор скачиваемого результата — закрытые списки, URL не преобразуется в произвольный путь.
+
+CLI запрещает пересечение входов и выходов, включая symlink/hardlink. Данные хранятся локально, ресурсы интерфейса поставляются в репозитории; сетевые вызовы не участвуют в маршрутизации. Пользовательской авторизации нет. Проверки и остаточные ограничения — в [соответствии критериям](CRITERIA_COMPLIANCE.md#security).
+
+<a id="structure"></a>
+## Структура каталогов
+
+```text
+lib/duo_route/          Runner, Engine, Money, Configuration
+  constraints/         обязательные проверки
+  policies/            формулы целей и реестр
+  state/               резервы, дни, окно RPM
+  simulation/          профили и ответы
+  reporting/           отчёт, рекомендации, проверка результата
+  validation/          проверка входных структур
+  input/               чтение JSON/YAML/CSV
+  cli/                 команды и безопасная запись
+  generators/          воспроизводимые сценарии
+  evaluation/          сравнение default-кандидатов
+app/                   Rails-контроллеры, модели, задание, интерфейс
+config/routing/        каталог, стандартная и финальная конфигурации
+data/examples/         публичные примеры
+storage/               локальные SQLite-базы
+docs/                  пять основных документов
+test/                  модульные и интеграционные проверки
+script/                валидатор, benchmark, проверка Markdown-ссылок
+```
+
+Пользовательские инструкции вынесены в [CLI](CLI.md) и [Web](WEB.md); свидетельства и замеры — в [критерии](CRITERIA_COMPLIANCE.md).

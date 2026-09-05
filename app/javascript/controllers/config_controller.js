@@ -29,16 +29,6 @@ export default class extends Controller {
     if (this.hasWarningTarget) this.warningTarget.hidden = sum > 0
   }
 
-  save(event) {
-    localStorage.setItem("duoroute-routing-config", this.configTarget.value)
-    event.currentTarget.querySelector(".icon-label__text").textContent = "Сохранено"
-  }
-
-  restore() {
-    const value = localStorage.getItem("duoroute-routing-config")
-    if (value) this.configTarget.value = value
-  }
-
   download() {
     const blob = new Blob([this.configTarget.value], { type: "application/yaml;charset=utf-8" })
     const url = URL.createObjectURL(blob)

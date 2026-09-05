@@ -92,6 +92,26 @@ class RoutingFlowTest < ActionDispatch::IntegrationTest
     assert_equal run.total, response.parsed_body.length
   end
 
+  test "duplicate job does not overwrite completed artifacts" do
+    post runs_path, params: { preset: "balanced", simulator_mode: "provider_snapshot", seed: 42 }
+    run = RoutingRun.order(:id).last
+    perform_enqueued_jobs
+    run.reload
+    assert_equal "completed", run.status
+    original = [ run.decisions_json, run.report_json, run.started_at ]
+    RoutingRunJob.perform_now(run.id)
+    run.reload
+    assert_equal original, [ run.decisions_json, run.report_json, run.started_at ]
+  end
+
+  test "oversized textarea is rejected before creating a run" do
+    assert_no_difference("RoutingRun.count") do
+      post runs_path, params: { providers_text: "x" * (RoutingRunsController::MAX_UPLOAD + 1) }
+    end
+    # Rack rejects oversized URL-encoded fields before the controller upload guard.
+    assert_response :bad_request
+  end
+
   test "invalid manual input renders all validator errors without creating run" do
     assert_no_difference("RoutingRun.count") do
       post runs_path, params: { preset: "balanced", timeout_mode: "fallback_on_timeout", simulator_mode: "seeded", seed: 42,
