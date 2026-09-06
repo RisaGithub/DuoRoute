@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute providers",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "type": "object",
+  "properties": {
+    "snapshot_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gateway": {
+      "type": "string",
+      "minLength": 1
+    },
+    "merchant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "traffic_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "limit_amount_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "limit_amount_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_amount_limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_approved_amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "in_progress_count_limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "in_progress_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "in_progress_amount_limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "in_progress_amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "available_requisites": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "conversion_24h": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "avg_latency_sec": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_margin_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "merchant_margin_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requests_per_minute_limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "volume_share_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "daily_turnover_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_turnover_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preferred_amount_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preferred_amount_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "payment_system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "banks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "exclude_banks": {
+            "type": "boolean"
+          },
+          "allow_negative_agreement": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "payment_system",
+          "status",
+          "traffic_percentage",
+          "daily_approved_amount",
+          "in_progress_count",
+          "in_progress_amount",
+          "available_requisites",
+          "conversion_24h",
+          "banks",
+          "exclude_banks",
+          "provider_margin_pct",
+          "merchant_margin_pct",
+          "allow_negative_agreement"
+        ],
+        "additionalProperties": true
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "snapshot_at",
+    "gateway",
+    "merchant",
+    "providers"
+  ],
+  "additionalProperties": true
+}

@@ -14,7 +14,7 @@ history = Array.new(history_count) do |i|
 end
 config = DuoRoute::Input::Loader.config_file(File.expand_path("../config/routing/default.yml", __dir__))
 started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-result = DuoRoute::Runner.new(providers_data: bundle["providers"], operations: bundle["operations"], history:, config:, seed: 42).call
+result = DuoRoute::Runner.new(providers_data: bundle["providers"], operations: bundle["operations"], history:, config:, seed: 42, audit_level: ENV.fetch("AUDIT_LEVEL", "submission")).call
 elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
 
 # Independent numerical invariants, checked for every actual external attempt.
@@ -59,5 +59,6 @@ rss, = Open3.capture2("ps", "-o", "rss=", "-p", Process.pid.to_s)
 puts DuoRoute.pretty_json("operations" => count, "external_providers" => providers_count, "history_rows" => history_count,
   "seconds" => elapsed.round(3), "operations_per_second" => (count / elapsed).round(2), "rss_after_kib" => rss.to_i,
   "rpm_100000_seconds" => rpm_elapsed.round(3), "invariant_checks" => checks, "seed" => 42,
+  "audit_level" => ENV.fetch("AUDIT_LEVEL", "submission"), "decisions_json_bytes" => 2 + [ result.decisions.size - 1, 0 ].max + result.decisions.sum { |row| JSON.generate(row).bytesize },
   "ruby" => RUBY_DESCRIPTION, "cpu" => cpu.strip, "ram_bytes" => ram.to_i,
   "daily_state_dates" => result.report["daily_state_history"].keys, "note" => "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately")

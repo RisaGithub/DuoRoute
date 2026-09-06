@@ -22,6 +22,24 @@ module DuoRoute
         turnover = turnover_status
         recommendation_details = RecommendationEngine.new(distribution:, volume_distribution: volumes,
           utilization:, provider_performance: performance, turnover:).call
+        feasibility = GoalFeasibility.call(providers: @providers, operations: @operations, decisions: @decisions,
+          fallback: @manifest.dig("resolved_configuration", "routing", "fallback_provider") || "spacepayments")
+        feasibility.each do |name, observed|
+          next unless observed["status"] == "not_reachable_on_observed_path"
+          next if recommendation_details.any? { |detail| detail["provider"] == name }
+          recommendation_details << { "severity" => "warning", "provider" => name, "evidence" => "цель #{observed['target_count_share_pct']}%, наблюдаемый допуск #{observed['observed_upper_share_pct']}%",
+            "rule_parameter" => "traffic_percentage", "current_value" => observed["target_count_share_pct"],
+            "rationale" => "цель выше наблюдаемого допуска" }
+        end
+        recommendation_details.each do |detail|
+          observed = feasibility[detail["provider"]]
+          next unless observed
+          detail["observed_eligibility"] = observed.slice("eligible_operations", "eligible_amount", "observed_upper_share_pct", "blocking_constraints", "status")
+          if observed["status"] == "not_reachable_on_observed_path"
+            detail["proposed_action"] = "Проверить блокирующие ограничения #{observed['blocking_constraints'].keys.join(', ')} и согласовать доступную долю; увеличение веса само по себе не устранит запрет"
+            detail["evidence"] += "; #{observed['explanation']}"
+          end
+        end
         exceptions = configuration_exceptions
         exceptions.each do |exception|
           recommendation_details << { "severity" => "warning", "provider" => exception["provider"], "evidence" => exception["explanation"], "rule_parameter" => exception["metric"], "proposed_action" => exception["recommendation"], "rationale" => "hard constraints имеют приоритет" }
@@ -31,6 +49,7 @@ module DuoRoute
           "period" => period,
           "total_operations" => @operations.length,
           "total_amount" => number(Money.sum(@operations.map { |operation| operation["amount"] })),
+          "goal_feasibility" => feasibility,
           "distribution" => distribution,
           "volume_distribution" => volumes,
           "results" => @decisions.map { |decision| decision["simulated_result"] }.tally,

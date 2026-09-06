@@ -12,12 +12,15 @@ class StrategySetting < ApplicationRecord
     entries
   end
 
-  def self.apply(config, strategy)
+  def self.apply(config, strategy, provider_names: nil)
     entries = catalog
     defaults = if %w[balanced custom].include?(strategy)
       entries.values.reduce({}) { |result, entry| DuoRoute::Configuration.merge(result, entry.fetch("parameters")) }
     else
       entries.dig(strategy, "parameters") || {}
+    end
+    if provider_names && defaults["provider_overrides"]
+      defaults = defaults.merge("provider_overrides" => defaults["provider_overrides"].slice(*provider_names))
     end
     DuoRoute::Configuration.merge(defaults, config)
   end

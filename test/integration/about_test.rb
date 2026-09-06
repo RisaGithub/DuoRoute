@@ -18,7 +18,9 @@ class AboutTest < ActionDispatch::IntegrationTest
     document.css('.product a[href^="#"]').each do |link|
       assert document.at_css("[id='#{link['href'].delete_prefix('#')}']"), "Missing anchor: #{link['href']}"
     end
-    assert_select "[data-controller=clipboard]", count: 5
+    assert_select "[data-controller=clipboard]", count: 8
+    assert_select "#three-minutes", text: /bin\/router readiness/
+    assert_select "#three-minutes a[href=?]", compare_strategies_path
   end
 
   test "documentation serves only allowlisted repository documents as escaped text" do

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-05T15:11:16Z",
+  "checked_at": "2026-09-05T18:02:53Z",
   "pages": {
     "/": 200,
     "/runs": 200,
@@ -10,9 +10,9 @@
     "/about": 200,
     "/strategies/compare": 200,
     "/up": 200,
+    "/about/docs/criteria_compliance": 200,
     "/about/docs/cli": 200,
     "/about/docs/web": 200,
-    "/about/docs/criteria_compliance": 200,
     "/about/docs/architecture": 200,
     "/about/docs/algorithm": 200,
     "/analytics": 404,
@@ -22,13 +22,13 @@
     "/about/docs/final": 404,
     "/about/docs/readme": 404,
     "/about/docs/%2e%2e%2fconfig%2fmaster.key": 404,
-    "/runs/10": 200,
-    "/runs/10/operations/op_101": 200
+    "/runs/13": 200,
+    "/runs/13/operations/op_101": 200
   },
   "documents_match_source": true,
   "assets": [
     {
-      "url": "/assets/application-47141e27.css",
+      "url": "/assets/application-d0de9abc.css",
       "status": 200,
       "source": "app/assets/stylesheets/application.css",
       "source_matches": true
@@ -125,5 +125,5 @@
     }
   ],
   "precompiled_manifest": false,
-  "browser": "unavailable; browser discovery returned []"
+  "browser": "local Playwright Chromium verified desktop/mobile; see VISUAL_QA.json and VISUAL_QA_EDGE.json"
 }

@@ -245,3 +245,46 @@ bin/router route --providers providers.json --operations operations.json \
 | `file_too_large` | CLI: 128 MiB; Web: 10 MiB на поле/файл |
 | Недостаточно места / пересечение путей / блокировка | Освободить место, выбрать отдельные выходы, дождаться другого писателя |
 | Нет операции в `explain` | Проверить ID и файл decisions нужного запуска |
+
+
+<a id="readiness"></a>
+## Проверка готовности и репетиция
+
+```bash
+bin/router readiness
+bin/router readiness --full
+bin/router rehearse-final
+bin/router rehearse-final --operations data/operations_queue_10.json \
+  --providers data/providers.json --history data/operations_history.csv
+```
+
+Обычный readiness занимает около секунды на проверенной машине: Ruby 3.4.10, обязательные файлы, config, семь стратегий, providers/history, два demo во временном каталоге, внутренний и независимый аудит, публичный валидатор, шесть схем, Markdown-ссылки, отсутствие преждевременных финальных файлов и Git без содержимого файлов. Изменённое рабочее дерево разрешено; конфликты Git запрещены. `READY` означает exit 0, `NOT READY` — exit 2 со списком причин. Это режим **до получения финальной очереди**: наличие любого из трёх финальных файлов считается проблемой.
+
+`--full` добавляет Rails tests, RuboCop, Brakeman, локальный bundler-audit без обновления базы и Zeitwerk. Сеть не нужна; тесты могут изменять тестовую SQLite, кэш и логи. Assets и benchmark остаются отдельными явными проверками, чтобы команда не меняла выдачу работающего сервера.
+
+Rehearsal копирует только указанную очередь в `Dir.mktmpdir`, присваивает ей там конкурсное имя, дважды вызывает `CLI::App final` с временным root и теми же опциями. Внутренний и независимый валидаторы проверяют временные результаты; decisions совпадают побайтово, report — после исключения только `reproducibility.duration_ms`. Весь временный каталог удаляется и при ошибке. В корне проекта `_test`-файлы не создаются.
+
+Публичный валидатор запускается только на совпадающих публичных queue/providers. На вероятностном final seed 42 он сообщает один конфликт: op_108 может перейти к spacepayments после отказа quickpay, хотя эталон требует quickpay. Этот результат показывается явно и не отменяет независимое доказательство допустимого каскада. Для другой очереди public validator помечается N/A. Скрипт организаторов не изменяется; seed не подбирается.
+
+<a id="independent-audit"></a>
+## Независимый аудит и схемы
+
+```bash
+ruby script/audit_submission.rb \
+  --providers data/providers.json --operations data/operations_queue_10.json \
+  --decisions routing_decisions.json --report routing_report.json
+ruby script/check_schemas.rb schemas/routing_decisions.schema.json routing_decisions.json
+bin/router feasibility --report routing_report.json
+```
+
+Аудитор — отдельный stdlib Ruby-скрипт без Rails, базы, Engine и проектных валидаторов. Он не пишет файлы. Проверяет корни JSON, повторные JSON-ключи/ID, покрытие и порядок, провайдеров, enum, попытки и selected, latency, fallback, десять ограничений, дневной оборот, in-progress, RPM, UTC-дни, commit/rollback и сводку отчёта. Проверяет доступные state_before/state_after, дневную историю и числовые поля goal_feasibility. Ошибка: `AUDIT FAIL`, exit 2; полный успех в объявленной области: `AUDIT PASS`, exit 0.
+
+`--config routing_report.json.config.json` закрепляет **разрешённую JSON-конфигурацию**, а не исходный YAML с неполными настройками. Без этой опции конфигурация берётся из Manifest; контрольные суммы подтверждают согласованность, но не аутентичность. Сокращённые decisions должны сохранить result/latency/status_check_result фактических attempts для восстановления состояния. Исторический RPM, реальные внешние завершения, истинность ответов, оптимальность score и произвольные секреты внутри текста доказать по результату нельзя. Проверка чувствительных имён полей эвристическая, без вывода значений.
+
+`final`, включая dry-run, запускает независимый аудит **на staged-файлах до rename**; провал сохраняет прежнюю пару. Самостоятельная команда полезна для проверки скачанных или вручную перенесённых файлов. Формальные [схемы](../schemas) описывают структуру; межполевые условия и состояние требуют семантических валидаторов. `check_schemas.rb` поддерживает только используемые в репозитории ключевые слова схем и отклоняет неизвестные; это не универсальная реализация стандарта.
+
+## Детализация аудита
+
+`route --audit-level full|submission|compact`; final по умолчанию использует `submission`, обычные CLI/Web — `full`. Алгоритм выбора общий. Full сохраняет все проверки и вклад каждого кандидата. Submission сохраняет attempts со всеми причинами, все hard failures, eligibility, краткий ranking, выбранный score_breakdown и state до/после; успешные checks не повторяются, simulation profiles хранятся в report/Manifest. Compact дополнительно опускает снимки состояния отдельных операций. `audit_level` указан в Manifest. Для подробного финального аудита можно явно выбрать `--audit-level full`; автоматической второй полной копии нет.
+
+`evaluate-default` теперь выполняет прежние 258 и дополнительные 2 064 диагностических прогона; занимает несколько минут. Команда обновляет только артефакт исследования, **не меняет веса config** и не читает финальную очередь.

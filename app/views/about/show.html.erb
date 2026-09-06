@@ -23,6 +23,23 @@
     </div>
   </section>
 
+  <section class="product-section" id="three-minutes">
+    <h2>Проверить за 3 минуты</h2>
+    <p>Локальная проверка готовности: входные данные, воспроизводимость, независимый аудит и публичный валидатор.</p>
+    <%= render "command", label: "Проверка готовности", command: "bin/router readiness" %>
+    <%= render "command", label: "Публичный пример", command: "bin/router demo --seed 42" %>
+    <%= render "command", label: "Репетиция финала без файлов в проекте", command: "bin/router rehearse-final" %>
+    <% if @demo_run %>
+      <p><%= link_to "Демонстрационный запуск", run_path(@demo_run) %>
+      <% if @hard_operation %> · <%= link_to "Исключения по ограничениям", operation_run_path(@demo_run, operation_id: @hard_operation["operation_id"]) %><% end %>
+      <% if @cascade_operation %> · <%= link_to "Каскад / резерв", operation_run_path(@demo_run, operation_id: @cascade_operation["operation_id"]) %><% end %></p>
+    <% else %>
+      <p>Готового запуска пока нет. <%= link_to "Создать запуск из подставленного публичного примера →", new_run_path %></p>
+    <% end %>
+    <p><%= link_to "Сравнение семи стратегий", compare_strategies_path %> · <%= link_to "Критерии, результаты тестов и ограничения", product_document_path("criteria_compliance") %></p>
+    <p>Ответы моделируются. Точная доля не гарантируется; наблюдаемый допуск не доказывает оптимальность. Настоящая финальная очередь ещё не получена.</p>
+  </section>
+
   <nav class="product-index" aria-label="Разделы о продукте"><a href="#how-it-works">01 / Процесс</a><a href="#interfaces">02 / CLI и Web</a><a href="#policies">03 / Стратегии</a><a href="#decision">04 / Решение</a><a href="#architecture">05 / Архитектура</a></nav>
 
   <section id="how-it-works" class="product-section">

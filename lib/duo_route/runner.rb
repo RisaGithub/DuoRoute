@@ -5,7 +5,8 @@ module DuoRoute
     attr_reader :providers_data, :operations, :config, :history
 
     def initialize(providers_data:, operations:, config:, history: [], preset: "balanced", seed: nil,
-      outcomes: nil, progress: nil, settings: [])
+      outcomes: nil, progress: nil, settings: [], audit_level: "full")
+      @audit_level = audit_level
       @raw_providers_data = deep_copy(providers_data)
       @operations = deep_copy(operations)
       @config = Configuration.resolve(config, strategy: preset, settings:)
@@ -59,8 +60,9 @@ module DuoRoute
         "excluded_future_history_rows" => history.length - @usable_history.length,
         "seed" => @seed
       }.compact
-      result = Engine.new(providers_data:, operations:, config:, preset: @preset, simulator:, history: @usable_history, progress: @progress).call(manifest:)
+      result = Engine.new(providers_data:, operations:, config:, preset: @preset, simulator:, history: @usable_history, progress: @progress, audit_level: @audit_level).call(manifest:)
       result.decisions.each do |decision|
+        next unless @audit_level == "full"
         decision["simulation"] = @simulation.profiles.fetch(decision["selected_provider"])
         decision["attempts"].each { |attempt| attempt["simulation"] = @simulation.profiles[attempt["provider"]] if attempt.key?("result") }
       end
@@ -78,7 +80,7 @@ module DuoRoute
     def validate_outcomes!
       Configuration.fail!("outcomes", "ожидается объект") unless @outcomes.is_a?(Hash)
       scripted = Simulation::Scripted.new(outcomes: @outcomes.fetch("outcomes", @outcomes), fallback: @outcomes["default"])
-      Engine.new(providers_data:, operations:, config:, preset: @preset, simulator: scripted, history:).call
+      Engine.new(providers_data:, operations:, config:, preset: @preset, simulator: scripted, history:, audit_level: @audit_level).call
     rescue Error, KeyError, ArgumentError, TypeError, NoMethodError => e
       Configuration.fail!("outcomes", e.message)
     end

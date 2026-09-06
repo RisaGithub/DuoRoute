@@ -25,6 +25,9 @@ module DuoRoute
         when "route" then route
         when "demo" then demo
         when "final" then final
+        when "rehearse-final" then rehearse_final
+        when "readiness" then readiness
+        when "feasibility" then feasibility
         when "generate" then generate
         when "compare" then compare
         when "explain" then explain
@@ -54,6 +57,9 @@ module DuoRoute
             route     выполнить роутинг и записать decisions/report
             demo      создать routing_decisions.json и routing_report.json на public queue
             final     строго создать в корне routing_*_test.json только из operations_queue_test.json
+            rehearse-final  репетиция настоящего final во временном каталоге
+            readiness  локальная проверка готовности (--full для расширенной)
+            feasibility --report PATH  наблюдаемая достижимость целей
             evaluate-default  сравнить кандидаты на фиксированных сценариях и seed
             generate  сгенерировать воспроизводимый набор данных
             compare   сравнить presets на одном исходном snapshot
@@ -106,6 +112,7 @@ module DuoRoute
           opts.on("--timeout-mode MODE") { |value| options[:settings] << "routing.timeout_mode=#{value}" }
           opts.on("--set PATH=VALUE", "повторяемое изменение YAML/JSON параметра") { |value| options[:settings] << value }
           opts.on("--seed N", Integer, "simulation seed") { |value| options[:seed] = value }
+          opts.on("--audit-level LEVEL", %w[full submission compact], "full|submission|compact") { |value| options[:audit_level] = value }
           opts.on("--quiet", "suppress progress summary") { options[:quiet] = true }
           opts.on("-h", "--help") { @out.puts opts; throw :help, :help }
         end
@@ -142,7 +149,7 @@ module DuoRoute
 
       def final
         options, parser = common_options(providers: File.join(@root, "data/providers.json"),
-          operations: File.join(@root, "operations_queue_test.json"), config: File.join(@root, "config/routing/final.yml"), quiet: false, final: true, history: nil)
+          operations: File.join(@root, "operations_queue_test.json"), config: File.join(@root, "config/routing/final.yml"), quiet: false, final: true, history: nil, audit_level: "submission")
         parser.on("--dry-run", "расчёт и проверки без записи финальных файлов") { options[:dry_run] = true }
         parser.on("--explain-summary", "источники симуляции, конфликты и рекомендации") { options[:explain_summary] = true }
         return 0 if catch(:help) { parse_options!(parser); nil } == :help
@@ -173,7 +180,7 @@ module DuoRoute
         operation_ids = runner.operations.map { |item| item["operation_id"] }
         validate_outputs!(result, operation_ids:)
         if options[:explain_summary]
-          @out.puts DuoRoute.pretty_json(result.report.slice("simulation", "target_exceptions", "recommendations"))
+          @out.puts DuoRoute.pretty_json(result.report.slice("simulation", "target_exceptions", "recommendations", "goal_feasibility"))
         end
         if options[:dry_run]
           # Exercise serialization and disk validation in a disposable directory too.
@@ -185,6 +192,7 @@ module DuoRoute
         end
         write_result(options, result)
         @out.puts "Итог: #{operation_ids.length} операций; approval #{result.report['approval_rate_pct']}%; fallback #{result.report['fallback_rate_pct']}%; latency #{result.report['average_latency_sec']} с" unless options[:quiet]
+        result.report.fetch("goal_feasibility", {}).each { |name, row| @out.puts "Цель #{name}: #{row['explanation']}" } unless options[:quiet]
         @out.puts "Готово: #{options[:decisions]}, #{options[:report]}" unless options[:quiet]
         0
       end
@@ -250,7 +258,7 @@ module DuoRoute
         Runner.new(providers_data: Input::Loader.json_file(options[:providers]), operations: build_operations(options),
           history: options[:history] ? Input::Loader.csv_file(options[:history]) : [], config: Input::Loader.config_file(options[:config]),
           outcomes: use_outcomes ? Input::Loader.json_file(options[:outcomes]) : nil,
-          preset: options[:preset], seed: options[:seed], settings: options[:settings], progress:)
+          preset: options[:preset], seed: options[:seed], settings: options[:settings], progress:, audit_level: options[:audit_level] || "full")
       end
 
       def build_operations(options) = Input::Loader.json_file(options[:operations])
@@ -301,6 +309,11 @@ module DuoRoute
           atomic_artifacts(artifacts) do |temps|
             staged = RunResult.new(decisions: Input::Loader.json_file(temps[0][1], max_bytes: artifacts[0][1].bytesize), report: Input::Loader.json_file(temps[1][1], max_bytes: artifacts[1][1].bytesize), manifest: result.manifest)
             validate_outputs!(staged, operation_ids: result.decisions.map { |row| row["operation_id"] })
+            if options[:final]
+              run_check!("independent final audit", RbConfig.ruby, File.join(ROOT, "script/audit_submission.rb"),
+                "--providers", options[:providers], "--operations", options[:operations],
+                "--decisions", temps[0][1], "--report", temps[1][1], "--config", temps[2][1])
+            end
           end
         end
       end
@@ -331,6 +344,7 @@ module DuoRoute
       def evaluate_default
         raise Error, "evaluate-default не принимает параметры" unless @argv.empty?
         report = Evaluation::DefaultStrategy.new.call
+        report["robustness"] = Evaluation::Robustness.new.call
         path = File.join(@root, "artifacts/verification/default_strategy_evaluation.json")
         atomic_write(path, DuoRoute.pretty_json(report))
         @out.puts "Оценка: #{path}; выбран #{report['selected_candidate']}"

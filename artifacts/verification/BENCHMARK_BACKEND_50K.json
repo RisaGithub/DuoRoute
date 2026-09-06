@@ -2,12 +2,14 @@
   "operations": 50000,
   "external_providers": 4,
   "history_rows": 100000,
-  "seconds": 15.801,
-  "operations_per_second": 3164.4,
-  "rss_after_kib": 1686832,
-  "rpm_100000_seconds": 0.382,
+  "seconds": 10.995,
+  "operations_per_second": 4547.43,
+  "rss_after_kib": 865392,
+  "rpm_100000_seconds": 0.386,
   "invariant_checks": 1452664,
   "seed": 42,
+  "audit_level": "submission",
+  "decisions_json_bytes": 166603774,
   "ruby": "ruby 3.4.10 (2026-06-30 revision 2b0b7728dc) +PRISM [arm64-darwin25]",
   "cpu": "Apple M4",
   "ram_bytes": 17179869184,
@@ -15,7 +17,5 @@
     "2026-07-30",
     "2026-07-31"
   ],
-  "note": "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately",
-  "peak_rss_bytes": 1727512576,
-  "measured_on": "2026-09-05"
+  "note": "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately"
 }

@@ -19,6 +19,7 @@
       </section>
     <% end %>
   </div>
+  <%= render "shared/goal_feasibility", report: report %>
   <% if report.fetch("recommendations", []).any? %>
     <section class="report-summary__recommendations"><h2><%= icon_label("Рекомендации", "bulb") %></h2><ul><% report["recommendations"].each do |item| %><li><%= item %></li><% end %></ul></section>
   <% end %>

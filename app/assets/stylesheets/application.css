@@ -149,7 +149,8 @@ tbody tr:hover td { background: rgba(255,255,255,.018); }
 @keyframes shimmer { to { background-position: -240% 0; } }
 .insights { display: grid; gap: 14px; }
 .insight { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 11px; }
-.insight strong { font-size: 12px; }
+.insight strong { font-size: 12px; overflow-wrap: anywhere; }
+.insight > div { min-width: 0; }
 .insight p { margin: 3px 0 0; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; }
 .kv { display: grid; grid-template-columns: minmax(130px, .8fr) minmax(0, 1.2fr); margin: 0; }
 .kv dt, .kv dd { margin: 0; padding: 8px 0; border-bottom: 1px solid var(--line); }
@@ -162,12 +163,12 @@ tbody tr:hover td { background: rgba(255,255,255,.018); }
 .score-orbit strong { font: 600 25px/1 var(--mono); }
 .score-orbit span { color: var(--quiet); font-size: 9px; text-transform: uppercase; }
 .timeline { position: relative; display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
-.timeline__item { position: relative; min-height: 73px; display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
+.timeline__item { position: relative; min-height: 73px; display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; }
 .timeline__item::before { content: ""; position: absolute; left: 5px; top: 16px; bottom: -3px; width: 1px; background: var(--line-strong); }
 .timeline__item:last-child::before { display: none; }
 .timeline__dot { z-index: 1; width: 11px; height: 11px; margin-top: 4px; border: 2px solid var(--quiet); border-radius: 50%; background: var(--surface); }
 .timeline__item--selected .timeline__dot { border-color: var(--teal); box-shadow: 0 0 12px rgba(45,212,191,.5); }
-.timeline__item strong { margin-right: 8px; font-family: var(--mono); }
+.timeline__item strong { margin-right: 8px; font-family: var(--mono); overflow-wrap: anywhere; }
 .timeline__item p { margin: 5px 0 0; overflow-wrap: anywhere; color: var(--muted); font-size: 11px; }
 .timeline__item small { color: var(--quiet); }
 .waterfall { display: grid; gap: 14px; }

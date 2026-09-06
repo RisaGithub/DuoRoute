@@ -1,0 +1,26 @@
+{
+  "operations": 1000,
+  "decision_retained_bytes": 88627920,
+  "fields_retained_bytes": {
+    "operation_id": 48040,
+    "selected_provider": 8480,
+    "attempts": 5093080,
+    "simulated_result": 8120,
+    "latency_sec": 8040,
+    "strategy": 8120,
+    "score": 8040,
+    "score_breakdown": 2649320,
+    "eligible_pool": 168480,
+    "ranking": 31130120,
+    "constraint_matrix": 43283640,
+    "conflicts": 369360,
+    "tie_break_rule": 8200,
+    "state_before": 4281240,
+    "state_after": 4281240,
+    "fallback_used": 8040,
+    "decision_time_ms": 8040,
+    "simulation": 15104
+  },
+  "json_bytes": 56646275,
+  "note": "ObjectSpace retained size; fields overlap through shared objects; not peak RSS."
+}

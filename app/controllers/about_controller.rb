@@ -11,6 +11,12 @@ class AboutController < ApplicationController
 
   def show
     @strategies = DuoRoute::StrategyCatalog.all
+    @demo_run = RoutingRun.where(status: "completed").where(name: "Публичный пример").recent.first || RoutingRun.where(status: "completed").recent.first
+    if @demo_run
+      decisions = @demo_run.decisions
+      @hard_operation = decisions.find { |row| row.fetch("attempts", []).any? { |a| DuoRoute::ReasonCodes::HARD.include?(a["reason"]) } }
+      @cascade_operation = decisions.find { |row| row["fallback_used"] || row.fetch("attempts", []).count { |a| a.key?("result") } > 1 }
+    end
   end
 
   def document

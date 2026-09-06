@@ -1,0 +1,12 @@
+<% if report.fetch("goal_feasibility", {}).any? %>
+  <section class="report-summary__recommendations">
+    <h2>Достижимость целей</h2>
+    <p>Допуск измерен по состоянию перед каждой операцией. Это наблюдаемый предел, а не математический максимум при другом распределении.</p>
+    <div class="table-wrap"><table><thead><tr><th>Провайдер</th><th>Цель</th><th>Факт</th><th>Допущено</th><th>Сумма допуска</th><th>Предел доли</th></tr></thead><tbody>
+      <% report["goal_feasibility"].each do |name, row| %>
+        <tr><td><%= name %></td><td><%= pct(row["target_count_share_pct"]) %></td><td><%= pct(row["actual_count_share_pct"]) %></td><td><%= row["eligible_operations"] %></td><td><%= money(row["eligible_amount"]) %></td><td><%= pct(row["observed_upper_share_pct"]) %></td></tr>
+      <% end %>
+    </tbody></table></div>
+    <ul><% report["goal_feasibility"].each do |name, row| %><li><strong><%= name %>:</strong> <%= row["explanation"] %></li><% end %></ul>
+  </section>
+<% end %>

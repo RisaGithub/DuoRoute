@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute routing_report",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "type": "object",
+  "properties": {
+    "period": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total_operations": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "share_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "target_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "deviation_pp": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "count",
+          "share_pct",
+          "target_pct",
+          "deviation_pp"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "volume_distribution": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "share_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "target_pct": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deviation_pp": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "amount",
+          "share_pct",
+          "target_pct",
+          "deviation_pp"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "skip_reasons": {
+      "type": "object"
+    },
+    "projected_daily_utilization": {
+      "type": "object"
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "recommendation_details": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 0
+    },
+    "reproducibility": {
+      "type": "object"
+    },
+    "approval_rate_pct": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fallback_rate_pct": {
+      "type": "number",
+      "minimum": 0
+    },
+    "average_latency_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "goal_feasibility": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "period",
+    "total_operations",
+    "total_amount",
+    "distribution",
+    "volume_distribution",
+    "results",
+    "skip_reasons",
+    "projected_daily_utilization",
+    "recommendations",
+    "recommendation_details",
+    "reproducibility",
+    "approval_rate_pct",
+    "fallback_rate_pct",
+    "average_latency_sec"
+  ],
+  "additionalProperties": true
+}

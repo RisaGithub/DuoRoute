@@ -3,6 +3,54 @@
   "period": "2026-07-30",
   "total_operations": 10,
   "total_amount": 385800,
+  "goal_feasibility": {
+    "vipay": {
+      "target_count_share_pct": 40.0,
+      "actual_count_share_pct": 10.0,
+      "eligible_operations": 4,
+      "eligible_amount": 102000,
+      "blocking_constraints": {
+        "bank_not_in_list": 4,
+        "amount_below_minimum": 1,
+        "amount_exceeds_limit": 1
+      },
+      "observed_upper_share_pct": 40.0,
+      "status": "not_ruled_out",
+      "target_reachable_on_observed_path": null,
+      "explanation": "Наблюдаемый допуск не исключает цель; отклонение связано с ответами провайдеров, конкурирующими целями и дискретностью очереди. Совместная достижимость не доказана.",
+      "bound_scope": "Observed eligibility, not a mathematical maximum over counterfactual routes."
+    },
+    "payflow": {
+      "target_count_share_pct": 35.0,
+      "actual_count_share_pct": 10.0,
+      "eligible_operations": 4,
+      "eligible_amount": 103800,
+      "blocking_constraints": {
+        "bank_not_in_list": 4,
+        "amount_exceeds_limit": 2,
+        "daily_amount_limit_exceeded": 1
+      },
+      "observed_upper_share_pct": 40.0,
+      "status": "not_ruled_out",
+      "target_reachable_on_observed_path": null,
+      "explanation": "Наблюдаемый допуск не исключает цель; отклонение связано с ответами провайдеров, конкурирующими целями и дискретностью очереди. Совместная достижимость не доказана.",
+      "bound_scope": "Observed eligibility, not a mathematical maximum over counterfactual routes."
+    },
+    "quickpay": {
+      "target_count_share_pct": 25.0,
+      "actual_count_share_pct": 70.0,
+      "eligible_operations": 9,
+      "eligible_amount": 385000,
+      "blocking_constraints": {
+        "amount_below_minimum": 1
+      },
+      "observed_upper_share_pct": 90.0,
+      "status": "not_ruled_out",
+      "target_reachable_on_observed_path": null,
+      "explanation": "Наблюдаемый допуск не исключает цель; отклонение связано с ответами провайдеров, конкурирующими целями и дискретностью очереди. Совместная достижимость не доказана.",
+      "bound_scope": "Observed eligibility, not a mathematical maximum over counterfactual routes."
+    }
+  },
   "distribution": {
     "vipay": {
       "count": 1,
@@ -391,7 +439,18 @@
       "rule_parameter": "traffic_percentage",
       "current_value": 35.0,
       "proposed_action": "снизить вес/долю или поднять лимит после согласования",
-      "rationale": "при текущем запасе новые операции могут перейти в fallback"
+      "rationale": "при текущем запасе новые операции могут перейти в fallback",
+      "observed_eligibility": {
+        "eligible_operations": 4,
+        "eligible_amount": 103800,
+        "observed_upper_share_pct": 40.0,
+        "blocking_constraints": {
+          "bank_not_in_list": 4,
+          "amount_exceeds_limit": 2,
+          "daily_amount_limit_exceeded": 1
+        },
+        "status": "not_ruled_out"
+      }
     },
     {
       "severity": "info",
@@ -400,7 +459,18 @@
       "rule_parameter": "traffic_percentage",
       "current_value": 40.0,
       "proposed_action": "повысить count_share или устранить hard-исключения",
-      "rationale": "фактическая доля 10.0% заметно отличается от цели"
+      "rationale": "фактическая доля 10.0% заметно отличается от цели",
+      "observed_eligibility": {
+        "eligible_operations": 4,
+        "eligible_amount": 102000,
+        "observed_upper_share_pct": 40.0,
+        "blocking_constraints": {
+          "bank_not_in_list": 4,
+          "amount_below_minimum": 1,
+          "amount_exceeds_limit": 1
+        },
+        "status": "not_ruled_out"
+      }
     },
     {
       "severity": "info",
@@ -409,7 +479,18 @@
       "rule_parameter": "traffic_percentage",
       "current_value": 35.0,
       "proposed_action": "повысить count_share или устранить hard-исключения",
-      "rationale": "фактическая доля 10.0% заметно отличается от цели"
+      "rationale": "фактическая доля 10.0% заметно отличается от цели",
+      "observed_eligibility": {
+        "eligible_operations": 4,
+        "eligible_amount": 103800,
+        "observed_upper_share_pct": 40.0,
+        "blocking_constraints": {
+          "bank_not_in_list": 4,
+          "amount_exceeds_limit": 2,
+          "daily_amount_limit_exceeded": 1
+        },
+        "status": "not_ruled_out"
+      }
     },
     {
       "severity": "info",
@@ -418,7 +499,16 @@
       "rule_parameter": "traffic_percentage",
       "current_value": 25.0,
       "proposed_action": "снизить count_share/проверить недоступность альтернатив",
-      "rationale": "фактическая доля 70.0% заметно отличается от цели"
+      "rationale": "фактическая доля 70.0% заметно отличается от цели",
+      "observed_eligibility": {
+        "eligible_operations": 9,
+        "eligible_amount": 385000,
+        "observed_upper_share_pct": 90.0,
+        "blocking_constraints": {
+          "amount_below_minimum": 1
+        },
+        "status": "not_ruled_out"
+      }
     },
     {
       "severity": "warning",
@@ -427,7 +517,18 @@
       "rule_parameter": "conversion weight",
       "current_value": 33.33,
       "proposed_action": "понизить effective conversion до проверки канала",
-      "rationale": "наблюдаемая успешность ниже 60%"
+      "rationale": "наблюдаемая успешность ниже 60%",
+      "observed_eligibility": {
+        "eligible_operations": 4,
+        "eligible_amount": 102000,
+        "observed_upper_share_pct": 40.0,
+        "blocking_constraints": {
+          "bank_not_in_list": 4,
+          "amount_below_minimum": 1,
+          "amount_exceeds_limit": 1
+        },
+        "status": "not_ruled_out"
+      }
     }
   ],
   "reproducibility": {
@@ -800,9 +901,10 @@
     "schema_version": "1.0",
     "app_version": "1.0.0",
     "ruby_version": "3.4.10",
-    "duration_ms": 6.12,
+    "duration_ms": 11.852,
     "preset": "balanced",
-    "timeout_mode": "fallback_on_timeout"
+    "timeout_mode": "fallback_on_timeout",
+    "audit_level": "full"
   },
   "simulation": {
     "vipay": {

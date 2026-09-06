@@ -27,7 +27,8 @@ class RoutingRunsController < ApplicationController
     providers = DuoRoute::Input::Loader.json_string(providers_text, label: "providers upload")
     operations = DuoRoute::Input::Loader.json_string(operations_text, label: "operations upload")
     DuoRoute::Configuration.fail!("strategy", "неизвестная стратегия") unless RoutingRun::PRESETS.include?(params[:preset])
-    config = StrategySetting.apply(parse_config(config_text), params[:preset])
+    provider_names = (providers.is_a?(Hash) ? Array(providers["providers"]) : []).filter_map { |provider| provider["payment_system"] if provider.is_a?(Hash) }
+    config = StrategySetting.apply(parse_config(config_text), params[:preset], provider_names:)
     config = DuoRoute::Configuration.resolve(config, strategy: params[:preset].presence || "balanced", settings: params[:settings].to_s.lines.map(&:strip).reject(&:empty?))
     apply_policy_weights!(config)
     outcomes = outcomes_text.present? ? DuoRoute::Input::Loader.json_string(outcomes_text, label: "outcomes upload") : nil

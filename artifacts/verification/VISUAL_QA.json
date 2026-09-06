@@ -1,0 +1,853 @@
+{
+  "run": "/runs/13",
+  "operation": "/runs/13/operations/op_101",
+  "provider": "/providers/vipay?run_id=13",
+  "rows": [
+    {
+      "name": "dashboard",
+      "path": "/",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "about",
+      "path": "/about",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "runs",
+      "path": "/runs",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "new-run",
+      "path": "/runs/new",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "run-detail",
+      "path": "/runs/13",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "operation-detail",
+      "path": "/runs/13/operations/op_101",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "providers",
+      "path": "/providers",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "provider-detail",
+      "path": "/providers/vipay?run_id=13",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "strategies",
+      "path": "/strategies",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "strategy-comparison",
+      "path": "/strategies/compare",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "generator",
+      "path": "/generator",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "validation-error",
+      "path": "/runs",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "dialog",
+      "path": "/runs/13",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "copy-command",
+      "path": "/about",
+      "size": "desktop",
+      "viewport": 1440,
+      "width": 1425,
+      "overflow": []
+    },
+    {
+      "name": "dashboard",
+      "path": "/",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "about",
+      "path": "/about",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "runs",
+      "path": "/runs",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "new-run",
+      "path": "/runs/new",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "run-detail",
+      "path": "/runs/13",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "operation-detail",
+      "path": "/runs/13/operations/op_101",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "providers",
+      "path": "/providers",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "provider-detail",
+      "path": "/providers/vipay?run_id=13",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "strategies",
+      "path": "/strategies",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "strategy-comparison",
+      "path": "/strategies/compare",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "generator",
+      "path": "/generator",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "validation-error",
+      "path": "/runs",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "path": "/runs/13",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link nav__link--active"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    },
+    {
+      "name": "copy-command",
+      "path": "/about",
+      "size": "mobile",
+      "viewport": 390,
+      "width": 375,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        },
+        {
+          "tag": "svg",
+          "cls": {}
+        },
+        {
+          "tag": "path",
+          "cls": {}
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label__text"
+        },
+        {
+          "tag": "A",
+          "cls": "nav__link"
+        },
+        {
+          "tag": "SPAN",
+          "cls": "icon-label"
+        }
+      ]
+    }
+  ],
+  "page_errors": [],
+  "scope": "Live local Chromium, desktop 1440x900 and mobile 390x844. Screenshots require human visual inspection.",
+  "screenshots": [
+    "desktop-about.png",
+    "desktop-copy-command.png",
+    "desktop-dashboard.png",
+    "desktop-dialog.png",
+    "desktop-empty-about.png",
+    "desktop-empty-dashboard.png",
+    "desktop-empty-runs.png",
+    "desktop-generator.png",
+    "desktop-long-operation.png",
+    "desktop-long-providers.png",
+    "desktop-long-run.png",
+    "desktop-new-run.png",
+    "desktop-operation-detail.png",
+    "desktop-provider-detail.png",
+    "desktop-providers.png",
+    "desktop-run-detail.png",
+    "desktop-runs.png",
+    "desktop-strategies.png",
+    "desktop-strategy-comparison.png",
+    "desktop-validation-error.png",
+    "mobile-about.png",
+    "mobile-copy-command.png",
+    "mobile-dashboard.png",
+    "mobile-dialog.png",
+    "mobile-empty-about.png",
+    "mobile-empty-dashboard.png",
+    "mobile-empty-runs.png",
+    "mobile-feasibility.png",
+    "mobile-generator.png",
+    "mobile-long-operation.png",
+    "mobile-long-providers.png",
+    "mobile-long-run.png",
+    "mobile-long-timeline.png",
+    "mobile-new-run.png",
+    "mobile-operation-detail.png",
+    "mobile-provider-detail.png",
+    "mobile-providers.png",
+    "mobile-run-detail.png",
+    "mobile-runs.png",
+    "mobile-strategies.png",
+    "mobile-strategy-comparison.png",
+    "mobile-three-minutes.png",
+    "mobile-validation-error.png"
+  ],
+  "visual_review": "Contact sheets and full-resolution focused fragments inspected. Latest captures include the current public scripted demo and wrapped feasibility explanations."
+}

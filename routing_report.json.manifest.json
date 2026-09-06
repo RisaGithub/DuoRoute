@@ -368,7 +368,8 @@
   "schema_version": "1.0",
   "app_version": "1.0.0",
   "ruby_version": "3.4.10",
-  "duration_ms": 6.12,
+  "duration_ms": 11.852,
   "preset": "balanced",
-  "timeout_mode": "fallback_on_timeout"
+  "timeout_mode": "fallback_on_timeout",
+  "audit_level": "full"
 }

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute outcomes",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "default": {
+          "anyOf": [
+            {
+              "enum": [
+                "approved",
+                "rejected",
+                "expired"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "enum": [
+                    "approved",
+                    "rejected",
+                    "expired"
+                  ]
+                },
+                "latency_sec": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "status_check_result": {
+                  "enum": [
+                    "approved",
+                    "rejected",
+                    null
+                  ]
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "additionalProperties": true
+            }
+          ]
+        },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "approved",
+                      "rejected",
+                      "expired"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "result": {
+                        "enum": [
+                          "approved",
+                          "rejected",
+                          "expired"
+                        ]
+                      },
+                      "latency_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "status_check_result": {
+                        "enum": [
+                          "approved",
+                          "rejected",
+                          null
+                        ]
+                      }
+                    },
+                    "required": [
+                      "result"
+                    ],
+                    "additionalProperties": true
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "approved",
+                        "rejected",
+                        "expired"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "enum": [
+                            "approved",
+                            "rejected",
+                            "expired"
+                          ]
+                        },
+                        "latency_sec": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "status_check_result": {
+                          "enum": [
+                            "approved",
+                            "rejected",
+                            null
+                          ]
+                        }
+                      },
+                      "required": [
+                        "result"
+                      ],
+                      "additionalProperties": true
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "outcomes"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "anyOf": [
+              {
+                "enum": [
+                  "approved",
+                  "rejected",
+                  "expired"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "result": {
+                    "enum": [
+                      "approved",
+                      "rejected",
+                      "expired"
+                    ]
+                  },
+                  "latency_sec": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "status_check_result": {
+                    "enum": [
+                      "approved",
+                      "rejected",
+                      null
+                    ]
+                  }
+                },
+                "required": [
+                  "result"
+                ],
+                "additionalProperties": true
+              }
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "approved",
+                    "rejected",
+                    "expired"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "enum": [
+                        "approved",
+                        "rejected",
+                        "expired"
+                      ]
+                    },
+                    "latency_sec": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "status_check_result": {
+                      "enum": [
+                        "approved",
+                        "rejected",
+                        null
+                      ]
+                    }
+                  },
+                  "required": [
+                    "result"
+                  ],
+                  "additionalProperties": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

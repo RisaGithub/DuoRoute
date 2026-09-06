@@ -25,6 +25,7 @@ require_relative "duo_route/simulation/seeded"
 require_relative "duo_route/simulation/scripted"
 require_relative "duo_route/reporting/history_analyzer"
 require_relative "duo_route/reporting/recommendation_engine"
+require_relative "duo_route/reporting/goal_feasibility"
 require_relative "duo_route/reporting/report_builder"
 require_relative "duo_route/reporting/output_validator"
 require_relative "duo_route/generators/scenario"
@@ -34,12 +35,31 @@ require_relative "duo_route/configuration"
 require_relative "duo_route/simulation/profile"
 require_relative "duo_route/runner"
 require_relative "duo_route/evaluation/default_strategy"
+require_relative "duo_route/evaluation/robustness"
 require_relative "duo_route/cli/app"
+require_relative "duo_route/cli/readiness"
 
 module DuoRoute
+  DecimalLiteral = Data.define(:text) do
+    def to_json(*) = text
+  end
+
   module_function
 
   def pretty_json(value)
-    JSON.pretty_generate(value, allow_nan: false) + "\n"
+    JSON.pretty_generate(json_decimal_literals(value), allow_nan: false) + "\n"
+  end
+
+  # JSON 2.21 may emit 7.6645200000000004 for Float 7.66452. Preserve the
+  # decimal representation validated by Money instead of introducing a tail.
+  def json_decimal_literals(value)
+    case value
+    when Float
+      raise Error, "JSON number must be finite" unless value.finite?
+      DecimalLiteral.new(value.to_s)
+    when Hash then value.transform_values { |item| json_decimal_literals(item) }
+    when Array then value.map { |item| json_decimal_literals(item) }
+    else value
+    end
   end
 end

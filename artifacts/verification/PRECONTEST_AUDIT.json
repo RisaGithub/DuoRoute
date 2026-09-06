@@ -1,0 +1,106 @@
+{
+  "checked_at": "2026-09-05T18:06:00.313929+00:00",
+  "ruby": "3.4.10",
+  "ci": "passed",
+  "rails_tests": {
+    "runs": 129,
+    "assertions": 33129,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "rubocop": "92 files, no offenses",
+  "brakeman": "0 warnings/errors",
+  "dependency_audit": "updated, no vulnerabilities",
+  "zeitwerk": "passed",
+  "assets": "production compile passed, clobbered before server restart",
+  "independent_audit": "AUDIT PASS: 8044 checks; coverage, attempts, ten constraints, state and report reconciled.",
+  "public_validators": {
+    "copy": "29/29",
+    "original": "29/29"
+  },
+  "readiness": "READY",
+  "readiness_full": "READY in network-restricted sandbox",
+  "rehearsal": "PASS; public deterministic op_108 reference conflicts with valid simulated rejection/fallback",
+  "default": {
+    "previous_runs": 258,
+    "additional_runs": 2064,
+    "order_checks": 48,
+    "weights_changed": false,
+    "mean_pareto_frontier": false,
+    "paired_holdout_dominators": []
+  },
+  "benchmarks": {
+    "10K": {
+      "operations": 10000,
+      "external_providers": 20,
+      "history_rows": 100000,
+      "seconds": 8.464,
+      "operations_per_second": 1181.48,
+      "rss_after_kib": 578592,
+      "rpm_100000_seconds": 0.387,
+      "invariant_checks": 933357,
+      "seed": 42,
+      "audit_level": "submission",
+      "decisions_json_bytes": 131998607,
+      "ruby": "ruby 3.4.10 (2026-06-30 revision 2b0b7728dc) +PRISM [arm64-darwin25]",
+      "cpu": "Apple M4",
+      "ram_bytes": 17179869184,
+      "daily_state_dates": [
+        "2026-07-30"
+      ],
+      "note": "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately",
+      "peak_rss_bytes": 675037184
+    },
+    "50K": {
+      "operations": 50000,
+      "external_providers": 4,
+      "history_rows": 100000,
+      "seconds": 10.995,
+      "operations_per_second": 4547.43,
+      "rss_after_kib": 865392,
+      "rpm_100000_seconds": 0.386,
+      "invariant_checks": 1452664,
+      "seed": 42,
+      "audit_level": "submission",
+      "decisions_json_bytes": 166603774,
+      "ruby": "ruby 3.4.10 (2026-06-30 revision 2b0b7728dc) +PRISM [arm64-darwin25]",
+      "cpu": "Apple M4",
+      "ram_bytes": 17179869184,
+      "daily_state_dates": [
+        "2026-07-30",
+        "2026-07-31"
+      ],
+      "note": "Local observation, not an SLA; /usr/bin/time -l records peak RSS separately",
+      "peak_rss_bytes": 942440448
+    }
+  },
+  "memory_scope": "submission Runner and incremental JSON sizing, not peak memory of the entire final publication pipeline",
+  "goal_feasibility": "post hoc; only exact observed share proves achieved; otherwise impossible bound or unknown",
+  "recommendations": "numerical evidence improved, automatic counterfactual not added",
+  "schemas": 6,
+  "visual_qa": {
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ],
+    "screenshots": 43,
+    "page_errors": 0,
+    "horizontal_document_overflows": 0,
+    "isolated_qa_server_stopped": true
+  },
+  "clean_setup": "fresh tree and SQLite passed, installed Ruby/gems reused",
+  "final_files_absent": [
+    "operations_queue_test.json",
+    "routing_decisions_test.json",
+    "routing_report_test.json"
+  ],
+  "commit_or_push": false,
+  "remaining_risks": [
+    "Actual final queue and validator are not available",
+    "Public op_108 validator expects the sole external provider even after its legitimate simulated rejection",
+    "Mean Pareto does not establish default superiority",
+    "Full final serialization plus independent subprocess peak memory was not measured",
+    "Arbitrary embedded secrets, external completions and pre-snapshot RPM cannot be proven from output JSON"
+  ]
+}

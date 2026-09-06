@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute routing_config",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "routing": {
+      "type": "object",
+      "properties": {
+        "fallback_provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeout_mode": {
+          "enum": [
+            "fallback_on_timeout",
+            "hold_until_status"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "presets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "weights": {
+            "type": "object",
+            "properties": {
+              "count_share": {
+                "type": "number",
+                "minimum": 0
+              },
+              "volume_share": {
+                "type": "number",
+                "minimum": 0
+              },
+              "cascade": {
+                "type": "number",
+                "minimum": 0
+              },
+              "preferred_amount": {
+                "type": "number",
+                "minimum": 0
+              },
+              "conversion": {
+                "type": "number",
+                "minimum": 0
+              },
+              "load_safe": {
+                "type": "number",
+                "minimum": 0
+              },
+              "intensity": {
+                "type": "number",
+                "minimum": 0
+              },
+              "turnover_commitment": {
+                "type": "number",
+                "minimum": 0
+              },
+              "economy": {
+                "type": "number",
+                "minimum": 0
+              },
+              "latency": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          },
+          "policy_priorities": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "count_share",
+                "volume_share",
+                "cascade",
+                "preferred_amount",
+                "conversion",
+                "load_safe",
+                "intensity",
+                "turnover_commitment",
+                "economy",
+                "latency"
+              ]
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "weights"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provider_overrides": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "traffic_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "limit_amount_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "limit_amount_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_amount_limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_approved_amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "in_progress_count_limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "in_progress_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "in_progress_amount_limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "in_progress_amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "available_requisites": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "conversion_24h": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "avg_latency_sec": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_margin_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "merchant_margin_pct": {
+            "type": "number",
+            "minimum": 0
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requests_per_minute_limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "volume_share_pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "daily_turnover_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_turnover_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preferred_amount_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preferred_amount_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "payment_system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "banks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "exclude_banks": {
+            "type": "boolean"
+          },
+          "allow_negative_agreement": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    "simulation": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "history",
+            "provider_snapshot",
+            "custom",
+            "scripted"
+          ]
+        },
+        "expired_rate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "minimum_samples": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "latency_method": {
+          "enum": [
+            "mean",
+            "median"
+          ]
+        },
+        "failure_expired_share": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "latency_spread_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "providers": {
+          "type": "object"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "calibration": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "minimum_samples": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prior_strength": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "resolved_strategy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "user_configuration": {
+      "type": "object"
+    },
+    "input_metadata": {
+      "type": "object"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

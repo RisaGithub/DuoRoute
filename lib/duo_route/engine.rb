@@ -5,7 +5,9 @@ module DuoRoute
 
   class Engine
     def initialize(providers_data:, operations:, config:, preset:, simulator:, history: [], progress: nil,
-      constraint_registry: Constraints::Registry.new, clock: Process)
+      constraint_registry: Constraints::Registry.new, clock: Process, audit_level: "full")
+      raise Error, "unknown audit level" unless %w[full submission compact].include?(audit_level)
+      @audit_level = audit_level
       @providers_data = providers_data
       @providers = providers_data.fetch("providers")
       @operations = operations.each_with_index.sort_by { |(operation, index)| [ Time.iso8601(operation["created_at"]), index ] }.map(&:first)
@@ -27,19 +29,32 @@ module DuoRoute
       state = State::Store.new(@providers, snapshot_at: @providers_data.fetch("snapshot_at"))
       decisions = @operations.map.with_index do |operation, index|
         @progress&.call(index, @operations.length, operation["operation_id"])
-        route_operation(operation, state)
+        retain_audit(route_operation(operation, state))
       end
       @progress&.call(@operations.length, @operations.length, nil)
       duration_ms = ((monotonic - started) * 1000).round(3)
       final_manifest = manifest.merge("schema_version" => SCHEMA_VERSION, "app_version" => VERSION,
         "ruby_version" => RUBY_VERSION, "duration_ms" => duration_ms, "preset" => @preset,
-        "timeout_mode" => @timeout_mode)
+        "timeout_mode" => @timeout_mode, "audit_level" => @audit_level)
       report = Reporting::ReportBuilder.new(providers_data: @providers_data, operations: @operations,
         decisions:, state:, history: @history, manifest: final_manifest).call
       RunResult.new(decisions:, report:, manifest: final_manifest)
     end
 
     private
+
+    def retain_audit(decision)
+      return decision if @audit_level == "full"
+      decision["constraint_matrix"].each_value do |evaluation|
+        evaluation["checks"] = []
+      end
+      decision["ranking"] = decision["ranking"].map { |row| row.slice("provider", "combined_score", "rank") }
+      if @audit_level == "compact"
+        decision.delete("state_before")
+        decision.delete("state_after")
+      end
+      decision
+    end
 
     def route_operation(operation, state)
       at = Time.iso8601(operation["created_at"])

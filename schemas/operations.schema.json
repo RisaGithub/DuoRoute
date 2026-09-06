@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute operations",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "operation_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "created_at": {
+        "type": "string",
+        "minLength": 1
+      },
+      "amount": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "bank": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "operation_id",
+      "created_at",
+      "amount",
+      "bank"
+    ],
+    "additionalProperties": true
+  },
+  "minItems": 1
+}

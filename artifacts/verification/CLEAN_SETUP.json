@@ -1,0 +1,7 @@
+{
+  "clean_checkout_setup": "passed",
+  "clean_database": true,
+  "demo": "passed",
+  "ruby": "3.4.10",
+  "scope": "Fresh temporary application tree and SQLite, installed Ruby/gems reused; not a fresh OS or dependency download test."
+}

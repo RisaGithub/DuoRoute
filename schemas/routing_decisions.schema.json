@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DuoRoute routing_decisions",
+  "description": "Structural contract. Cross-field constraints, identity, exact money, state, and configuration semantics require the input validator or independent submission audit.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "operation_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "selected_provider": {
+        "type": "string",
+        "minLength": 1
+      },
+      "attempts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "minLength": 1
+            },
+            "decision": {
+              "enum": [
+                "selected",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "result": {
+              "enum": [
+                "approved",
+                "rejected",
+                "expired"
+              ]
+            },
+            "latency_sec": {
+              "type": "number",
+              "minimum": 0
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "provider",
+            "decision",
+            "reason"
+          ],
+          "additionalProperties": true
+        },
+        "minItems": 1
+      },
+      "simulated_result": {
+        "enum": [
+          "approved",
+          "rejected",
+          "expired"
+        ]
+      },
+      "latency_sec": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "operation_id",
+      "selected_provider",
+      "attempts",
+      "simulated_result",
+      "latency_sec"
+    ],
+    "additionalProperties": true
+  },
+  "minItems": 0
+}

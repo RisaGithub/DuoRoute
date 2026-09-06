@@ -9,6 +9,23 @@ class RoutingFlowTest < ActionDispatch::IntegrationTest
     RoutingRun.delete_all
   end
 
+  test "uploaded external provider names work without public catalog overrides and explicit typos fail" do
+    data = providers_data
+    args = { preset: "balanced", simulator_mode: "provider_snapshot", history_text: "", providers_text: JSON.generate(data),
+      operations_text: JSON.generate([ operation ]), config_text: JSON.generate(config) }
+    post runs_path, params: args
+    assert_response :redirect, Nokogiri::HTML(response.body).at_css(".alert--error")&.text
+    run = RoutingRun.order(:id).last
+    perform_enqueued_jobs
+    assert_equal "completed", run.reload.status
+    assert_equal "alpha", run.decisions.first["selected_provider"]
+    get run_path(run)
+    assert_select "h2", text: "Достижимость целей"
+    post runs_path, params: args.merge(settings: "provider_overrides.typo.traffic_percentage=100")
+    assert_response :unprocessable_entity
+    assert_select ".alert--error", /typo/
+  end
+
   test "dashboard new run background progress detail and downloads" do
     get root_path
     assert_response :success
