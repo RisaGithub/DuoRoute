@@ -165,14 +165,24 @@ class SubmissionRoundTripTest < ActiveSupport::TestCase
     end
   end
 
-  test "robustness evidence retains all predeclared cases without holdout tuning" do
-    evidence = DuoRoute::Input::Loader.json_file(Rails.root.join("artifacts/verification/default_strategy_evaluation.json"))["robustness"]
-    assert_equal 2064, evidence["run_count"]
-    assert_equal 48, evidence["order_checks"]
-    assert_equal [ 1, 3, 10, 50 ], evidence["provider_counts"]
-    assert_equal false, evidence["default_changed"]
-    assert_empty evidence["paired_holdout_dominators"]
-    result = DuoRoute::Evaluation::Robustness.new.summarize(evidence["results"], order_checks: 48)
-    assert_equal evidence["holdout_pareto_candidates"], result["holdout_pareto_candidates"]
+  test "robustness summary separates training from paired holdout dominance" do
+    rows = %w[training holdout].flat_map do |split|
+      { "default" => [ 2, 4 ], "better" => [ 1, 3 ], "uneven" => [ 0, 5 ] }.flat_map do |candidate, values|
+        values.map do |value|
+          value = 100 - value if split == "training"
+          DuoRoute::Evaluation::Robustness::METRICS.to_h { |metric| [ metric, value ] }
+            .merge("split" => split, "candidate" => candidate)
+        end
+      end
+    end
+    result = DuoRoute::Evaluation::Robustness.new.summarize(rows, order_checks: 2)
+    assert_equal 12, result["run_count"]
+    assert_equal 2, result["order_checks"]
+    assert_equal false, result["default_changed"]
+    assert_equal [ "better" ], result["paired_holdout_dominators"]
+    assert_equal [ "better" ], result["holdout_pareto_candidates"]
+    summary = result["summaries"].find { |row| row["split"] == "holdout" && row["candidate"] == "default" }
+    assert_equal({ "mean" => 3.0, "median" => 3.0, "p95" => 4, "worst" => 4,
+      "best" => 2, "range" => 2, "stddev" => 1.0 }, summary["metrics"]["failure_rate_pct"])
   end
 end

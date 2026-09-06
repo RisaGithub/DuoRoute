@@ -352,7 +352,7 @@ module DuoRoute
         report = Evaluation::DefaultStrategy.new.call
         report["robustness"] = Evaluation::Robustness.new.call
         report["strategy_comparison"] = Evaluation::StrategyComparison.new.call
-        path = File.join(@root, "artifacts/verification/default_strategy_evaluation.json")
+        path = File.join(@root, "tmp/default_strategy_evaluation.json")
         atomic_write(path, DuoRoute.pretty_json(report))
         @out.puts "Оценка: #{path}; выбран #{report['selected_candidate']}"
         0

@@ -1,6 +1,5 @@
 {
   "strategy": "balanced",
-  "evaluated_candidate": "balanced",
   "version": "paired-final-v1-2026-09-06",
   "weights": {
     "count_share": 2,
@@ -18,76 +17,21 @@
       "scenario_count": 43,
       "metrics": {
         "approval_rate_pct": {
-          "n": 43,
           "mean": 99.00255813953487,
-          "median": 100.0,
-          "p90": 100.0,
-          "p95": 100.0,
-          "best": 100.0,
-          "worst": 95.6,
-          "sd": 1.4218544932967538
-        },
-        "failure_rate_pct": {
-          "n": 43,
-          "mean": 0.9974418604651166,
-          "median": 0.0,
-          "p90": 3.0,
-          "p95": 3.8900000000000006,
-          "best": 0.0,
-          "worst": 4.400000000000006,
-          "sd": 1.4218544932967538
+          "worst": 95.6
         },
         "fallback_rate_pct": {
-          "n": 43,
           "mean": 31.25372093023256,
-          "median": 12.0,
-          "p90": 90.0,
-          "p95": 98.7,
-          "best": 0.0,
-          "worst": 100.0,
-          "sd": 35.44928444341334
+          "worst": 100.0
         },
         "average_latency_sec": {
-          "n": 43,
           "mean": 43.58860465116279,
-          "median": 33.6,
-          "p90": 79.03,
-          "p95": 89.47,
-          "best": 12.0,
-          "worst": 141.06,
-          "sd": 28.975514007632203
-        },
-        "count_absolute_deviation_pp": {
-          "n": 43,
-          "mean": 87.30279069767442,
-          "median": 100.0,
-          "p90": 180.0,
-          "p95": 197.4,
-          "best": 6.0,
-          "worst": 200.0,
-          "sd": 64.03321704580571
+          "worst": 141.06
         }
       },
       "regret": {
         "failure_rate_pct": {
-          "n": 43,
-          "mean": 0.011627906976743856,
-          "median": 0.0,
-          "p90": 0.09999999999999432,
-          "p95": 0.09999999999999432,
-          "best": 0.0,
-          "worst": 0.10000000000000853,
-          "sd": 0.032055927330441464
-        },
-        "fallback_rate_pct": {
-          "n": 43,
-          "mean": 0.12372093023255798,
-          "median": 0.0,
-          "p90": 0.01999999999999602,
-          "p95": 0.7999999999999972,
-          "best": 0.0,
-          "worst": 2.0,
-          "sd": 0.4375461344755356
+          "worst": 0.1
         }
       },
       "pareto_count": 32,
@@ -97,84 +41,27 @@
       "scenario_count": 43,
       "metrics": {
         "approval_rate_pct": {
-          "n": 43,
           "mean": 98.66720930232557,
-          "median": 100.0,
-          "p90": 100.0,
-          "p95": 100.0,
-          "best": 100.0,
-          "worst": 90.0,
-          "sd": 2.35424339851434
-        },
-        "failure_rate_pct": {
-          "n": 43,
-          "mean": 1.3327906976744184,
-          "median": 0.0,
-          "p90": 4.0,
-          "p95": 4.5,
-          "best": 0.0,
-          "worst": 10.0,
-          "sd": 2.35424339851434
+          "worst": 90.0
         },
         "fallback_rate_pct": {
-          "n": 43,
           "mean": 29.979767441860467,
-          "median": 12.0,
-          "p90": 88.0,
-          "p95": 99.2,
-          "best": 0.0,
-          "worst": 100.0,
-          "sd": 35.42108073465621
+          "worst": 100.0
         },
         "average_latency_sec": {
-          "n": 43,
           "mean": 42.403255813953486,
-          "median": 34.44,
-          "p90": 77.25,
-          "p95": 79.03,
-          "best": 12.0,
-          "worst": 146.52,
-          "sd": 28.113805738828844
-        },
-        "count_absolute_deviation_pp": {
-          "n": 43,
-          "mean": 87.72232558139535,
-          "median": 100.0,
-          "p90": 176.0,
-          "p95": 198.4,
-          "best": 6.0,
-          "worst": 200.0,
-          "sd": 63.729921446797086
+          "worst": 146.52
         }
       },
       "regret": {
         "failure_rate_pct": {
-          "n": 43,
-          "mean": 0.007209302325581448,
-          "median": 0.0,
-          "p90": 0.0,
-          "p95": 0.09999999999999432,
-          "best": 0.0,
-          "worst": 0.10000000000000853,
-          "sd": 0.0254563540197416
-        },
-        "fallback_rate_pct": {
-          "n": 43,
-          "mean": 0.0583720930232561,
-          "median": 0.0,
-          "p90": 0.10000000000000853,
-          "p95": 0.3999999999999986,
-          "best": 0.0,
-          "worst": 1.1999999999999957,
-          "sd": 0.2081807156870952
+          "worst": 0.1
         }
       },
       "pareto_count": 34,
       "hard_violations": 0
     }
   },
-  "study": "artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json",
-  "study_results_sha256": "d1fa4cf18cd4d2fa9595e6c88126e8db06bea6bdba0e8a65eef249b4ffc2972d",
   "policy_priorities": [
     "count_share",
     "volume_share",

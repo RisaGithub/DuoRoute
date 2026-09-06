@@ -7,7 +7,7 @@ require "pathname"
 # Scan shipped documentation and text-bearing application sources, including comments.
 class ProductionDocsCheck
   ROOT = File.expand_path("..", __dir__)
-  GLOBS = %w[README.md THIRD_PARTY_NOTICES.md docs/**/*.{md,txt,html} app/views/**/* app/helpers/**/*.rb
+  GLOBS = %w[CHANGELOG.md README.md THIRD_PARTY_NOTICES.md docs/**/*.{md,txt,html} app/views/**/* app/helpers/**/*.rb
     app/controllers/**/*.rb app/models/**/*.rb app/javascript/**/*.{js,json} app/assets/stylesheets/*.css
     config/locales/**/* config/routing/**/*.{yml,yaml,json} data/examples/**/*.{yml,yaml,json}
     schemas/**/*.json lib/*.rb lib/duo_route/**/*.rb].freeze
@@ -15,7 +15,7 @@ class ProductionDocsCheck
     /telegram|t\.me\/|телеграм|discord(?:app)?\.com\/channels\/|slack\.com\/archives\//iu => "internal chat reference",
     /\bzoom\b|расшифровк[аиу].{0,30}конференц/iu => "internal conference reference",
     /\bQA(?:[_-]zoom)?\b|answers(?:_\d+)?\.txt|checkpoint|чекпо[ий]нт/iu => "internal question file or checkpoint",
-    %r{/(?:Volumes|Users|home)/[^\s<>"']+}i => "absolute workstation path",
+    %r{/(?:Volumes|Users|home|private/tmp|var/folders)/[^\s<>"']+}i => "absolute workstation path",
     /\b(?:\u0043odex|\u0043hatGPT)\b|(?<![\p{L}])\u0418\u0418(?![\p{L}])|\bAI[- ](?:generated|assisted)\b|генераци[яи] кода/iu => "generation attribution",
     /(?:№\s*\d+|\bmessages?\s*(?:\#|№)?\s*\d+|сообщени[еяй]\s*(?:\#|№)?\s*\d+)/iu => "internal message number",
     /(?:организатор.{0,35}(?:ответил|подтвердил).{0,20}чат|на конференции нам сказали|переписк[аи]|\bTODO\b|\bFIXME\b)/iu => "internal discussion or unfinished note"

@@ -3,7 +3,8 @@
 
 require_relative "../lib/duo_route"
 require_relative "../lib/duo_route/evaluation/final_study"
-path = ARGV.fetch(0, File.expand_path("../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json", __dir__))
+path = ARGV.fetch(0, File.expand_path("../tmp/default_strategy_final_evaluation.json", __dir__))
+FileUtils.mkdir_p(File.dirname(path))
 study = DuoRoute::Evaluation::FinalStudy.new
 report = study.call(path:)
 File.write(path, DuoRoute.pretty_json(report))

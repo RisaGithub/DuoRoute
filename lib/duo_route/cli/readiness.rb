@@ -51,7 +51,7 @@ module DuoRoute
         report
       end
 
-      def public_validator!(options, decisions, strict: true)
+      def public_validator!(options, decisions, strict: true, announce: true)
         matches = %i[providers operations].all? do |key|
           filename = key == :providers ? "providers.json" : "operations_queue_10.json"
           Input::Loader.json_file(options[key]) == Input::Loader.json_file(File.join(App::ROOT, "data", filename))
@@ -62,7 +62,7 @@ module DuoRoute
         end
         output, status = Open3.capture2e(RbConfig.ruby, File.join(App::ROOT, "script/validate_10.rb"), decisions)
         if status.success?
-          @out.puts "PASS: public validator"
+          @out.puts "PASS: public validator" if announce
           return :passed
         end
         @out.puts output
@@ -92,10 +92,10 @@ module DuoRoute
         expected.any? && failures.sort == expected.sort && count.to_i == expected.length
       end
 
-      def run_check!(label, *command)
+      def run_check!(label, *command, announce: true)
         output, status = Open3.capture2e(*command, chdir: App::ROOT)
         raise Error, "#{label}: failed (exit #{status.exitstatus})\n#{output}" unless status.success?
-        @out.puts "PASS: #{label}"
+        @out.puts "PASS: #{label}" if announce
         output
       end
 
@@ -132,6 +132,7 @@ module DuoRoute
           selection = DefaultSelection.record
           %w[default final].each do |name|
             settings = Input::Loader.config_file(File.join(App::ROOT, "config/routing/#{name}.yml"))
+            raise Error, "default strategy differs from selection" unless settings.dig("routing", "default_strategy") == selection.fetch("strategy")
             resolved = Configuration.resolve(settings, strategy: selection.fetch("strategy"))
             raise Error, "default weights differ from evidence" unless resolved.dig("presets", selection["strategy"], "weights") == selection["weights"]
           end
@@ -150,21 +151,26 @@ module DuoRoute
               before = current
               run_check!("independent audit", RbConfig.ruby, File.join(App::ROOT, "script/audit_submission.rb"),
                 "--providers", App::DEFAULT_PROVIDERS, "--operations", App::DEFAULT_OPERATIONS, "--decisions", decisions, "--report", report,
-                "--config", "#{report}.config.json")
-              public_validator!({ providers: App::DEFAULT_PROVIDERS, operations: App::DEFAULT_OPERATIONS }, decisions)
+                "--config", "#{report}.config.json", announce: false)
+              public_validator!({ providers: App::DEFAULT_PROVIDERS, operations: App::DEFAULT_OPERATIONS }, decisions, announce: false)
               { "providers" => App::DEFAULT_PROVIDERS, "operations" => App::DEFAULT_OPERATIONS,
                 "routing_config" => "#{report}.config.json", "routing_decisions" => decisions, "routing_report" => report,
                 "outcomes" => File.join(App::ROOT, "data/examples/demo_outcomes.json") }.each do |name, path|
-                run_check!("schema #{name}", RbConfig.ruby, File.join(App::ROOT, "script/check_schemas.rb"), File.join(App::ROOT, "schemas/#{name}.schema.json"), path)
+                run_check!("schema #{name}", RbConfig.ruby, File.join(App::ROOT, "script/check_schemas.rb"), File.join(App::ROOT, "schemas/#{name}.schema.json"), path, announce: false)
               end
             end
           end
         end
-        check.call("production documentation") { run_check!("production documentation", RbConfig.ruby, File.join(App::ROOT, "script/check_production_docs.rb")) }
-        check.call("Markdown links") { run_check!("Markdown links", RbConfig.ruby, File.join(App::ROOT, "script/check_markdown_links.rb")) }
+        check.call("production documentation") { run_check!("production documentation", RbConfig.ruby, File.join(App::ROOT, "script/check_production_docs.rb"), announce: false) }
+        check.call("Markdown links") { run_check!("Markdown links", RbConfig.ruby, File.join(App::ROOT, "script/check_markdown_links.rb"), announce: false) }
         check.call("no premature final files") do
           present = FINAL_FILES.select { |file| File.exist?(File.join(@root, file)) }
           raise Error, "pre-final mode: present #{present.join(', ')}" if present.any?
+        end
+        check.call("no tracked internal files") do
+          tracked, status = Open3.capture2e("git", "ls-files", "-z", "--", "AGENTS.md", "artifacts/verification", "docs/screenshots", chdir: @root)
+          raise Error, "cannot list Git files" unless status.success?
+          raise Error, "internal files are tracked: #{tracked.split("\0").join(', ')}" unless tracked.empty?
         end
         check.call("Git") do
           status, exit_status = Open3.capture2e("git", "status", "--porcelain=v1", "-z", chdir: @root)
@@ -177,7 +183,7 @@ module DuoRoute
             [ "Brakeman", "bundle", "exec", "brakeman", "-q", "--no-pager" ],
             [ "dependency audit (offline; cached advisory DB required)", "bundle", "exec", "ruby", "-rbundler/audit/database", "-rbundler/audit/cli", "-e", 'abort "local advisory DB missing" unless Bundler::Audit::Database.exists?; Bundler::Audit::CLI.start(["check", "--no-update", "--config", "config/bundler-audit.yml"])' ],
             [ "Zeitwerk", RbConfig.ruby, "bin/rails", "zeitwerk:check" ] ].each do |label, *command|
-            check.call(label) { run_check!(label, *command) }
+            check.call(label) { run_check!(label, *command, announce: false) }
           end
         end
         problems.each { |problem| @out.puts "FAIL: #{problem}" }

@@ -163,7 +163,7 @@ Semantic audit независимо восстанавливает hard constrai
 
 ### Причина проигрыша balanced на публичной очереди
 
-Парная history simulation, seed 42: balanced даёт 133,9 с и суммарное count-отклонение 130 п.п.; count_share — 105,4 с и 40 п.п. У обоих approval 100%, fallback 20%. Полные score и attempts сохраняет `public_diagnosis` в [финальном исследовании](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json).
+Парная history simulation, seed 42: balanced даёт 133,9 с и суммарное count-отклонение 130 п.п.; count_share — 105,4 с и 40 п.п. У обоих approval 100%, fallback 20%. Разбор воспроизводится командой `ruby script/diagnose_default.rb`.
 
 В op_101 баллы quickpay/vipay/payflow равны 0,637567/0,564551/0,480351. Вклад load_safe у quickpay 1,72125 против 0,714 у vipay: исходная дневная загрузка подавляет преимущество vipay по count (0,8 против 0,5) и conversion (3,48 против 3,16). Balanced вызывает quickpay → approved; count_share вызывает vipay → approved. Знаменатель у всех трёх равен 9,5: отсутствующие volume, intensity и turnover исключены.
 
@@ -175,4 +175,4 @@ Ablation: отключение load_safe или обнуление началь�
 
 ### Выбор стратегии по умолчанию
 
-Default — `balanced`, версия `paired-final-v1-2026-09-06`. Balanced — единственный проверенный статический кандидат с worst-case regret успешности не выше 0,1 п.п. и на validation, и на holdout. Кандидат `amount_range` имеет больший worst-case regret на holdout. Глобальная оптимальность не доказана. Полные числа и ограничения — в [финальном исследовании](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json). Веса выбранного режима: count_share=2, volume_share=2, conversion=4, load_safe=2, intensity=2, turnover_commitment=2, latency=1, economy=0.5. Правило выбора, единицы regret и исходные результаты опубликованы в [критериях](CRITERIA_COMPLIANCE.md#default).
+Default — `balanced`, версия `paired-final-v1-2026-09-06`. Balanced — единственный проверенный статический кандидат с worst-case regret успешности не выше 0,1 п.п. и на validation, и на holdout. Кандидат `amount_range` имеет больший worst-case regret на holdout. Глобальная оптимальность не доказана. Краткие метрики и веса — в [записи default](../config/routing/default_selection.json). Веса выбранного режима: count_share=2, volume_share=2, conversion=4, load_safe=2, intensity=2, turnover_commitment=2, latency=1, economy=0.5. Правило выбора, единицы regret и исходные результаты опубликованы в [критериях](CRITERIA_COMPLIANCE.md#default).

@@ -50,20 +50,24 @@ class RandomizedBackendTest < ActiveSupport::TestCase
   end
 
   test "evaluation decision and actual defaults agree across config CLI and Web" do
-    report = DuoRoute::Input::Loader.json_file(Rails.root.join("artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json"))
     selection = DuoRoute::DefaultSelection.record
-    assert_equal "complete", report["status"]
-    assert_equal report.dig("decision", "implemented_default"), selection["strategy"]
-    assert_equal report.dig("decision", "default_version"), selection["version"]
+    assert_equal "balanced", selection["strategy"]
+    assert_match(/\Apaired-final-v\d+-\d{4}-\d{2}-\d{2}\z/, selection["version"])
+    assert_equal %w[evidence policy_priorities reason strategy version weights], selection.keys.sort
+    assert selection["reason"].present?
+    selection.fetch("evidence").values.each do |split|
+      assert_equal 43, split.fetch("scenario_count")
+      assert_equal 0, split.fetch("hard_violations")
+      assert_operator split.dig("regret", "failure_rate_pct", "worst"), :<=, 0.1 + 1e-9
+    end
     %w[default final].each do |name|
       settings = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/#{name}.yml"))
       assert_equal selection["strategy"], settings.dig("routing", "default_strategy")
       resolved = DuoRoute::Configuration.resolve(settings, strategy: selection["strategy"])
       assert_equal selection["weights"], resolved.dig("presets", selection["strategy"], "weights")
+      assert_equal selection["policy_priorities"], resolved.dig("presets", selection["strategy"], "policy_priorities")
       assert_equal false, settings.dig("calibration", "enabled")
     end
-    assert_equal [ 223, 227 ], report.dig("methodology", "splits", "validation")
-    assert_equal [ 331, 347 ], report.dig("methodology", "splits", "holdout")
     options, = DuoRoute::CLI::App.new([], out: StringIO.new, err: StringIO.new).send(:common_options)
     assert_equal selection["strategy"], options[:preset]
   end

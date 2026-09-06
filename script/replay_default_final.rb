@@ -4,9 +4,11 @@
 require_relative "../lib/duo_route"
 require_relative "../lib/duo_route/evaluation/final_study"
 require_relative "../lib/duo_route/evaluation/pair_audit"
-path = "artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json"
+path = ARGV.first
+abort "Укажите путь к исследованию: ruby #{File.basename(__FILE__)} PATH" unless ARGV.length == 1
+abort "Файл исследования не найден: #{path}" unless File.file?(path)
 report = JSON.parse(File.read(path))
-raise "study incomplete" unless report["status"] == "complete"
+abort "Исследование не завершено" unless report["status"] == "complete"
 study = DuoRoute::Evaluation::FinalStudy.new
 study.instance_variable_set(:@candidates, report["methodology"]["candidates"])
 selected = report["decision"]["candidate"]

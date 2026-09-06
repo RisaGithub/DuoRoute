@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+require_relative "../lib/ruby_preflight"
+RubyPreflight.check!
+
 require "fileutils"
 
 APP_ROOT = File.expand_path("..", __dir__)

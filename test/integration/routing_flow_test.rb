@@ -9,6 +9,23 @@ class RoutingFlowTest < ActionDispatch::IntegrationTest
     RoutingRun.delete_all
   end
 
+  test "Web default agrees with recorded selection and reports actual weights" do
+    post runs_path, params: { name: "Default selection", simulator_mode: "scripted",
+      outcomes_text: Rails.root.join("data/examples/demo_outcomes.json").read }
+    assert_response :redirect
+    perform_enqueued_jobs
+    run = RoutingRun.find_by!(name: "Default selection")
+    assert_equal "completed", run.status
+    selection = DuoRoute::DefaultSelection.record
+    assert_equal selection["strategy"], run.preset
+    evidence = run.report.fetch("strategy_selection")
+    assert_equal selection["weights"], evidence["actual_weights"]
+    assert_equal selection["policy_priorities"], evidence["policy_priorities"]
+    assert_equal selection["version"], evidence["default_version"]
+    assert_equal selection["evidence"], evidence["default_evidence"]
+    assert_equal true, evidence["matches_evaluated_default"]
+  end
+
   test "uploaded external provider names work without public catalog overrides and explicit typos fail" do
     data = providers_data
     args = { preset: "balanced", simulator_mode: "provider_snapshot", history_text: "", providers_text: JSON.generate(data),

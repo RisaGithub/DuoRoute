@@ -88,6 +88,9 @@ jobs:
           ruby script/check_production_docs.rb
           ruby script/check_markdown_links.rb
 
+      - name: Check routing readiness
+        run: bin/router readiness
+
       - name: Run tests
         env:
           RAILS_ENV: test

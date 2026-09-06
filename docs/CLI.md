@@ -32,7 +32,7 @@ bin/setup --skip-server
 
 На Linux установите rbenv, ruby-build, SQLite и инструменты сборки пакетным менеджером своей системы; остальные команды те же. `bin/setup` готовит и Web-базу с публичным примером. Только для CLI достаточно Ruby и `bundle install`.
 
-Если видна системная Ruby 2.6, проверьте `which ruby` и `rbenv version`. Добавьте `eval "$(rbenv init - zsh)"` в `~/.zshrc`, откройте новый терминал. Немедленный обход: `rbenv exec ruby -v`, `rbenv exec ruby bin/router help`. Все дальнейшие команды предполагают Ruby 3.4.10.
+Если видна системная Ruby 2.6, проверьте `which ruby` и `rbenv version`. Добавьте `eval "$(rbenv init - zsh)"` в `~/.zshrc`, откройте новый терминал. Немедленный обход: `rbenv exec ruby -v`, `rbenv exec ruby bin/router help`. Версия закреплена в `.ruby-version` и Gemfile. `bin/router` и `bin/setup` проверяют её до загрузки приложения и при несовпадении завершаются короткой ошибкой. Все дальнейшие команды предполагают Ruby 3.4.10.
 
 <a id="demo"></a>
 ## Быстрый демонстрационный запуск
@@ -308,10 +308,10 @@ bin/router feasibility --report routing_report.json
 
 `selected_provider` — итоговый провайдер после каскада. Первоначальный кандидат — первая реальная попытка с `result`, а не первая строка attempts: перед вызовами могут находиться записи hard exclusions. Attempts сохраняет все вызовы, ответы, причины переходов и исключения. После исчерпания внешних кандидатов fallback становится итоговым провайдером, а report относит операцию к нему.
 
-Default — `balanced`, версия `paired-final-v1-2026-09-06`. Balanced — единственный проверенный статический кандидат с worst-case regret успешности не выше 0,1 п.п. и на validation, и на holdout. Кандидат `amount_range` имеет больший worst-case regret на holdout. Глобальная оптимальность не доказана. Полные числа и ограничения — в [финальном исследовании](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json).
+Default — `balanced`, версия `paired-final-v1-2026-09-06`. Balanced — единственный проверенный статический кандидат с worst-case regret успешности не выше 0,1 п.п. и на validation, и на holdout. Кандидат `amount_range` имеет больший worst-case regret на holdout. Глобальная оптимальность не доказана. Краткие метрики и веса — в [записи default](../config/routing/default_selection.json).
 
 ### Версия и доказательства default
 
 `routing.default_strategy` в default.yml/final.yml и `config/routing/default_selection.json` согласованы. CLI, Web и Runner используют эти настройки. `--strategy` явно выбирает другой режим. В Manifest и Report сохраняются `strategy_selection`: фактическая стратегия, веса, policy_priorities, причина, версия и основные validation/holdout-метрики. Seed и хеши входов находятся рядом в reproducibility. Пользовательские настройки отмечены отдельно; исследование default не доказывает их превосходства.
 
-Повторение исследования: `ruby script/evaluate_default_final.rb tmp/repeated-study.json`. Машинный результат основной проверки: [DEFAULT_STRATEGY_FINAL_EVALUATION.json](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json). Команда не меняет рабочие веса и не использует финальную очередь. `ruby script/replay_default_final.rb` сверяет решения по всем сценариям в обратном порядке.
+Повторение исследования: `ruby script/evaluate_default_final.rb tmp/repeated-study.json`. Команда не меняет рабочие веса и не использует финальную очередь. `ruby script/replay_default_final.rb tmp/repeated-study.json` сверяет решения по всем сценариям в обратном порядке.
