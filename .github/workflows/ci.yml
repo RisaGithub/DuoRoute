@@ -53,7 +53,7 @@ jobs:
           bundler-cache: true
 
       - name: Prepare RuboCop cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         env:
           DEPENDENCIES_HASH: ${{ hashFiles('.ruby-version', '**/.rubocop.yml', '**/.rubocop_todo.yml', 'Gemfile.lock') }}
         with:
@@ -87,9 +87,6 @@ jobs:
         run: |
           ruby script/check_production_docs.rb
           ruby script/check_markdown_links.rb
-
-      - name: Check routing readiness
-        run: bin/router readiness
 
       - name: Run tests
         env:

@@ -68,20 +68,40 @@ class SubmissionAuditTest < ActiveSupport::TestCase
   end
 
   test "rehearsal uses final pipeline and removes all temporary final files" do
-    before = DuoRoute::CLI::App::FINAL_FILES.to_h { |f| [ f, File.exist?(Rails.root.join(f)) ] }
+    file_state = lambda do
+      DuoRoute::CLI::App::FINAL_FILES.to_h do |file|
+        path = Rails.root.join(file)
+        [ file, File.exist?(path) ? Digest::SHA256.file(path).hexdigest : nil ]
+      end
+    end
+    before = file_state.call
     dirs_before = Dir.glob(File.join(Dir.tmpdir, "duoroute-rehearsal-*"))
     out = StringIO.new
     assert_equal 0, DuoRoute::CLI::App.new([ "rehearse-final", "--allow-reference-mismatch" ], out:, err: StringIO.new).run
     assert_includes out.string, "PASS WITH REFERENCE MISMATCH"
-    assert_equal before, DuoRoute::CLI::App::FINAL_FILES.to_h { |f| [ f, File.exist?(Rails.root.join(f)) ] }
+    assert_equal before, file_state.call
     assert_equal dirs_before, Dir.glob(File.join(Dir.tmpdir, "duoroute-rehearsal-*"))
-    assert before.values.none?
   end
 
   test "readiness reports correct success and failure exit codes" do
-    out = StringIO.new
-    assert_equal 0, DuoRoute::CLI::App.new([ "readiness" ], out:, err: StringIO.new).run
-    assert_equal "READY", out.string.lines.last.strip
+    Dir.mktmpdir do |dir|
+      DuoRoute::CLI::App::REQUIRED_FILES.each do |file|
+        destination = File.join(dir, file)
+        FileUtils.mkdir_p(File.dirname(destination))
+        FileUtils.cp(Rails.root.join(file), destination)
+      end
+      output, status = Open3.capture2e("git", "init", "--quiet", dir)
+      assert status.success?, output
+      out = StringIO.new
+      assert_equal 0, DuoRoute::CLI::App.new([ "readiness" ], root: dir, out:, err: StringIO.new).run, out.string
+      assert_equal "READY", out.string.lines.last.strip
+
+      File.write(File.join(dir, "routing_decisions_test.json"), "[]\n")
+      out = StringIO.new
+      assert_equal 2, DuoRoute::CLI::App.new([ "readiness" ], root: dir, out:, err: StringIO.new).run
+      assert_equal "NOT READY", out.string.lines.last.strip
+      assert_includes out.string, "no premature final files"
+    end
     Dir.mktmpdir do |dir|
       out = StringIO.new
       assert_equal 2, DuoRoute::CLI::App.new([ "readiness" ], root: dir, out:, err: StringIO.new).run

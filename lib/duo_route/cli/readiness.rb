@@ -7,6 +7,7 @@ module DuoRoute
   module CLI
     module Readiness
       FINAL_FILES = %w[operations_queue_test.json routing_decisions_test.json routing_report_test.json].freeze
+      REQUIRED_FILES = %w[README.md docs/CLI.md docs/WEB.md docs/ALGORITHM.md docs/ARCHITECTURE.md docs/CRITERIA_COMPLIANCE.md config/routing/default.yml config/routing/final.yml data/providers.json data/operations_queue_10.json data/operations_history.csv script/audit_submission.rb script/validate_10.rb].freeze
 
       private
 
@@ -115,7 +116,7 @@ module DuoRoute
         end
         check.call("Ruby") { raise Error, "нужна Ruby 3.4.10, получена #{RUBY_VERSION}" unless RUBY_VERSION == "3.4.10" }
         check.call("required files") do
-          %w[README.md docs/CLI.md docs/WEB.md docs/ALGORITHM.md docs/ARCHITECTURE.md docs/CRITERIA_COMPLIANCE.md config/routing/default.yml config/routing/final.yml data/providers.json data/operations_queue_10.json data/operations_history.csv script/audit_submission.rb script/validate_10.rb].each do |path|
+          REQUIRED_FILES.each do |path|
             raise Error, "missing #{path}" unless File.file?(File.join(@root, path))
           end
         end
