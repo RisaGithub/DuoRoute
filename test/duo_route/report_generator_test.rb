@@ -3,6 +3,46 @@
 require "test_helper"
 
 class ReportGeneratorTest < ActiveSupport::TestCase
+  test "fallback recommendations include usage even below the share deviation threshold" do
+    [ 5.0, 18.89 ].each do |share|
+      distribution = {
+        "spacepayments" => { "count" => 17, "share_pct" => share, "target_pct" => 0, "deviation_pp" => share },
+        "alpha" => { "count" => 83, "share_pct" => 81.11, "target_pct" => 60, "deviation_pp" => 21.11 }
+      }
+      details = DuoRoute::Reporting::RecommendationEngine.new(distribution:, volume_distribution: {}, utilization: {},
+        provider_performance: {}, turnover: {}).call
+      fallback = details.select { |item| item["provider"] == "spacepayments" }
+      assert_equal 1, fallback.size
+      assert_equal "fallback_rate_pct", fallback.first["rule_parameter"]
+      assert_equal "fallback: 17 операций / #{share}%", fallback.first["evidence"]
+      assert_includes fallback.first["proposed_action"], "устранение причин недоступности внешних провайдеров"
+      refute_includes fallback.first["proposed_action"], "count_share"
+      assert_equal "снизить count_share/проверить недоступность альтернатив",
+        details.find { |item| item["provider"] == "alpha" }["proposed_action"]
+    end
+  end
+
+  test "unused fallback does not receive a usage recommendation" do
+    distribution = { "spacepayments" => { "count" => 0, "share_pct" => 0, "target_pct" => 0, "deviation_pp" => 0 } }
+    assert_empty DuoRoute::Reporting::RecommendationEngine.new(distribution:, volume_distribution: {}, utilization: {},
+      provider_performance: {}, turnover: {}).call
+  end
+
+  test "fallback recommendation generation leaves routing decisions unchanged" do
+    options = { providers_data: providers_data, operations: [ operation("one"), operation("two", amount: 1500) ],
+      config: config, outcomes: { "outcomes" => { "one:alpha" => "rejected", "one:spacepayments" => "approved", "two:spacepayments" => "approved" } }, seed: 42 }
+    result = DuoRoute::Runner.new(**options).call
+    engine = DuoRoute::Reporting::RecommendationEngine
+    original_call = engine.instance_method(:call)
+    engine.define_method(:call) { [] }
+    without_recommendations = DuoRoute::Runner.new(**options).call
+    assert_equal without_recommendations.decisions, result.decisions
+    assert_equal %w[spacepayments spacepayments], result.decisions.map { |row| row["selected_provider"] }
+    assert result.report["recommendation_details"].any? { |item| item["rule_parameter"] == "fallback_rate_pct" }
+  ensure
+    engine.define_method(:call, original_call) if original_call
+  end
+
   test "report math distributions rounding and evidence based recommendations" do
     providers = providers_data
     operations = [ operation("one", amount: 500), operation("two", amount: 1500) ]

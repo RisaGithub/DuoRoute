@@ -411,7 +411,7 @@
     "vipay: Проверить блокирующие ограничения bank_not_in_list, amount_exceeds_limit, amount_below_minimum и согласовать доступную долю; увеличение веса само по себе не устранит запрет (count deviation -32.22 п.п.; Допуск только для 31/90 операций (34.44%) ниже цели 40.0%. Ограничения: bank_not_in_list, amount_below_minimum, amount_exceeds_limit.)",
     "payflow: Проверить блокирующие ограничения bank_not_in_list, amount_exceeds_limit, daily_amount_limit_exceeded и согласовать доступную долю; увеличение веса само по себе не устранит запрет (count deviation -22.78 п.п.; Допуск только для 24/90 операций (26.67%) ниже цели 35.0%. Ограничения: bank_not_in_list, amount_exceeds_limit, daily_amount_limit_exceeded.)",
     "quickpay: снизить count_share/проверить недоступность альтернатив (count deviation 36.11 п.п.)",
-    "spacepayments: снизить count_share/проверить недоступность альтернатив (count deviation 18.89 п.п.)"
+    "spacepayments: снижать частоту fallback через устранение причин недоступности внешних провайдеров; проверить timeout, reject и отсутствие допустимого внешнего провайдера (fallback: 17 операций / 18.89%)"
   ],
   "recommendation_details": [
     {
@@ -495,11 +495,11 @@
     {
       "severity": "info",
       "provider": "spacepayments",
-      "evidence": "count deviation 18.89 п.п.",
-      "rule_parameter": "traffic_percentage",
-      "current_value": 0.0,
-      "proposed_action": "снизить count_share/проверить недоступность альтернатив",
-      "rationale": "фактическая доля 18.89% заметно отличается от цели"
+      "evidence": "fallback: 17 операций / 18.89%",
+      "rule_parameter": "fallback_rate_pct",
+      "current_value": 18.89,
+      "proposed_action": "снижать частоту fallback через устранение причин недоступности внешних провайдеров; проверить timeout, reject и отсутствие допустимого внешнего провайдера",
+      "rationale": "резервный провайдер используется после исчерпания допустимых внешних вариантов и не участвует в обычном ranking"
     }
   ],
   "strategy_selection": {
@@ -1023,7 +1023,7 @@
     "schema_version": "1.0",
     "app_version": "1.0.0",
     "ruby_version": "3.4.10",
-    "duration_ms": 42.913,
+    "duration_ms": 44.062,
     "preset": "balanced",
     "timeout_mode": "fallback_on_timeout",
     "audit_level": "submission"

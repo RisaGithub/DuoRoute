@@ -20,6 +20,15 @@ module DuoRoute
             "при текущем запасе новые операции могут перейти в fallback")
         end
         @distribution.each do |provider, row|
+          if provider == "spacepayments"
+            if row["count"].positive?
+              details << detail("info", provider, "fallback: #{row['count']} операций / #{row['share_pct']}%",
+                "fallback_rate_pct", row["share_pct"],
+                "снижать частоту fallback через устранение причин недоступности внешних провайдеров; проверить timeout, reject и отсутствие допустимого внешнего провайдера",
+                "резервный провайдер используется после исчерпания допустимых внешних вариантов и не участвует в обычном ranking")
+            end
+            next
+          end
           next unless row["deviation_pp"].abs >= 15 && row["count"] >= 1
           action = row["deviation_pp"].positive? ? "снизить count_share/проверить недоступность альтернатив" : "повысить count_share или устранить hard-исключения"
           details << detail("info", provider, "count deviation #{row['deviation_pp']} п.п.", "traffic_percentage",
