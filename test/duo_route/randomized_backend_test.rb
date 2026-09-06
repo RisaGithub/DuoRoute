@@ -49,14 +49,22 @@ class RandomizedBackendTest < ActiveSupport::TestCase
     end
   end
 
-  test "evaluation selected weights equal web CLI and final defaults" do
-    report = DuoRoute::Input::Loader.json_file(Rails.root.join("artifacts/verification/default_strategy_evaluation.json"))
+  test "evaluation decision and actual defaults agree across config CLI and Web" do
+    report = DuoRoute::Input::Loader.json_file(Rails.root.join("artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json"))
+    selection = DuoRoute::DefaultSelection.record
+    assert_equal "complete", report["status"]
+    assert_equal report.dig("decision", "implemented_default"), selection["strategy"]
+    assert_equal report.dig("decision", "default_version"), selection["version"]
     %w[default final].each do |name|
       settings = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/#{name}.yml"))
-      assert_equal report["selected_weights"], settings.dig("presets", "balanced", "weights")
-      assert_equal report["selected_calibration"], settings.dig("calibration", "enabled")
+      assert_equal selection["strategy"], settings.dig("routing", "default_strategy")
+      resolved = DuoRoute::Configuration.resolve(settings, strategy: selection["strategy"])
+      assert_equal selection["weights"], resolved.dig("presets", selection["strategy"], "weights")
+      assert_equal false, settings.dig("calibration", "enabled")
     end
-    assert_equal [ 42, 17 ], report["seeds"]
-    assert_equal [ 101, 309 ], report["holdout_seeds"]
+    assert_equal [ 223, 227 ], report.dig("methodology", "splits", "validation")
+    assert_equal [ 331, 347 ], report.dig("methodology", "splits", "holdout")
+    options, = DuoRoute::CLI::App.new([], out: StringIO.new, err: StringIO.new).send(:common_options)
+    assert_equal selection["strategy"], options[:preset]
   end
 end

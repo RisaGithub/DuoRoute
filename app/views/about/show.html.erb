@@ -26,9 +26,11 @@
   <section class="product-section" id="three-minutes">
     <h2>Проверить за 3 минуты</h2>
     <p>Локальная проверка готовности: входные данные, воспроизводимость, независимый аудит и публичный валидатор.</p>
-    <%= render "command", label: "Проверка готовности", command: "bin/router readiness" %>
-    <%= render "command", label: "Публичный пример", command: "bin/router demo --seed 42" %>
-    <%= render "command", label: "Репетиция финала без файлов в проекте", command: "bin/router rehearse-final" %>
+    <div class="product-quick-commands">
+      <%= render "command", label: "Проверка готовности", command: "bin/router readiness" %>
+      <%= render "command", label: "Публичный пример", command: "bin/router demo --seed 42" %>
+      <%= render "command", label: "Репетиция финала без файлов в проекте", command: "bin/router rehearse-final" %>
+    </div>
     <% if @demo_run %>
       <p><%= link_to "Демонстрационный запуск", run_path(@demo_run) %>
       <% if @hard_operation %> · <%= link_to "Исключения по ограничениям", operation_run_path(@demo_run, operation_id: @hard_operation["operation_id"]) %><% end %>
@@ -37,7 +39,7 @@
       <p>Готового запуска пока нет. <%= link_to "Создать запуск из подставленного публичного примера →", new_run_path %></p>
     <% end %>
     <p><%= link_to "Сравнение семи стратегий", compare_strategies_path %> · <%= link_to "Критерии, результаты тестов и ограничения", product_document_path("criteria_compliance") %></p>
-    <p>Ответы моделируются. Точная доля не гарантируется; наблюдаемый допуск не доказывает оптимальность. Настоящая финальная очередь ещё не получена.</p>
+    <p>Ответы моделируются. Точная доля не гарантируется; наблюдаемый допуск не доказывает оптимальность. Для финального расчёта требуется отдельная входная очередь.</p>
   </section>
 
   <nav class="product-index" aria-label="Разделы о продукте"><a href="#how-it-works">01 / Процесс</a><a href="#interfaces">02 / CLI и Web</a><a href="#policies">03 / Стратегии</a><a href="#decision">04 / Решение</a><a href="#architecture">05 / Архитектура</a></nav>
@@ -104,7 +106,7 @@
         <dt>Симуляция и seed</dt><dd><code>simulation.source</code> / <code>--simulation-source</code>: <code>history</code>, <code>provider_snapshot</code>, <code>custom</code>, <code>scripted</code>. <code>seed</code> / <code>--seed</code> — целое ≥ 0. В <code>scripted</code> нужны точные outcomes.</dd>
         <dt>История и вероятности</dt><dd><code>simulation.latency_method</code>: <code>mean</code> / <code>median</code>; <code>simulation.minimum_samples</code> — положительное целое (по умолчанию 20). <code>simulation.failure_expired_share</code>: 0–1. В <code>simulation.providers.NAME</code>: <code>approved_rate</code>, <code>rejected_rate</code>, <code>expired_rate</code> — доли 0–1 с суммой 1; <code>average_latency_sec</code>, <code>latency_spread_sec</code> — секунды ≥ 0.</dd>
       </dl>
-      <%= render "command", label: "Усилить фактор конверсии", command: "bin/router route --strategy balanced \\\n  --set presets.balanced.weights.conversion=3 \\\n  --simulation-source provider_snapshot --seed 42" %>
+      <%= render "command", label: "Усилить фактор конверсии", command: "bin/router route --strategy balanced \\\n  --set presets.balanced.weights.conversion=5 \\\n  --simulation-source provider_snapshot --seed 42" %>
       <p class="product-caption">Команда использует стандартные входные пути CLI и записывает стандартные выходные файлы. Настройки применяются на сервере тем же core, что и в Web.</p>
     </div></details>
   </section>
@@ -114,11 +116,12 @@
     <div class="product-decision">
       <div class="product-decision__header"><strong><code>op_105</code></strong><span>Банк: <code>tinkoff</code></span><span class="pill pill--ok">Выбран quickpay</span></div>
       <div class="product-decision__row"><div><strong>payflow</strong><span class="pill pill--fail">Исключён</span></div><p>Банк отсутствует в разрешённом списке. До scoring провайдер не допускается.</p><code>bank_not_in_list</code></div>
-      <div class="product-decision__row"><div><strong>vipay</strong><span class="pill pill--warn">Timeout</span></div><p>Первый в рейтинге: <b>0.652371</b>. Попытка вернула <code>expired</code> за 320 с. В режиме <code>fallback_on_timeout</code> резерв освобождён.</p><code>provider_expired</code></div>
-      <div class="product-decision__row product-decision__row--selected"><div><strong>quickpay</strong><span class="pill pill--ok">Выбран</span></div><p>Следующий допустимый кандидат: <b>0.638752</b>. Ответ <code>approved</code> за 22 с. Итоговая задержка операции — 342 с.</p><code>highest_combined_score</code></div>
+      <div class="product-decision__row"><div><strong>vipay</strong><span class="pill pill--muted">Не вызван</span></div><p>Второй в рейтинге: <b>0.62</b>. Первый кандидат успешно обработал выплату.</p><code>lower_combined_score</code></div>
+      <div class="product-decision__row product-decision__row--selected"><div><strong>quickpay</strong><span class="pill pill--ok">Выбран</span></div><p>Первоначальный и итоговый кандидат: <b>0.652492</b>. Ответ <code>approved</code> за 22 с. Итоговая задержка операции — 22 с.</p><code>highest_combined_score</code></div>
       <div class="product-decision__footer">spacepayments не понадобился: внешний кандидат успешно обработал выплату.</div>
     </div>
     <div class="product-proof-grid"><article><h3>Разложение, а не чёрный ящик</h3><p><code>score_breakdown</code> хранит исходное значение, нормализованный score, вес и вклад каждой политики. <code>constraint_matrix</code> объясняет проверки; <code>state_before</code> и <code>state_after</code> показывают изменения.</p><div class="product-equation">score = Σ(score политики × вес) / Σ(весов)</div><p class="product-caption">В знаменателе только веса политик, вернувших score для этого провайдера. Отсутствующее необязательное поле исключает соответствующий фактор из расчёта.</p></article><article><h3>Повторяемый результат</h3><p>Сохраните входы, итоговую конфигурацию, outcomes и seed. Manifest содержит SHA-256 для сверки. При одинаковых данных и версии core решения воспроизводятся; время исполнения не является детерминированной метрикой.</p><p class="product-caption">Равенство score: порядок политик → приоритет провайдера → имя <code>payment_system</code>. Seed влияет на симуляцию, а не на выбор при равенстве.</p></article></div>
+    <p class="product-footnote">Статический reference ожидает первоначального кандидата и может расходиться с корректным каскадом после отказа. Независимый semantic audit проверяет итоговый маршрут, все попытки, ограничения и согласованность отчёта.</p>
     <p class="product-footnote">Fallback также проходит обязательные проверки. Его недоступность останавливает расчёт; выбор резервного провайдера сам по себе не гарантирует ответ <code>approved</code>.</p>
   </section>
 
@@ -129,7 +132,7 @@
     "operation_id": "op_105",
     "selected_provider": "quickpay",
     "simulated_result": "approved",
-    "score": 0.638752,
+    "score": 0.652492,
     "fallback_used": false
   }
 ]</code></pre></article><article><h3><code>routing_report.json</code></h3><p>Итоги очереди, распределение количества и объёма, загрузка, причины пропуска и рекомендации.</p><pre><code>{
@@ -138,7 +141,7 @@
   "approval_rate_pct": 100.0,
   "fallback_rate_pct": 10.0
 }</code></pre><p class="product-caption">В CLI рядом: <code>routing_report.json.config.json</code> и <code>routing_report.json.manifest.json</code>.</p></article></div>
-    <details class="product-details"><summary>Финальная очередь Hack.Genesis: команда final</summary><div class="product-details__body"><p>Workflow реализован. После получения настоящей финальной очереди команда принимает basename строго <code>operations_queue_test.json</code>, проверяет данные и записывает в корень репозитория <code>routing_decisions_test.json</code>, <code>routing_report_test.json</code> а Config/Manifest сохраняет в <code>tmp/final_audit</code>. Публичный demo не подменяет финальную очередь.</p><%= render "command", label: "Запуск финальной очереди", command: "bin/router final \\\n  --operations operations_queue_test.json \\\n  --providers data/providers.json \\\n  --config config/routing/final.yml \\\n  --strategy balanced --seed 42" %><%= link_to "Регламент финальной очереди →", product_document_path("cli"), class: "text-link" %></div></details>
+    <details class="product-details"><summary>Финальная очередь Hack.Genesis: команда final</summary><div class="product-details__body"><p>Команда финального расчёта принимает basename строго <code>operations_queue_test.json</code>, проверяет данные и записывает в корень репозитория <code>routing_decisions_test.json</code>, <code>routing_report_test.json</code> а Config/Manifest сохраняет в <code>tmp/final_audit</code>. Публичный demo не подменяет финальную очередь.</p><%= render "command", label: "Запуск финальной очереди", command: "bin/router final \\\n  --operations operations_queue_test.json \\\n  --providers data/providers.json \\\n  --config config/routing/final.yml \\\n  --strategy balanced --seed 42" %><%= link_to "Регламент финальной очереди →", product_document_path("cli"), class: "text-link" %></div></details>
   </section>
 
   <section id="architecture" class="product-section">

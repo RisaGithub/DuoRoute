@@ -1,5 +1,5 @@
 <div class="product-terminal" data-controller="clipboard">
-  <div class="product-terminal__head"><span><%= label %></span><button type="button" class="btn" hidden data-clipboard-target="button" data-action="clipboard#copy" aria-label="Скопировать: <%= label %>">Копировать</button></div>
+  <div class="product-terminal__head"><span><%= label %></span><button type="button" class="btn btn--icon" hidden data-clipboard-target="button" data-action="clipboard#copy" title="Копировать команду" aria-label="Скопировать: <%= label %>"><%= ui_icon("copy") %></button></div>
   <pre><code data-clipboard-target="source"><%= command %></code></pre>
   <span class="product-terminal__status" role="status" data-clipboard-target="status"></span>
 </div>

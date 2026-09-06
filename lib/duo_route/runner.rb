@@ -4,8 +4,9 @@ module DuoRoute
   class Runner
     attr_reader :providers_data, :operations, :config, :history
 
-    def initialize(providers_data:, operations:, config:, history: [], preset: "balanced", seed: nil,
+    def initialize(providers_data:, operations:, config:, history: [], preset: nil, seed: nil,
       outcomes: nil, progress: nil, settings: [], audit_level: "full")
+      preset ||= config.is_a?(Hash) ? (config["resolved_strategy"] || (config["routing"].is_a?(Hash) && config["routing"]["default_strategy"]) || "balanced") : "balanced"
       @audit_level = audit_level
       @raw_providers_data = deep_copy(providers_data)
       @operations = deep_copy(operations)
@@ -58,7 +59,9 @@ module DuoRoute
         "simulation" => @simulation.profiles,
         "history_cutoff" => providers_data["snapshot_at"],
         "excluded_future_history_rows" => history.length - @usable_history.length,
-        "seed" => @seed
+        "seed" => @seed,
+        "random_scenario" => "operation_provider_v2",
+        "strategy_selection" => DefaultSelection.evidence(@preset, config)
       }.compact
       result = Engine.new(providers_data:, operations:, config:, preset: @preset, simulator:, history: @usable_history, progress: @progress, audit_level: @audit_level).call(manifest:)
       result.decisions.each do |decision|

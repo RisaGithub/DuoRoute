@@ -67,6 +67,7 @@ module DuoRoute
           "history_analytics" => HistoryAnalyzer.new(@history).call,
           "recommendations" => recommendation_details.map { |item| "#{item['provider']}: #{item['proposed_action']} (#{item['evidence']})" },
           "recommendation_details" => recommendation_details,
+          "strategy_selection" => @manifest["strategy_selection"],
           "reproducibility" => @manifest
         }
       end

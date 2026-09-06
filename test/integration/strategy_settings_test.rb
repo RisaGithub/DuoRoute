@@ -40,6 +40,19 @@ class StrategySettingsTest < ActionDispatch::IntegrationTest
     assert_nil StrategySetting.find_by(name: "amount_range")
   end
 
+  test "volume settings accept missing partial and explicit zero targets" do
+    get strategies_path
+    assert_select "#volume_share_vipay_volume_share_pct[required]", count: 0
+    assert_select "#volume_share_vipay_volume_share_pct[placeholder='не задано']"
+    [ [ "", "", "" ], [ "0", "", "" ], [ "40", "", "" ], [ "40", "30", "30" ] ].each do |values|
+      overrides = %w[vipay payflow quickpay].zip(values).to_h.transform_values { |value| { volume_share_pct: value } }
+      patch strategy_settings_path(name: "volume_share"), params: { provider_overrides: overrides }
+      assert_response :redirect
+      actual = StrategySetting.find_by!(name: "volume_share").provider_overrides.values.map { |row| row["volume_share_pct"] }
+      assert_equal values.map { |value| value.empty? ? nil : value.to_f }, actual
+    end
+  end
+
   test "nullable maximum and explicit per-run overrides are respected" do
     overrides = DuoRoute::StrategyCatalog.all.dig("amount_range", "parameters", "provider_overrides")
     overrides["quickpay"]["preferred_amount_max"] = ""

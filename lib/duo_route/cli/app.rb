@@ -99,14 +99,14 @@ module DuoRoute
 
       def common_options(defaults = {})
         options = { providers: DEFAULT_PROVIDERS, operations: DEFAULT_OPERATIONS, config: DEFAULT_CONFIG,
-          settings: [], history: File.file?(File.join(ROOT, "data/operations_history.csv")) ? File.join(ROOT, "data/operations_history.csv") : nil, outcomes: nil, preset: "balanced", seed: nil, quiet: false }.merge(defaults)
+          settings: [], history: File.file?(File.join(ROOT, "data/operations_history.csv")) ? File.join(ROOT, "data/operations_history.csv") : nil, outcomes: nil, preset: DefaultSelection.strategy, seed: nil, quiet: false }.merge(defaults)
         parser = OptionParser.new do |opts|
           opts.on("--providers PATH", "providers.json") { |value| options[:providers] = value }
           opts.on("--operations PATH", "operations queue JSON") { |value| options[:operations] = value }
           opts.on("--history PATH", "optional history CSV") { |value| options[:history] = value }
           opts.on("--config PATH", "routing YAML/JSON") { |value| options[:config] = value }
           opts.on("--outcomes PATH", "deterministic scripted outcomes JSON") { |value| options[:outcomes] = value }
-          opts.on("--preset NAME", "preset (default: balanced)") { |value| options[:preset] = value; options[:strategy_selected] = true }
+          opts.on("--preset NAME", "preset (default: #{DefaultSelection.strategy})") { |value| options[:preset] = value; options[:strategy_selected] = true }
           opts.on("--strategy NAME", "стратегия или balanced/custom") { |value| options[:preset] = value; options[:strategy_selected] = true }
           opts.on("--simulation-source SOURCE", "history|provider_snapshot|custom|scripted") { |value| options[:settings] << "simulation.source=#{value}" }
           opts.on("--timeout-mode MODE") { |value| options[:settings] << "routing.timeout_mode=#{value}" }
@@ -150,6 +150,7 @@ module DuoRoute
       def final
         options, parser = common_options(providers: File.join(@root, "data/providers.json"),
           operations: File.join(@root, "operations_queue_test.json"), config: File.join(@root, "config/routing/final.yml"), quiet: false, final: true, history: nil, audit_level: "submission")
+        parser.on("--allow-reference-mismatch", "разрешить подтверждённое расхождение публичного эталона") { options[:allow_reference_mismatch] = true }
         parser.on("--dry-run", "расчёт и проверки без записи финальных файлов") { options[:dry_run] = true }
         parser.on("--explain-summary", "источники симуляции, конфликты и рекомендации") { options[:explain_summary] = true }
         return 0 if catch(:help) { parse_options!(parser); nil } == :help
@@ -177,6 +178,7 @@ module DuoRoute
           check_space!(@root, 1024 * 1024)
         end
         result = runner.call
+        @out.puts "Стратегия: #{result.manifest['preset']}; default version: #{result.manifest.dig('strategy_selection', 'default_version')}" unless options[:quiet]
         operation_ids = runner.operations.map { |item| item["operation_id"] }
         validate_outputs!(result, operation_ids:)
         if options[:explain_summary]
@@ -187,10 +189,12 @@ module DuoRoute
           Dir.mktmpdir("duoroute-dry-run-") do |dir|
             write_result(options.merge(decisions: "#{dir}/decisions.json", report: "#{dir}/report.json", audit_dir: dir), result)
           end
-          @out.puts "Dry-run успешен: #{operation_ids.length} операций; финальные файлы не записаны"
+          @out.puts "PASS WITH REFERENCE MISMATCH" if @reference_mismatch
+          @out.puts "Dry-run успешен: #{operation_ids.length} операций; approval #{result.report['approval_rate_pct']}%; fallback #{result.report['fallback_rate_pct']}%; latency #{result.report['average_latency_sec']} с; финальные файлы не записаны"
           return 0
         end
         write_result(options, result)
+        @out.puts "PASS WITH REFERENCE MISMATCH" if @reference_mismatch
         @out.puts "Итог: #{operation_ids.length} операций; approval #{result.report['approval_rate_pct']}%; fallback #{result.report['fallback_rate_pct']}%; latency #{result.report['average_latency_sec']} с" unless options[:quiet]
         result.report.fetch("goal_feasibility", {}).each { |name, row| @out.puts "Цель #{name}: #{row['explanation']}" } unless options[:quiet]
         @out.puts "Готово: #{options[:decisions]}, #{options[:report]}" unless options[:quiet]
@@ -229,9 +233,7 @@ module DuoRoute
         table = options[:presets].split(",").map do |preset|
           result = build_runner(options.merge(preset: preset.strip)).call
           { "preset" => preset.strip, "resolved_configuration" => result.manifest["resolved_configuration"], "manifest" => result.manifest, "approval_rate_pct" => result.report["approval_rate_pct"],
-            "fallback_rate_pct" => result.report["fallback_rate_pct"], "average_latency_sec" => result.report["average_latency_sec"],
-            "count_absolute_deviation_pp" => result.report["distribution"].values.sum { |row| row["deviation_pp"].abs }.round(2),
-            "volume_absolute_deviation_pp" => result.report["volume_distribution"].values.sum { |row| row["deviation_pp"].to_f.abs }.round(2) }
+            "fallback_rate_pct" => result.report["fallback_rate_pct"], "average_latency_sec" => result.report["average_latency_sec"] }.merge(Reporting::ComparisonMetrics.call(result.report))
         end
         @out.puts JSON.pretty_generate("counterfactual" => true, "results" => table)
         0
@@ -310,9 +312,13 @@ module DuoRoute
             staged = RunResult.new(decisions: Input::Loader.json_file(temps[0][1], max_bytes: artifacts[0][1].bytesize), report: Input::Loader.json_file(temps[1][1], max_bytes: artifacts[1][1].bytesize), manifest: result.manifest)
             validate_outputs!(staged, operation_ids: result.decisions.map { |row| row["operation_id"] })
             if options[:final]
+              { "routing_decisions" => temps[0][1], "routing_report" => temps[1][1], "routing_config" => temps[2][1] }.each do |name, path|
+                run_check!("JSON schema #{name}", RbConfig.ruby, File.join(ROOT, "script/check_schemas.rb"), File.join(ROOT, "schemas/#{name}.schema.json"), path)
+              end
               run_check!("independent final audit", RbConfig.ruby, File.join(ROOT, "script/audit_submission.rb"),
                 "--providers", options[:providers], "--operations", options[:operations],
                 "--decisions", temps[0][1], "--report", temps[1][1], "--config", temps[2][1])
+              @reference_mismatch = public_validator!(options, temps[0][1], strict: !options[:allow_reference_mismatch]) == :reference_mismatch
             end
           end
         end
@@ -345,6 +351,7 @@ module DuoRoute
         raise Error, "evaluate-default не принимает параметры" unless @argv.empty?
         report = Evaluation::DefaultStrategy.new.call
         report["robustness"] = Evaluation::Robustness.new.call
+        report["strategy_comparison"] = Evaluation::StrategyComparison.new.call
         path = File.join(@root, "artifacts/verification/default_strategy_evaluation.json")
         atomic_write(path, DuoRoute.pretty_json(report))
         @out.puts "Оценка: #{path}; выбран #{report['selected_candidate']}"

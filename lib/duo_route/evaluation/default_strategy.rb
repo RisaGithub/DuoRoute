@@ -81,7 +81,7 @@ module DuoRoute
 
       def metrics(result, candidate, scenario, size, seed, split)
         report = result.report
-        errors = %w[distribution volume_distribution].map { |key| report[key].values.sum { |row| row["deviation_pp"].to_f.abs } / 2 }
+        errors = %w[distribution volume_distribution].filter_map { |key| Reporting::ComparisonMetrics.deviation(report[key]) }
         deficits = report["turnover_commitments"].values.filter_map do |row|
           next unless row["minimum"]&.positive?
           [ (row["minimum"] - row["actual"]).to_f / row["minimum"] * 100, 0 ].max
@@ -90,7 +90,7 @@ module DuoRoute
         {
           "candidate" => candidate, "scenario" => scenario, "size" => size, "seed" => seed, "split" => split,
           "fallback_rate_pct" => report["fallback_rate_pct"], "failure_rate_pct" => 100 - report["approval_rate_pct"],
-          "share_error_pp" => errors.sum / errors.length, "turnover_deficit_pct" => mean(deficits),
+          "share_error_pp" => (errors.empty? ? nil : mean(errors)), "turnover_deficit_pct" => mean(deficits),
           "capacity_pressure_pct" => mean(pressure), "average_latency_sec" => report["average_latency_sec"],
           "negative_margin_spread" => -result.decisions.sum { |decision| decision.dig("score_breakdown", "economy", "raw_value").to_f } / size,
           "invariants" => "passed"

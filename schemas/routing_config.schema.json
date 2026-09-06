@@ -24,6 +24,10 @@
             "fallback_on_timeout",
             "hold_until_status"
           ]
+        },
+        "default_strategy": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [],

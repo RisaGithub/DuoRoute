@@ -10,7 +10,7 @@
         "result": "rejected",
         "latency_sec": 21,
         "sequence": 1,
-        "score": 0.626436,
+        "score": 0.637567,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -27,7 +27,7 @@
         "result": "rejected",
         "latency_sec": 18,
         "sequence": 2,
-        "score": 0.605001,
+        "score": 0.564551,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -44,7 +44,7 @@
         "result": "rejected",
         "latency_sec": 31,
         "sequence": 3,
-        "score": 0.530968,
+        "score": 0.480351,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -82,7 +82,7 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.626436,
+        "combined_score": 0.637567,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -94,16 +94,6 @@
             "weight": 2.0,
             "contribution": 0.5,
             "explanation": "projected count share 100.0% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 100.0,
-              "target_pct": 25
-            },
-            "normalized_value": 0.25,
-            "weight": 2.0,
-            "contribution": 0.5,
-            "explanation": "projected volume share 100.0% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -121,16 +111,6 @@
             "weight": 2.0,
             "contribution": 1.72125,
             "explanation": "максимальная projected utilization 13.9%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 20
-            },
-            "normalized_value": 0.95,
-            "weight": 2.0,
-            "contribution": 1.9,
-            "explanation": "projected RPM 1/20"
           },
           "latency": {
             "raw_value": 29,
@@ -151,7 +131,7 @@
       },
       {
         "provider": "vipay",
-        "combined_score": 0.605001,
+        "combined_score": 0.564551,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
@@ -163,16 +143,6 @@
             "weight": 2.0,
             "contribution": 0.8,
             "explanation": "projected count share 100.0% при цели 40.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 100.0,
-              "target_pct": 50
-            },
-            "normalized_value": 0.5,
-            "weight": 2.0,
-            "contribution": 1.0,
-            "explanation": "projected volume share 100.0% при цели 50%"
           },
           "conversion": {
             "raw_value": {
@@ -190,27 +160,6 @@
             "weight": 2.0,
             "contribution": 0.714,
             "explanation": "максимальная projected utilization 64.3%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 7
-            },
-            "normalized_value": 0.857143,
-            "weight": 2.0,
-            "contribution": 1.714286,
-            "explanation": "projected RPM 1/7"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 3215000,
-              "min": null,
-              "max": 5000000
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.3215e7, коридор —–5000000"
           },
           "latency": {
             "raw_value": 38,
@@ -231,7 +180,7 @@
       },
       {
         "provider": "payflow",
-        "combined_score": 0.530968,
+        "combined_score": 0.480351,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
@@ -243,16 +192,6 @@
             "weight": 2.0,
             "contribution": 0.7,
             "explanation": "projected count share 100.0% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 100.0,
-              "target_pct": 25
-            },
-            "normalized_value": 0.25,
-            "weight": 2.0,
-            "contribution": 0.5,
-            "explanation": "projected volume share 100.0% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -270,27 +209,6 @@
             "weight": 2.0,
             "contribution": 0.056667,
             "explanation": "максимальная projected utilization 97.2%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 15
-            },
-            "normalized_value": 0.933333,
-            "weight": 2.0,
-            "contribution": 1.866667,
-            "explanation": "projected RPM 1/15"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2915000,
-              "min": 2000000,
-              "max": null
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.2915e7, коридор 2000000–—"
           },
           "latency": {
             "raw_value": 52,
@@ -386,7 +304,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": []
@@ -465,7 +383,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": []
@@ -541,7 +459,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -628,13 +546,10 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "vipay",
-          "volume_share": "vipay",
           "conversion": "payflow",
           "load_safe": "quickpay",
-          "intensity": "quickpay",
           "latency": "quickpay",
-          "economy": "quickpay",
-          "turnover_commitment": "vipay"
+          "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
       }
@@ -726,7 +641,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.727765,
+        "score": 0.741962,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -740,14 +655,14 @@
         "provider": "payflow",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.616184",
-        "score": 0.616184
+        "details": "rank 2, score 0.583298",
+        "score": 0.583298
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.727765,
+    "score": 0.741962,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -758,16 +673,6 @@
         "weight": 2.0,
         "contribution": 1.5,
         "explanation": "projected count share 50.0% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 76.1905,
-          "target_pct": 25
-        },
-        "normalized_value": 0.488095,
-        "weight": 2.0,
-        "contribution": 0.97619,
-        "explanation": "projected volume share 0.762e2% при цели 25%"
       },
       "conversion": {
         "raw_value": {
@@ -785,16 +690,6 @@
         "weight": 2.0,
         "contribution": 1.713,
         "explanation": "максимальная projected utilization 14.4%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
       },
       "latency": {
         "raw_value": 29,
@@ -818,7 +713,7 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.727765,
+        "combined_score": 0.741962,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -830,16 +725,6 @@
             "weight": 2.0,
             "contribution": 1.5,
             "explanation": "projected count share 50.0% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 76.1905,
-              "target_pct": 25
-            },
-            "normalized_value": 0.488095,
-            "weight": 2.0,
-            "contribution": 0.97619,
-            "explanation": "projected volume share 0.762e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -857,16 +742,6 @@
             "weight": 2.0,
             "contribution": 1.713,
             "explanation": "максимальная projected utilization 14.4%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
           },
           "latency": {
             "raw_value": 29,
@@ -887,7 +762,7 @@
       },
       {
         "provider": "payflow",
-        "combined_score": 0.616184,
+        "combined_score": 0.583298,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
@@ -899,16 +774,6 @@
             "weight": 2.0,
             "contribution": 1.7,
             "explanation": "projected count share 50.0% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 76.1905,
-              "target_pct": 25
-            },
-            "normalized_value": 0.488095,
-            "weight": 2.0,
-            "contribution": 0.97619,
-            "explanation": "projected volume share 0.762e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -926,27 +791,6 @@
             "weight": 2.0,
             "contribution": 0.034667,
             "explanation": "максимальная projected utilization 98.3%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 15
-            },
-            "normalized_value": 0.866667,
-            "weight": 2.0,
-            "contribution": 1.733333,
-            "explanation": "projected RPM 2/15"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2948000,
-              "min": 2000000,
-              "max": null
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.2948e7, коридор 2000000–—"
           },
           "latency": {
             "raw_value": 52,
@@ -1042,7 +886,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": [
@@ -1133,7 +977,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": []
@@ -1209,7 +1053,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -1220,13 +1064,10 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "payflow",
-          "volume_share": "quickpay",
           "conversion": "payflow",
           "load_safe": "quickpay",
-          "intensity": "quickpay",
           "latency": "quickpay",
-          "economy": "quickpay",
-          "turnover_commitment": "payflow"
+          "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
       }
@@ -1322,7 +1163,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.642692,
+        "score": 0.656368,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -1336,7 +1177,7 @@
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.642692,
+    "score": 0.656368,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -1347,16 +1188,6 @@
         "weight": 2.0,
         "contribution": 1.166667,
         "explanation": "projected count share 66.7% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 92.9577,
-          "target_pct": 25
-        },
-        "normalized_value": 0.320423,
-        "weight": 2.0,
-        "contribution": 0.640845,
-        "explanation": "projected volume share 0.93e2% при цели 25%"
       },
       "conversion": {
         "raw_value": {
@@ -1374,16 +1205,6 @@
         "weight": 2.0,
         "contribution": 1.6755,
         "explanation": "максимальная projected utilization 16.2%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
       },
       "latency": {
         "raw_value": 29,
@@ -1406,7 +1227,7 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.642692,
+        "combined_score": 0.656368,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -1418,16 +1239,6 @@
             "weight": 2.0,
             "contribution": 1.166667,
             "explanation": "projected count share 66.7% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 92.9577,
-              "target_pct": 25
-            },
-            "normalized_value": 0.320423,
-            "weight": 2.0,
-            "contribution": 0.640845,
-            "explanation": "projected volume share 0.93e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -1445,16 +1256,6 @@
             "weight": 2.0,
             "contribution": 1.6755,
             "explanation": "максимальная projected utilization 16.2%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
           },
           "latency": {
             "raw_value": 29,
@@ -1550,7 +1351,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": [
@@ -1637,7 +1438,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -1728,7 +1529,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -1833,7 +1634,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.630146,
+        "score": 0.638746,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -1847,7 +1648,7 @@
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.630146,
+    "score": 0.638746,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -1858,16 +1659,6 @@
         "weight": 2.0,
         "contribution": 1.0,
         "explanation": "projected count share 75.0% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 93.0556,
-          "target_pct": 25
-        },
-        "normalized_value": 0.319444,
-        "weight": 2.0,
-        "contribution": 0.638889,
-        "explanation": "projected volume share 0.931e2% при цели 25%"
       },
       "conversion": {
         "raw_value": {
@@ -1885,16 +1676,6 @@
         "weight": 2.0,
         "contribution": 1.67475,
         "explanation": "максимальная projected utilization 16.3%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
       },
       "latency": {
         "raw_value": 29,
@@ -1917,7 +1698,7 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.630146,
+        "combined_score": 0.638746,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -1929,16 +1710,6 @@
             "weight": 2.0,
             "contribution": 1.0,
             "explanation": "projected count share 75.0% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 93.0556,
-              "target_pct": 25
-            },
-            "normalized_value": 0.319444,
-            "weight": 2.0,
-            "contribution": 0.638889,
-            "explanation": "projected volume share 0.931e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -1956,16 +1727,6 @@
             "weight": 2.0,
             "contribution": 1.67475,
             "explanation": "максимальная projected utilization 16.3%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
           },
           "latency": {
             "raw_value": 29,
@@ -2061,7 +1822,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": [
@@ -2152,7 +1913,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -2239,7 +2000,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -2326,13 +2087,13 @@
         ]
       },
       {
-        "provider": "vipay",
-        "decision": "skipped",
-        "reason": "provider_expired",
-        "result": "expired",
-        "latency_sec": 320,
+        "provider": "quickpay",
+        "decision": "selected",
+        "reason": "highest_combined_score",
+        "result": "approved",
+        "latency_sec": 22,
         "sequence": 1,
-        "score": 0.652371,
+        "score": 0.652492,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -2343,27 +2104,17 @@
         }
       },
       {
-        "provider": "quickpay",
-        "decision": "selected",
-        "reason": "highest_combined_score",
-        "result": "approved",
-        "latency_sec": 22,
-        "sequence": 2,
-        "score": 0.638752,
-        "simulation": {
-          "source": "scripted",
-          "requested_source": "scripted",
-          "probabilities_applied": false,
-          "history_records": 0,
-          "provider_snapshot_fallback": false,
-          "seed": 42
-        }
+        "provider": "vipay",
+        "decision": "skipped",
+        "reason": "lower_combined_score",
+        "details": "rank 2, score 0.62",
+        "score": 0.62
       }
     ],
     "simulated_result": "approved",
-    "latency_sec": 342,
+    "latency_sec": 22,
     "strategy": "balanced",
-    "score": 0.638752,
+    "score": 0.652492,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -2374,16 +2125,6 @@
         "weight": 2.0,
         "contribution": 0.9,
         "explanation": "projected count share 80.0% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 93.7759,
-          "target_pct": 25
-        },
-        "normalized_value": 0.312241,
-        "weight": 2.0,
-        "contribution": 0.624481,
-        "explanation": "projected volume share 0.938e2% при цели 25%"
       },
       "conversion": {
         "raw_value": {
@@ -2401,16 +2142,6 @@
         "weight": 2.0,
         "contribution": 1.6685,
         "explanation": "максимальная projected utilization 16.6%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
       },
       "latency": {
         "raw_value": 29,
@@ -2433,88 +2164,8 @@
     ],
     "ranking": [
       {
-        "provider": "vipay",
-        "combined_score": 0.652371,
-        "provider_priority": 1,
-        "score_breakdown": {
-          "count_share": {
-            "raw_value": {
-              "projected_pct": 20.0,
-              "target_pct": 40.0
-            },
-            "normalized_value": 0.8,
-            "weight": 2.0,
-            "contribution": 1.6,
-            "explanation": "projected count share 20.0% при цели 40.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 10.3734,
-              "target_pct": 50
-            },
-            "normalized_value": 0.603734,
-            "weight": 2.0,
-            "contribution": 1.207469,
-            "explanation": "projected volume share 0.104e2% при цели 50%"
-          },
-          "conversion": {
-            "raw_value": {
-              "value": 0.87,
-              "source": "provider_snapshot"
-            },
-            "normalized_value": 0.87,
-            "weight": 4.0,
-            "contribution": 3.48,
-            "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
-          },
-          "load_safe": {
-            "raw_value": 0.645,
-            "normalized_value": 0.355,
-            "weight": 2.0,
-            "contribution": 0.71,
-            "explanation": "максимальная projected utilization 64.5%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 7
-            },
-            "normalized_value": 0.857143,
-            "weight": 2.0,
-            "contribution": 1.714286,
-            "explanation": "projected RPM 1/7"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 3225000,
-              "min": null,
-              "max": 5000000
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.3225e7, коридор —–5000000"
-          },
-          "latency": {
-            "raw_value": 38,
-            "normalized_value": 0.0,
-            "weight": 1.0,
-            "contribution": 0.0,
-            "explanation": "latency 38 с; максимум допустимого пула 38 с"
-          },
-          "economy": {
-            "raw_value": 0.3,
-            "normalized_value": 0.2,
-            "weight": 0.5,
-            "contribution": 0.1,
-            "explanation": "маржинальный запас 0.3 п.п."
-          }
-        },
-        "rank": 1
-      },
-      {
         "provider": "quickpay",
-        "combined_score": 0.638752,
+        "combined_score": 0.652492,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -2526,16 +2177,6 @@
             "weight": 2.0,
             "contribution": 0.9,
             "explanation": "projected count share 80.0% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 93.7759,
-              "target_pct": 25
-            },
-            "normalized_value": 0.312241,
-            "weight": 2.0,
-            "contribution": 0.624481,
-            "explanation": "projected volume share 0.938e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -2554,16 +2195,6 @@
             "contribution": 1.6685,
             "explanation": "максимальная projected utilization 16.6%"
           },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
-          },
           "latency": {
             "raw_value": 29,
             "normalized_value": 0.236842,
@@ -2577,6 +2208,55 @@
             "weight": 0.5,
             "contribution": 0.233333,
             "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "vipay",
+        "combined_score": 0.62,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 20.0,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.8,
+            "weight": 2.0,
+            "contribution": 1.6,
+            "explanation": "projected count share 20.0% при цели 40.0%"
+          },
+          "conversion": {
+            "raw_value": {
+              "value": 0.87,
+              "source": "provider_snapshot"
+            },
+            "normalized_value": 0.87,
+            "weight": 4.0,
+            "contribution": 3.48,
+            "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
+          },
+          "load_safe": {
+            "raw_value": 0.645,
+            "normalized_value": 0.355,
+            "weight": 2.0,
+            "contribution": 0.71,
+            "explanation": "максимальная projected utilization 64.5%"
+          },
+          "latency": {
+            "raw_value": 38,
+            "normalized_value": 0.0,
+            "weight": 1.0,
+            "contribution": 0.0,
+            "explanation": "latency 38 с; максимум допустимого пула 38 с"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.5,
+            "contribution": 0.1,
+            "explanation": "маржинальный запас 0.3 п.п."
           }
         },
         "rank": 2
@@ -2658,7 +2338,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": []
@@ -2737,7 +2417,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -2824,7 +2504,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -2835,11 +2515,8 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "vipay",
-          "volume_share": "vipay",
           "conversion": "vipay",
           "load_safe": "quickpay",
-          "intensity": "quickpay",
-          "turnover_commitment": "vipay",
           "latency": "quickpay",
           "economy": "quickpay"
         },
@@ -2878,7 +2555,7 @@
         "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
-        "requests_last_minute": 1
+        "requests_last_minute": 0
       },
       "payflow": {
         "daily_approved_amount": 2900000,
@@ -2912,7 +2589,7 @@
   },
   {
     "operation_id": "op_106",
-    "selected_provider": "vipay",
+    "selected_provider": "quickpay",
     "attempts": [
       {
         "provider": "payflow",
@@ -2923,13 +2600,13 @@
         "threshold": 50000
       },
       {
-        "provider": "vipay",
+        "provider": "quickpay",
         "decision": "selected",
         "reason": "highest_combined_score",
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.638455,
+        "score": 0.644106,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -2940,89 +2617,58 @@
         }
       },
       {
-        "provider": "quickpay",
+        "provider": "vipay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.631215",
-        "score": 0.631215
+        "details": "rank 2, score 0.611846",
+        "score": 0.611846
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.638455,
+    "score": 0.644106,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 16.6667,
-          "target_pct": 40.0
+          "projected_pct": 83.3333,
+          "target_pct": 25.0
         },
-        "normalized_value": 0.766667,
+        "normalized_value": 0.416667,
         "weight": 2.0,
-        "contribution": 1.533333,
-        "explanation": "projected count share 16.7% при цели 40.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 17.7474,
-          "target_pct": 50
-        },
-        "normalized_value": 0.677474,
-        "weight": 2.0,
-        "contribution": 1.354949,
-        "explanation": "projected volume share 0.177e2% при цели 50%"
+        "contribution": 0.833333,
+        "explanation": "projected count share 83.3% при цели 25.0%"
       },
       "conversion": {
         "raw_value": {
-          "value": 0.87,
+          "value": 0.79,
           "source": "provider_snapshot"
         },
-        "normalized_value": 0.87,
+        "normalized_value": 0.79,
         "weight": 4.0,
-        "contribution": 3.48,
-        "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
+        "contribution": 3.16,
+        "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
       },
       "load_safe": {
-        "raw_value": 0.6504,
-        "normalized_value": 0.3496,
+        "raw_value": 0.17225,
+        "normalized_value": 0.82775,
         "weight": 2.0,
-        "contribution": 0.6992,
-        "explanation": "максимальная projected utilization 65.0%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 7
-        },
-        "normalized_value": 0.714286,
-        "weight": 2.0,
-        "contribution": 1.428571,
-        "explanation": "projected RPM 2/7"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 3252000,
-          "min": null,
-          "max": 5000000
-        },
-        "normalized_value": 0.65,
-        "weight": 2.0,
-        "contribution": 1.3,
-        "explanation": "projected turnover 0.3252e7, коридор —–5000000"
+        "contribution": 1.6555,
+        "explanation": "максимальная projected utilization 17.2%"
       },
       "latency": {
-        "raw_value": 38,
-        "normalized_value": 0.0,
+        "raw_value": 29,
+        "normalized_value": 0.236842,
         "weight": 1.0,
-        "contribution": 0.0,
-        "explanation": "latency 38 с; максимум допустимого пула 38 с"
+        "contribution": 0.236842,
+        "explanation": "latency 29 с; максимум допустимого пула 38 с"
       },
       "economy": {
-        "raw_value": 0.3,
-        "normalized_value": 0.2,
+        "raw_value": 0.7,
+        "normalized_value": 0.466667,
         "weight": 0.5,
-        "contribution": 0.1,
-        "explanation": "маржинальный запас 0.3 п.п."
+        "contribution": 0.233333,
+        "explanation": "маржинальный запас 0.7 п.п."
       }
     },
     "eligible_pool": [
@@ -3031,88 +2677,8 @@
     ],
     "ranking": [
       {
-        "provider": "vipay",
-        "combined_score": 0.638455,
-        "provider_priority": 1,
-        "score_breakdown": {
-          "count_share": {
-            "raw_value": {
-              "projected_pct": 16.6667,
-              "target_pct": 40.0
-            },
-            "normalized_value": 0.766667,
-            "weight": 2.0,
-            "contribution": 1.533333,
-            "explanation": "projected count share 16.7% при цели 40.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 17.7474,
-              "target_pct": 50
-            },
-            "normalized_value": 0.677474,
-            "weight": 2.0,
-            "contribution": 1.354949,
-            "explanation": "projected volume share 0.177e2% при цели 50%"
-          },
-          "conversion": {
-            "raw_value": {
-              "value": 0.87,
-              "source": "provider_snapshot"
-            },
-            "normalized_value": 0.87,
-            "weight": 4.0,
-            "contribution": 3.48,
-            "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
-          },
-          "load_safe": {
-            "raw_value": 0.6504,
-            "normalized_value": 0.3496,
-            "weight": 2.0,
-            "contribution": 0.6992,
-            "explanation": "максимальная projected utilization 65.0%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 7
-            },
-            "normalized_value": 0.714286,
-            "weight": 2.0,
-            "contribution": 1.428571,
-            "explanation": "projected RPM 2/7"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 3252000,
-              "min": null,
-              "max": 5000000
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.3252e7, коридор —–5000000"
-          },
-          "latency": {
-            "raw_value": 38,
-            "normalized_value": 0.0,
-            "weight": 1.0,
-            "contribution": 0.0,
-            "explanation": "latency 38 с; максимум допустимого пула 38 с"
-          },
-          "economy": {
-            "raw_value": 0.3,
-            "normalized_value": 0.2,
-            "weight": 0.5,
-            "contribution": 0.1,
-            "explanation": "маржинальный запас 0.3 п.п."
-          }
-        },
-        "rank": 1
-      },
-      {
         "provider": "quickpay",
-        "combined_score": 0.631215,
+        "combined_score": 0.644106,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
@@ -3124,16 +2690,6 @@
             "weight": 2.0,
             "contribution": 0.833333,
             "explanation": "projected count share 83.3% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 94.8805,
-              "target_pct": 25
-            },
-            "normalized_value": 0.301195,
-            "weight": 2.0,
-            "contribution": 0.602389,
-            "explanation": "projected volume share 0.949e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -3152,16 +2708,6 @@
             "contribution": 1.6555,
             "explanation": "максимальная projected utilization 17.2%"
           },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
-          },
           "latency": {
             "raw_value": 29,
             "normalized_value": 0.236842,
@@ -3175,6 +2721,55 @@
             "weight": 0.5,
             "contribution": 0.233333,
             "explanation": "маржинальный запас 0.7 п.п."
+          }
+        },
+        "rank": 1
+      },
+      {
+        "provider": "vipay",
+        "combined_score": 0.611846,
+        "provider_priority": 1,
+        "score_breakdown": {
+          "count_share": {
+            "raw_value": {
+              "projected_pct": 16.6667,
+              "target_pct": 40.0
+            },
+            "normalized_value": 0.766667,
+            "weight": 2.0,
+            "contribution": 1.533333,
+            "explanation": "projected count share 16.7% при цели 40.0%"
+          },
+          "conversion": {
+            "raw_value": {
+              "value": 0.87,
+              "source": "provider_snapshot"
+            },
+            "normalized_value": 0.87,
+            "weight": 4.0,
+            "contribution": 3.48,
+            "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
+          },
+          "load_safe": {
+            "raw_value": 0.6504,
+            "normalized_value": 0.3496,
+            "weight": 2.0,
+            "contribution": 0.6992,
+            "explanation": "максимальная projected utilization 65.0%"
+          },
+          "latency": {
+            "raw_value": 38,
+            "normalized_value": 0.0,
+            "weight": 1.0,
+            "contribution": 0.0,
+            "explanation": "latency 38 с; максимум допустимого пула 38 с"
+          },
+          "economy": {
+            "raw_value": 0.3,
+            "normalized_value": 0.2,
+            "weight": 0.5,
+            "contribution": 0.1,
+            "explanation": "маржинальный запас 0.3 п.п."
           }
         },
         "rank": 2
@@ -3255,8 +2850,8 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
-            "actual": 2,
-            "threshold": 7
+            "actual": 1,
+            "threshold": null
           }
         ],
         "failures": []
@@ -3335,7 +2930,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -3419,7 +3014,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -3430,11 +3025,8 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "vipay",
-          "volume_share": "vipay",
           "conversion": "vipay",
           "load_safe": "quickpay",
-          "intensity": "quickpay",
-          "turnover_commitment": "vipay",
           "latency": "quickpay",
           "economy": "quickpay"
         },
@@ -3447,7 +3039,7 @@
         "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
-        "requests_last_minute": 1
+        "requests_last_minute": 0
       },
       "payflow": {
         "daily_approved_amount": 2900000,
@@ -3470,10 +3062,10 @@
     },
     "state_after": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
-        "requests_last_minute": 2
+        "requests_last_minute": 0
       },
       "payflow": {
         "daily_approved_amount": 2900000,
@@ -3482,10 +3074,10 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1378000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 1
+        "requests_last_minute": 2
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -3532,7 +3124,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.653589,
+        "score": 0.57458,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -3546,7 +3138,7 @@
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.653589,
+    "score": 0.57458,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
@@ -3557,16 +3149,6 @@
         "weight": 2.0,
         "contribution": 1.585714,
         "explanation": "projected count share 14.3% при цели 35.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 0.2723,
-          "target_pct": 25
-        },
-        "normalized_value": 0.752723,
-        "weight": 2.0,
-        "contribution": 1.505446,
-        "explanation": "projected volume share 0.3e0% при цели 25%"
       },
       "conversion": {
         "raw_value": {
@@ -3584,27 +3166,6 @@
         "weight": 2.0,
         "contribution": 0.066133,
         "explanation": "максимальная projected utilization 96.7%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 1,
-          "limit": 15
-        },
-        "normalized_value": 0.933333,
-        "weight": 2.0,
-        "contribution": 1.866667,
-        "explanation": "projected RPM 1/15"
-      },
-      "turnover_commitment": {
-        "raw_value": {
-          "projected": 2900800,
-          "min": 2000000,
-          "max": null
-        },
-        "normalized_value": 0.65,
-        "weight": 2.0,
-        "contribution": 1.3,
-        "explanation": "projected turnover 0.29008e7, коридор 2000000–—"
       },
       "latency": {
         "raw_value": 52,
@@ -3627,7 +3188,7 @@
     "ranking": [
       {
         "provider": "payflow",
-        "combined_score": 0.653589,
+        "combined_score": 0.57458,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
@@ -3639,16 +3200,6 @@
             "weight": 2.0,
             "contribution": 1.585714,
             "explanation": "projected count share 14.3% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 0.2723,
-              "target_pct": 25
-            },
-            "normalized_value": 0.752723,
-            "weight": 2.0,
-            "contribution": 1.505446,
-            "explanation": "projected volume share 0.3e0% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -3666,27 +3217,6 @@
             "weight": 2.0,
             "contribution": 0.066133,
             "explanation": "максимальная projected utilization 96.7%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 15
-            },
-            "normalized_value": 0.933333,
-            "weight": 2.0,
-            "contribution": 1.866667,
-            "explanation": "projected RPM 1/15"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2900800,
-              "min": 2000000,
-              "max": null
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.29008e7, коридор 2000000–—"
           },
           "latency": {
             "raw_value": 52,
@@ -3735,7 +3265,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 3252800,
+            "actual": 3200800,
             "threshold": 5000000
           },
           {
@@ -3781,8 +3311,8 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
-            "actual": 2,
-            "threshold": 7
+            "actual": 1,
+            "threshold": null
           }
         ],
         "failures": [
@@ -3869,7 +3399,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": []
@@ -3902,7 +3432,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1326800,
+            "actual": 1378800,
             "threshold": 8000000
           },
           {
@@ -3944,8 +3474,8 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
-            "actual": 1,
-            "threshold": 20
+            "actual": 2,
+            "threshold": null
           }
         ],
         "failures": [
@@ -3963,10 +3493,10 @@
     "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
     "state_before": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
-        "requests_last_minute": 1
+        "requests_last_minute": 0
       },
       "payflow": {
         "daily_approved_amount": 2900000,
@@ -3975,10 +3505,10 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1378000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 0
+        "requests_last_minute": 1
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -3989,10 +3519,10 @@
     },
     "state_after": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
-        "requests_last_minute": 1
+        "requests_last_minute": 0
       },
       "payflow": {
         "daily_approved_amount": 2900800,
@@ -4001,10 +3531,10 @@
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1378000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
-        "requests_last_minute": 0
+        "requests_last_minute": 1
       },
       "spacepayments": {
         "daily_approved_amount": 15000,
@@ -4058,7 +3588,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.674455,
+        "score": 0.635614,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -4072,27 +3602,17 @@
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.674455,
+    "score": 0.635614,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 62.5,
+          "projected_pct": 75.0,
           "target_pct": 25.0
         },
-        "normalized_value": 0.625,
+        "normalized_value": 0.5,
         "weight": 2.0,
-        "contribution": 1.25,
-        "explanation": "projected count share 62.5% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 79.8094,
-          "target_pct": 25
-        },
-        "normalized_value": 0.451906,
-        "weight": 2.0,
-        "contribution": 0.903812,
-        "explanation": "projected volume share 0.798e2% при цели 25%"
+        "contribution": 1.0,
+        "explanation": "projected count share 75.0% при цели 25.0%"
       },
       "conversion": {
         "raw_value": {
@@ -4105,21 +3625,11 @@
         "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
       },
       "load_safe": {
-        "raw_value": 0.171,
-        "normalized_value": 0.829,
+        "raw_value": 0.1775,
+        "normalized_value": 0.8225,
         "weight": 2.0,
-        "contribution": 1.658,
-        "explanation": "максимальная projected utilization 17.1%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 1,
-          "limit": 20
-        },
-        "normalized_value": 0.95,
-        "weight": 2.0,
-        "contribution": 1.9,
-        "explanation": "projected RPM 1/20"
+        "contribution": 1.645,
+        "explanation": "максимальная projected utilization 17.8%"
       },
       "latency": {
         "raw_value": 29,
@@ -4142,28 +3652,18 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.674455,
+        "combined_score": 0.635614,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 62.5,
+              "projected_pct": 75.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.625,
+            "normalized_value": 0.5,
             "weight": 2.0,
-            "contribution": 1.25,
-            "explanation": "projected count share 62.5% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 79.8094,
-              "target_pct": 25
-            },
-            "normalized_value": 0.451906,
-            "weight": 2.0,
-            "contribution": 0.903812,
-            "explanation": "projected volume share 0.798e2% при цели 25%"
+            "contribution": 1.0,
+            "explanation": "projected count share 75.0% при цели 25.0%"
           },
           "conversion": {
             "raw_value": {
@@ -4176,21 +3676,11 @@
             "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
           },
           "load_safe": {
-            "raw_value": 0.171,
-            "normalized_value": 0.829,
+            "raw_value": 0.1775,
+            "normalized_value": 0.8225,
             "weight": 2.0,
-            "contribution": 1.658,
-            "explanation": "максимальная projected utilization 17.1%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 20
-            },
-            "normalized_value": 0.95,
-            "weight": 2.0,
-            "contribution": 1.9,
-            "explanation": "projected RPM 1/20"
+            "contribution": 1.645,
+            "explanation": "максимальная projected utilization 17.8%"
           },
           "latency": {
             "raw_value": 29,
@@ -4239,7 +3729,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 3294000,
+            "actual": 3242000,
             "threshold": 5000000
           },
           {
@@ -4286,7 +3776,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": [
@@ -4377,7 +3867,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -4421,7 +3911,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1368000,
+            "actual": 1420000,
             "threshold": 8000000
           },
           {
@@ -4464,7 +3954,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -4474,7 +3964,7 @@
     "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
     "state_before": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -4486,7 +3976,7 @@
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1326000,
+        "daily_approved_amount": 1378000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 0
@@ -4500,7 +3990,7 @@
     },
     "state_after": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -4512,7 +4002,7 @@
         "requests_last_minute": 1
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1420000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -4557,7 +4047,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.677369,
+        "score": 0.654434,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -4571,34 +4061,24 @@
         "provider": "vipay",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.664033",
-        "score": 0.664033
+        "details": "rank 2, score 0.601918",
+        "score": 0.601918
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.677369,
+    "score": 0.654434,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 66.6667,
+          "projected_pct": 77.7778,
           "target_pct": 25.0
         },
-        "normalized_value": 0.583333,
+        "normalized_value": 0.472222,
         "weight": 2.0,
-        "contribution": 1.166667,
-        "explanation": "projected count share 66.7% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 80.3933,
-          "target_pct": 25
-        },
-        "normalized_value": 0.446067,
-        "weight": 2.0,
-        "contribution": 0.892134,
-        "explanation": "projected volume share 0.804e2% при цели 25%"
+        "contribution": 0.944444,
+        "explanation": "projected count share 77.8% при цели 25.0%"
       },
       "conversion": {
         "raw_value": {
@@ -4611,21 +4091,11 @@
         "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
       },
       "load_safe": {
-        "raw_value": 0.17225,
-        "normalized_value": 0.82775,
+        "raw_value": 0.17875,
+        "normalized_value": 0.82125,
         "weight": 2.0,
-        "contribution": 1.6555,
-        "explanation": "максимальная projected utilization 17.2%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
+        "contribution": 1.6425,
+        "explanation": "максимальная projected utilization 17.9%"
       },
       "latency": {
         "raw_value": 29,
@@ -4649,28 +4119,18 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.677369,
+        "combined_score": 0.654434,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 66.6667,
+              "projected_pct": 77.7778,
               "target_pct": 25.0
             },
-            "normalized_value": 0.583333,
+            "normalized_value": 0.472222,
             "weight": 2.0,
-            "contribution": 1.166667,
-            "explanation": "projected count share 66.7% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 80.3933,
-              "target_pct": 25
-            },
-            "normalized_value": 0.446067,
-            "weight": 2.0,
-            "contribution": 0.892134,
-            "explanation": "projected volume share 0.804e2% при цели 25%"
+            "contribution": 0.944444,
+            "explanation": "projected count share 77.8% при цели 25.0%"
           },
           "conversion": {
             "raw_value": {
@@ -4683,21 +4143,11 @@
             "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
           },
           "load_safe": {
-            "raw_value": 0.17225,
-            "normalized_value": 0.82775,
+            "raw_value": 0.17875,
+            "normalized_value": 0.82125,
             "weight": 2.0,
-            "contribution": 1.6555,
-            "explanation": "максимальная projected utilization 17.2%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
+            "contribution": 1.6425,
+            "explanation": "максимальная projected utilization 17.9%"
           },
           "latency": {
             "raw_value": 29,
@@ -4718,28 +4168,18 @@
       },
       {
         "provider": "vipay",
-        "combined_score": 0.664033,
+        "combined_score": 0.601918,
         "provider_priority": 1,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 22.2222,
+              "projected_pct": 11.1111,
               "target_pct": 40.0
             },
-            "normalized_value": 0.822222,
+            "normalized_value": 0.711111,
             "weight": 2.0,
-            "contribution": 1.644444,
-            "explanation": "projected count share 22.2% при цели 40.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 17.9294,
-              "target_pct": 50
-            },
-            "normalized_value": 0.679294,
-            "weight": 2.0,
-            "contribution": 1.358589,
-            "explanation": "projected volume share 0.179e2% при цели 50%"
+            "contribution": 1.422222,
+            "explanation": "projected count share 11.1% при цели 40.0%"
           },
           "conversion": {
             "raw_value": {
@@ -4752,32 +4192,11 @@
             "explanation": "ожидаемая конверсия 87.0%; provider_snapshot"
           },
           "load_safe": {
-            "raw_value": 0.6524,
-            "normalized_value": 0.3476,
+            "raw_value": 0.642,
+            "normalized_value": 0.358,
             "weight": 2.0,
-            "contribution": 0.6952,
-            "explanation": "максимальная projected utilization 65.2%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 7
-            },
-            "normalized_value": 0.857143,
-            "weight": 2.0,
-            "contribution": 1.714286,
-            "explanation": "projected RPM 1/7"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 3262000,
-              "min": null,
-              "max": 5000000
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.3262e7, коридор —–5000000"
+            "contribution": 0.716,
+            "explanation": "максимальная projected utilization 64.2%"
           },
           "latency": {
             "raw_value": 38,
@@ -4826,7 +4245,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 3262000,
+            "actual": 3210000,
             "threshold": 5000000
           },
           {
@@ -4873,7 +4292,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": []
@@ -4952,7 +4371,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": [
@@ -4996,7 +4415,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1378000,
+            "actual": 1430000,
             "threshold": 8000000
           },
           {
@@ -5039,7 +4458,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -5050,13 +4469,10 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "vipay",
-          "volume_share": "vipay",
           "conversion": "vipay",
           "load_safe": "quickpay",
-          "intensity": "quickpay",
           "latency": "quickpay",
-          "economy": "quickpay",
-          "turnover_commitment": "vipay"
+          "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
       }
@@ -5064,7 +4480,7 @@
     "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
     "state_before": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -5076,7 +4492,7 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1368000,
+        "daily_approved_amount": 1420000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -5090,7 +4506,7 @@
     },
     "state_after": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -5102,7 +4518,7 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1378000,
+        "daily_approved_amount": 1430000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 2
@@ -5148,7 +4564,7 @@
         "result": "approved",
         "latency_sec": 24,
         "sequence": 1,
-        "score": 0.683898,
+        "score": 0.670331,
         "simulation": {
           "source": "scripted",
           "requested_source": "scripted",
@@ -5162,34 +4578,24 @@
         "provider": "payflow",
         "decision": "skipped",
         "reason": "lower_combined_score",
-        "details": "rank 2, score 0.672536",
-        "score": 0.672536
+        "details": "rank 2, score 0.583804",
+        "score": 0.583804
       }
     ],
     "simulated_result": "approved",
     "latency_sec": 24,
     "strategy": "balanced",
-    "score": 0.683898,
+    "score": 0.670331,
     "score_breakdown": {
       "count_share": {
         "raw_value": {
-          "projected_pct": 70.0,
+          "projected_pct": 80.0,
           "target_pct": 25.0
         },
-        "normalized_value": 0.55,
+        "normalized_value": 0.45,
         "weight": 2.0,
-        "contribution": 1.1,
-        "explanation": "projected count share 70.0% при цели 25.0%"
-      },
-      "volume_share": {
-        "raw_value": {
-          "projected_pct": 82.4261,
-          "target_pct": 25
-        },
-        "normalized_value": 0.425739,
-        "weight": 2.0,
-        "contribution": 0.851477,
-        "explanation": "projected volume share 0.824e2% при цели 25%"
+        "contribution": 0.9,
+        "explanation": "projected count share 80.0% при цели 25.0%"
       },
       "conversion": {
         "raw_value": {
@@ -5202,21 +4608,11 @@
         "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
       },
       "load_safe": {
-        "raw_value": 0.17725,
-        "normalized_value": 0.82275,
+        "raw_value": 0.18375,
+        "normalized_value": 0.81625,
         "weight": 2.0,
-        "contribution": 1.6455,
-        "explanation": "максимальная projected utilization 17.7%"
-      },
-      "intensity": {
-        "raw_value": {
-          "projected_rpm": 2,
-          "limit": 20
-        },
-        "normalized_value": 0.9,
-        "weight": 2.0,
-        "contribution": 1.8,
-        "explanation": "projected RPM 2/20"
+        "contribution": 1.6325,
+        "explanation": "максимальная projected utilization 18.4%"
       },
       "latency": {
         "raw_value": 29,
@@ -5240,28 +4636,18 @@
     "ranking": [
       {
         "provider": "quickpay",
-        "combined_score": 0.683898,
+        "combined_score": 0.670331,
         "provider_priority": 3,
         "score_breakdown": {
           "count_share": {
             "raw_value": {
-              "projected_pct": 70.0,
+              "projected_pct": 80.0,
               "target_pct": 25.0
             },
-            "normalized_value": 0.55,
+            "normalized_value": 0.45,
             "weight": 2.0,
-            "contribution": 1.1,
-            "explanation": "projected count share 70.0% при цели 25.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 82.4261,
-              "target_pct": 25
-            },
-            "normalized_value": 0.425739,
-            "weight": 2.0,
-            "contribution": 0.851477,
-            "explanation": "projected volume share 0.824e2% при цели 25%"
+            "contribution": 0.9,
+            "explanation": "projected count share 80.0% при цели 25.0%"
           },
           "conversion": {
             "raw_value": {
@@ -5274,21 +4660,11 @@
             "explanation": "ожидаемая конверсия 79.0%; provider_snapshot"
           },
           "load_safe": {
-            "raw_value": 0.17725,
-            "normalized_value": 0.82275,
+            "raw_value": 0.18375,
+            "normalized_value": 0.81625,
             "weight": 2.0,
-            "contribution": 1.6455,
-            "explanation": "максимальная projected utilization 17.7%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 2,
-              "limit": 20
-            },
-            "normalized_value": 0.9,
-            "weight": 2.0,
-            "contribution": 1.8,
-            "explanation": "projected RPM 2/20"
+            "contribution": 1.6325,
+            "explanation": "максимальная projected utilization 18.4%"
           },
           "latency": {
             "raw_value": 29,
@@ -5309,7 +4685,7 @@
       },
       {
         "provider": "payflow",
-        "combined_score": 0.672536,
+        "combined_score": 0.583804,
         "provider_priority": 2,
         "score_breakdown": {
           "count_share": {
@@ -5321,16 +4697,6 @@
             "weight": 2.0,
             "contribution": 1.7,
             "explanation": "projected count share 20.0% при цели 35.0%"
-          },
-          "volume_share": {
-            "raw_value": {
-              "projected_pct": 10.5754,
-              "target_pct": 25
-            },
-            "normalized_value": 0.855754,
-            "weight": 2.0,
-            "contribution": 1.711509,
-            "explanation": "projected volume share 0.106e2% при цели 25%"
           },
           "conversion": {
             "raw_value": {
@@ -5348,27 +4714,6 @@
             "weight": 2.0,
             "contribution": 0.039467,
             "explanation": "максимальная projected utilization 98.0%"
-          },
-          "intensity": {
-            "raw_value": {
-              "projected_rpm": 1,
-              "limit": 15
-            },
-            "normalized_value": 0.933333,
-            "weight": 2.0,
-            "contribution": 1.866667,
-            "explanation": "projected RPM 1/15"
-          },
-          "turnover_commitment": {
-            "raw_value": {
-              "projected": 2940800,
-              "min": 2000000,
-              "max": null
-            },
-            "normalized_value": 0.65,
-            "weight": 2.0,
-            "contribution": 1.3,
-            "explanation": "projected turnover 0.29408e7, коридор 2000000–—"
           },
           "latency": {
             "raw_value": 52,
@@ -5417,7 +4762,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 3292000,
+            "actual": 3240000,
             "threshold": 5000000
           },
           {
@@ -5464,7 +4809,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 7
+            "threshold": null
           }
         ],
         "failures": [
@@ -5555,7 +4900,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 1,
-            "threshold": 15
+            "threshold": null
           }
         ],
         "failures": []
@@ -5588,7 +4933,7 @@
             "eligible": true,
             "code": "eligible",
             "explanation": "дневной лимит не задан или соблюдён",
-            "actual": 1418000,
+            "actual": 1470000,
             "threshold": 8000000
           },
           {
@@ -5631,7 +4976,7 @@
             "code": "eligible",
             "explanation": "RPM limit не задан или соблюдён",
             "actual": 2,
-            "threshold": 20
+            "threshold": null
           }
         ],
         "failures": []
@@ -5642,13 +4987,10 @@
         "code": "policy_winners_disagree",
         "winners": {
           "count_share": "payflow",
-          "volume_share": "payflow",
           "conversion": "payflow",
           "load_safe": "quickpay",
-          "intensity": "payflow",
           "latency": "quickpay",
-          "economy": "quickpay",
-          "turnover_commitment": "payflow"
+          "economy": "quickpay"
         },
         "resolution": "weighted combined score and deterministic tie-break"
       }
@@ -5656,7 +4998,7 @@
     "tie_break_rule": "combined_score → policy_priority → provider.priority → payment_system",
     "state_before": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -5668,7 +5010,7 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1378000,
+        "daily_approved_amount": 1430000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 1
@@ -5682,7 +5024,7 @@
     },
     "state_after": {
       "vipay": {
-        "daily_approved_amount": 3252000,
+        "daily_approved_amount": 3200000,
         "in_progress_count": 4,
         "in_progress_amount": 380000,
         "requests_last_minute": 0
@@ -5694,7 +5036,7 @@
         "requests_last_minute": 0
       },
       "quickpay": {
-        "daily_approved_amount": 1418000,
+        "daily_approved_amount": 1470000,
         "in_progress_count": 1,
         "in_progress_amount": 50000,
         "requests_last_minute": 2

@@ -23,12 +23,14 @@ class AboutTest < ActionDispatch::IntegrationTest
     assert_select "#three-minutes a[href=?]", compare_strategies_path
   end
 
-  test "documentation serves only allowlisted repository documents as escaped text" do
+  test "documentation renders only allowlisted repository documents as Markdown" do
     assert_equal %w[cli web criteria_compliance architecture algorithm], AboutController::DOCUMENTS.keys
     AboutController::DOCUMENTS.each do |name, (_title, path)|
       get product_document_path(name)
       assert_response :success
-      assert_equal Rails.root.join(path).read, Nokogiri::HTML(response.body).at_css(".product-doc pre").text
+      assert_select ".product-doc h1", text: Rails.root.join(path).read.lines.first.delete_prefix("# ").strip
+      assert_select ".product-doc h2"
+      assert_select ".product-doc > pre:only-child", count: 0
     end
     %w[credentials readme formats final ../README.md %2e%2e%2fconfig/master.key].each do |name|
       get product_document_path(name)
@@ -41,6 +43,17 @@ class AboutTest < ActionDispatch::IntegrationTest
       get link["href"]
       assert_response :success
     end
+  end
+
+  test "CLI documentation renders navigation tables and fenced code" do
+    get product_document_path("cli")
+    assert_response :success
+    assert_select '.product-doc a[href="#installation"]', text: "Установка"
+    assert_select ".product-doc #installation"
+    assert_select ".product-doc strong", text: "3.4.10"
+    assert_select ".product-doc pre code.bash", text: /brew install rbenv/
+    assert_select ".product-doc__table table thead th", text: "Файл"
+    assert_select ".product-doc a[href=?]", product_document_path("algorithm", anchor: "constraints")
   end
 
   test "public JSON excerpts agree with a fresh scripted demo" do
@@ -59,7 +72,8 @@ class AboutTest < ActionDispatch::IntegrationTest
     assert_equal result.report.slice(*examples.last.keys), examples.last
     assert_equal "bank_not_in_list", decision["attempts"].find { |row| row["provider"] == "payflow" }["reason"]
     vipay = decision["attempts"].find { |row| row["provider"] == "vipay" }
-    assert_equal "expired", vipay["result"]
+    assert_equal "lower_combined_score", vipay["reason"]
+    assert_nil vipay["result"]
     assert_select ".product-decision__row b", text: vipay["score"].to_s
   end
 end

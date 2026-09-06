@@ -23,7 +23,7 @@ class StrategyComparisonAuditTest < ActionDispatch::IntegrationTest
         expected = entries.to_h do |name, entry|
           config = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/default.yml").to_s)
           config["simulation"]["source"] = "provider_snapshot"
-          config["provider_overrides"] = entry["parameters"]["provider_overrides"]
+          config["provider_overrides"] = source == "saved" ? entries.values.reduce({}) { |memo, row| DuoRoute::Configuration.merge(memo, row["parameters"]["provider_overrides"]) } : {}
           runner = DuoRoute::Runner.new(providers_data: providers, operations:, config:, preset: name, seed:)
           result = runner.call
           decisions = result.decisions
@@ -75,7 +75,7 @@ class StrategyComparisonAuditTest < ActionDispatch::IntegrationTest
           end
           expected_deviations = %w[distribution volume_distribution].map do |metric|
             values = report[metric].values.filter_map { |row| row["deviation_pp"] }
-            values.empty? ? "цель не задана" : "#{values.sum(&:abs).round(1)} п.п."
+            values.empty? ? "не задано" : "#{values.sum(&:abs).round(1)} п.п. (#{report[metric].select { |_, row| !row["target_pct"].nil? }.keys.join(", ")})"
           end
           assert_equal expected_deviations, css_select(".comparison-deviations b").map(&:text)
         end

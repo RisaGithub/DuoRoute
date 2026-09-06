@@ -8,6 +8,7 @@ module IconsHelper
     "play" => [ "M8 4l12 8-12 8z" ],
     "plus" => [ "M12 5v14 M5 12h14" ],
     "check" => [ "M20 6L9 17l-5-5" ],
+    "copy" => [ "M9 9h12v12H9z M15 9V3H3v12h6" ],
     "clock" => [ "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18 M12 7v5l3 2" ],
     "fallback" => [ "M5 4v10a4 4 0 0 0 4 4h10 M15 14l4 4-4 4 M5 8h10a4 4 0 0 0 4-4" ],
     "chart" => [ "M4 3v17h17 M8 15V9 M13 15V5 M18 15v-4" ],

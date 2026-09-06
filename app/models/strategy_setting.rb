@@ -13,11 +13,9 @@ class StrategySetting < ApplicationRecord
   end
 
   def self.apply(config, strategy, provider_names: nil)
-    entries = catalog
-    defaults = if %w[balanced custom].include?(strategy)
-      entries.values.reduce({}) { |result, entry| DuoRoute::Configuration.merge(result, entry.fetch("parameters")) }
-    else
-      entries.dig(strategy, "parameters") || {}
+    selected = %w[balanced custom].include?(strategy) ? all : where(name: strategy)
+    defaults = selected.reduce({}) do |result, setting|
+      DuoRoute::Configuration.merge(result, { "provider_overrides" => setting.provider_overrides })
     end
     if provider_names && defaults["provider_overrides"]
       defaults = defaults.merge("provider_overrides" => defaults["provider_overrides"].slice(*provider_names))
@@ -36,7 +34,7 @@ class StrategySetting < ApplicationRecord
     end
     provider_overrides.each do |provider, fields|
       fields.each do |key, value|
-        next if value.nil? && template[provider][key].nil?
+        next if value.nil? && (template[provider][key].nil? || key == "volume_share_pct")
         unless value.is_a?(Numeric) && value.finite? && value >= 0
           errors.add(:base, "#{provider} · #{key}: введите неотрицательное число")
           next
@@ -49,6 +47,7 @@ class StrategySetting < ApplicationRecord
     end
     %w[traffic_percentage volume_share_pct].each do |field|
       values = provider_overrides.values.filter_map { |fields| fields[field] }
+      next if field == "volume_share_pct" && values.length < provider_overrides.length
       if values.any? && values.all? { |value| value.is_a?(Numeric) } && (values.sum - 100).abs > 0.001
         errors.add(:base, "Сумма долей должна быть равна 100%")
       end

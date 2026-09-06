@@ -13,17 +13,23 @@ module DuoRoute
       def rehearse_final
         options, parser = common_options(providers: File.join(App::ROOT, "data/providers.json"),
           operations: File.join(App::ROOT, "data/operations_queue_10.json"), config: File.join(App::ROOT, "config/routing/final.yml"))
+        allow_reference_mismatch = false
+        parser.on("--allow-reference-mismatch", "разрешить только подтверждённое расхождение статического эталона") { allow_reference_mismatch = true }
+        mismatch = false
         return 0 if catch(:help) { parse_options!(parser); nil } == :help
         Dir.mktmpdir("duoroute-rehearsal-") do |dir|
           queue = File.join(dir, "operations_queue_test.json")
           FileUtils.cp(options[:operations], queue)
           args = [ "final", "--operations", queue, "--providers", File.expand_path(options[:providers]), "--config", File.expand_path(options[:config]), "--preset", options[:preset], "--quiet" ]
+          args << "--allow-reference-mismatch" if allow_reference_mismatch
           %i[history outcomes seed].each { |key| args.concat([ "--#{key}", options[key].to_s ]) if options[key] }
           args.concat([ "--audit-level", options[:audit_level] ]) if options[:audit_level]
           options[:settings].each { |value| args.concat([ "--set", value ]) }
           previous = nil
           2.times do
-            code = self.class.new(args, root: dir, out: StringIO.new, err: @err).run
+            final_output = StringIO.new
+            code = self.class.new(args, root: dir, out: final_output, err: @err).run
+            @out.puts final_output.string
             raise Error, "final pipeline failed in rehearsal" unless code.zero?
             decisions = File.join(dir, "routing_decisions_test.json")
             report = File.join(dir, "routing_report_test.json")
@@ -33,10 +39,10 @@ module DuoRoute
             current = [ File.read(decisions), deterministic_report(JSON.parse(File.read(report))) ]
             raise Error, "rehearsal is not deterministic" if previous && previous != current
             previous = current
-            public_validator!(options, decisions, strict: false)
+            mismatch = public_validator!(options, decisions, strict: !allow_reference_mismatch) == :reference_mismatch || mismatch
           end
         end
-        @out.puts "REHEARSAL PASS: настоящий final, два одинаковых результата; временные файлы удалены."
+        @out.puts "#{mismatch ? 'PASS WITH REFERENCE MISMATCH' : 'REHEARSAL PASS'}: настоящий final, обязательный semantic audit и повторяемость проверены; временные файлы удалены."
         0
       end
 
@@ -57,17 +63,38 @@ module DuoRoute
         output, status = Open3.capture2e(RbConfig.ruby, File.join(App::ROOT, "script/validate_10.rb"), decisions)
         if status.success?
           @out.puts "PASS: public validator"
-        elsif strict
-          raise Error, "public validator failed"
-        else
-          @out.puts "Public validator: не пройден; эталон требует фиксированного selected_provider, а final моделирует отказы. Независимый аудит проверен отдельно."
-          @out.puts output.lines.grep(/❌|ожидался/)
+          return :passed
         end
+        @out.puts output
+        unless reference_only_failure?(output, status, decisions)
+          raise Error, "public validator failed: ошибка не является подтверждённым reference mismatch"
+        end
+        explanation = "REFERENCE MISMATCH: статический эталон ожидает первоначального кандидата; selected_provider содержит итог после rejected/expired. Semantic audit обязателен."
+        @out.puts explanation
+        raise Error, "#{explanation} Для явного разрешения используйте --allow-reference-mismatch" if strict
+        :reference_mismatch
+      end
+
+      def reference_only_failure?(output, status, decisions)
+        return false unless status.exitstatus == 1
+        rows = Input::Loader.json_file(decisions)
+        reference = Input::Loader.json_file(File.join(App::ROOT, "data/reference_decisions.json"))
+        expected = reference.fetch("deterministic_cases").filter_map do |item|
+          row = rows.find { |decision| decision["operation_id"] == item["operation_id"] }
+          next unless row && row["selected_provider"] != item["required_provider"]
+          calls = row.fetch("attempts").select { |attempt| attempt.key?("result") }
+          first = calls.first
+          next unless first && first["provider"] == item["required_provider"] && %w[rejected expired].include?(first["result"])
+          "❌ #{row['operation_id']}: выбран #{row['selected_provider']}, ожидался #{item['required_provider']}"
+        end
+        failures = output.lines.map(&:strip).grep(/^❌ /).reject { |line| line.start_with?("❌ Ошибок:") }
+        count = output[/❌ Ошибок:\s+(\d+)/, 1]
+        expected.any? && failures.sort == expected.sort && count.to_i == expected.length
       end
 
       def run_check!(label, *command)
         output, status = Open3.capture2e(*command, chdir: App::ROOT)
-        raise Error, "#{label}: failed (exit #{status.exitstatus})" unless status.success?
+        raise Error, "#{label}: failed (exit #{status.exitstatus})\n#{output}" unless status.success?
         @out.puts "PASS: #{label}"
         output
       end
@@ -101,6 +128,15 @@ module DuoRoute
           options[:history] = File.join(@root, "data/operations_history.csv")
           build_runner(options).validate!
         end
+        check.call("default strategy evidence and configuration") do
+          selection = DefaultSelection.record
+          %w[default final].each do |name|
+            settings = Input::Loader.config_file(File.join(App::ROOT, "config/routing/#{name}.yml"))
+            resolved = Configuration.resolve(settings, strategy: selection.fetch("strategy"))
+            raise Error, "default weights differ from evidence" unless resolved.dig("presets", selection["strategy"], "weights") == selection["weights"]
+          end
+          raise Error, "default study incomplete" if selection["version"] == "study-pending"
+        end
         check.call("public demo, determinism, validators") do
           Dir.mktmpdir("duoroute-readiness-") do |dir|
             args = [ "demo", "--seed", "42", "--quiet" ]
@@ -124,6 +160,7 @@ module DuoRoute
             end
           end
         end
+        check.call("production documentation") { run_check!("production documentation", RbConfig.ruby, File.join(App::ROOT, "script/check_production_docs.rb")) }
         check.call("Markdown links") { run_check!("Markdown links", RbConfig.ruby, File.join(App::ROOT, "script/check_markdown_links.rb")) }
         check.call("no premature final files") do
           present = FINAL_FILES.select { |file| File.exist?(File.join(@root, file)) }

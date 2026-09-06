@@ -1,3 +1,4 @@
+<p class="hint">Поля показывают примеры параметров. Нажмите «Сохранить», чтобы применять их к новым запускам; без сохранения используются цели из входных данных.</p>
 <section class="strategy-list" aria-label="Список стратегий">
   <% @strategies.each_with_index do |(name, strategy), index| %>
     <% original = DuoRoute::StrategyCatalog.all.fetch(name).dig("parameters", "provider_overrides") %>
@@ -12,7 +13,7 @@
           <%= form_with url: strategy_settings_path(name: name), method: :patch, id: "strategy-form-#{name}", data: { turbo: false } do %>
             <div class="strategy-matrix-wrap">
               <table class="strategy-matrix" aria-label="Параметры: <%= strategy['title'] %>">
-                <thead><tr><th scope="col">Параметр<% if %w[count_share volume_share].include?(name) %><small class="strategy-rule">Сумма долей — 100%</small><% end %></th><% providers.each do |provider| %><th scope="col"><span class="strategy-provider-heading"><%= provider %><% if (description = strategy_provider_description(provider)) %><small title="Характеристика провайдера в демонстрационном наборе"><%= description %></small><% end %></span></th><% end %></tr></thead>
+                <thead><tr><th scope="col">Параметр<% if %w[count_share volume_share].include?(name) %><small class="strategy-rule"><%= name == "volume_share" ? "Пусто — не задано; полная сумма — 100%" : "Сумма долей — 100%" %></small><% end %></th><% providers.each do |provider| %><th scope="col"><span class="strategy-provider-heading"><%= provider %><% if (description = strategy_provider_description(provider)) %><small title="Характеристика провайдера в демонстрационном наборе"><%= description %></small><% end %></span></th><% end %></tr></thead>
                 <tbody>
                   <% original.values.flat_map(&:keys).uniq.each do |key| %>
                     <tr><th scope="row"><%= icon_label(strategy_parameter_label(key), strategy_parameter_icon(key)) %></th>
@@ -20,7 +21,7 @@
                         <td>
                           <% if original.fetch(provider).key?(key) %>
                             <% default = original.dig(provider, key); integer = %w[priority requests_per_minute_limit].include?(key) %>
-                            <%= number_field_tag "provider_overrides[#{provider}][#{key}]", strategy.dig("parameters", "provider_overrides", provider, key), id: "#{name}_#{provider}_#{key}", class: "input mono", min: integer ? 1 : 0, max: %w[traffic_percentage volume_share_pct].include?(key) ? 100 : nil, step: integer ? 1 : 0.01, required: !default.nil?, placeholder: "Без лимита", aria: { label: "#{provider} · #{strategy_parameter_label(key)}" }, title: "По умолчанию: #{default.nil? ? 'без ограничения' : number_with_delimiter(default, delimiter: ' ')}" %>
+                            <%= number_field_tag "provider_overrides[#{provider}][#{key}]", strategy.dig("parameters", "provider_overrides", provider, key), id: "#{name}_#{provider}_#{key}", class: "input mono", min: integer ? 1 : 0, max: %w[traffic_percentage volume_share_pct].include?(key) ? 100 : nil, step: integer ? 1 : 0.01, required: !default.nil? && key != "volume_share_pct", placeholder: key == "volume_share_pct" ? "не задано" : "Без лимита", aria: { label: "#{provider} · #{strategy_parameter_label(key)}" }, title: "По умолчанию: #{default.nil? ? 'без ограничения' : number_with_delimiter(default, delimiter: ' ')}" %>
                           <% else %>—<% end %>
                         </td>
                       <% end %>

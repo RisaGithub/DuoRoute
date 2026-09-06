@@ -71,8 +71,8 @@ class SubmissionAuditTest < ActiveSupport::TestCase
     before = DuoRoute::CLI::App::FINAL_FILES.to_h { |f| [ f, File.exist?(Rails.root.join(f)) ] }
     dirs_before = Dir.glob(File.join(Dir.tmpdir, "duoroute-rehearsal-*"))
     out = StringIO.new
-    assert_equal 0, DuoRoute::CLI::App.new([ "rehearse-final" ], out:, err: StringIO.new).run
-    assert_includes out.string, "REHEARSAL PASS"
+    assert_equal 0, DuoRoute::CLI::App.new([ "rehearse-final", "--allow-reference-mismatch" ], out:, err: StringIO.new).run
+    assert_includes out.string, "PASS WITH REFERENCE MISMATCH"
     assert_equal before, DuoRoute::CLI::App::FINAL_FILES.to_h { |f| [ f, File.exist?(Rails.root.join(f)) ] }
     assert_equal dirs_before, Dir.glob(File.join(Dir.tmpdir, "duoroute-rehearsal-*"))
     assert before.values.none?

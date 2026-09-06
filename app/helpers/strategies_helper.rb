@@ -1,7 +1,9 @@
 module StrategiesHelper
   def strategy_distribution_deviation(distribution)
-    deviations = distribution.values.filter_map { |row| row["deviation_pp"] }
-    deviations.empty? ? "цель не задана" : "#{deviations.sum(&:abs).round(1)} п.п."
+    value = DuoRoute::Reporting::ComparisonMetrics.deviation(distribution)
+    return "не задано" if value.nil?
+    names = DuoRoute::Reporting::ComparisonMetrics.targets(distribution).keys.join(", ")
+    "#{value.round(1)} п.п. (#{names})"
   end
 
   def strategy_provider_description(provider)

@@ -1,7 +1,7 @@
 {
   "providers_sha256": "01cf7dce518f527df95f5c251d45ff216240fd133ac1fd20ee3b6c8661ff8285",
   "operations_sha256": "a11ca7bdd1eb16dedf2b73d5042ab3da8aad7e37f0b9814722c40a797eeb2707",
-  "config_sha256": "b138d2d55dcbe84a4507fb0a8b0af5426e7bba141b1953292ebae14eeadd147b",
+  "config_sha256": "8984d49a24d6c4d86fa8298f7663fbe431217f47201b078cd1384fc769118e23",
   "history_sha256": "ab69a3ff6ea8bd410f1a5d89a1f5a6f3441aa0d75a8295c6ceea1c0637294391",
   "outcomes_sha256": "769a8b459f02a67cdba9d5b275c17b864c44c9a00d6a3047195ca1f872ee45a0",
   "resolved_configuration": {
@@ -16,40 +16,13 @@
       "fallback_provider": "spacepayments",
       "timeout_mode": "fallback_on_timeout"
     },
-    "provider_overrides": {
-      "vipay": {
-        "traffic_percentage": 40,
-        "volume_share_pct": 50,
-        "priority": 1,
-        "preferred_amount_min": 50001,
-        "preferred_amount_max": 100000,
-        "requests_per_minute_limit": 7,
-        "daily_turnover_max": 5000000
-      },
-      "payflow": {
-        "traffic_percentage": 35,
-        "volume_share_pct": 25,
-        "priority": 2,
-        "preferred_amount_min": 500,
-        "preferred_amount_max": 50000,
-        "requests_per_minute_limit": 15,
-        "daily_turnover_min": 2000000
-      },
-      "quickpay": {
-        "traffic_percentage": 25,
-        "volume_share_pct": 25,
-        "priority": 3,
-        "preferred_amount_min": 100000.01,
-        "preferred_amount_max": null,
-        "requests_per_minute_limit": 20
-      }
-    },
     "schema_version": "1.0",
     "calibration": {
       "enabled": false,
       "minimum_samples": 20,
       "prior_strength": 30
     },
+    "provider_overrides": {},
     "presets": {
       "balanced": {
         "weights": {
@@ -365,10 +338,11 @@
   "history_cutoff": "2026-07-30T09:00:00+03:00",
   "excluded_future_history_rows": 0,
   "seed": 42,
+  "random_scenario": "operation_provider_v2",
   "schema_version": "1.0",
   "app_version": "1.0.0",
   "ruby_version": "3.4.10",
-  "duration_ms": 11.852,
+  "duration_ms": 6.193,
   "preset": "balanced",
   "timeout_mode": "fallback_on_timeout",
   "audit_level": "full"

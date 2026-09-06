@@ -7,13 +7,16 @@
     </div>
     <details class="report-summary__help"><summary>Как читать показатели</summary><p>Approval — процент успешных операций. Reject — отказ; Expired — ответ не получен вовремя. Latency — среднее время итогового ответа, включая предшествующие попытки. Цель — значение из настроек провайдера или стратегии. Факт — результат выбранного запуска. Отклонение указано в процентных пунктах.</p></details>
   </div>
+  <% if (selection = report["strategy_selection"]) %>
+    <details><summary>Стратегия: <%= selection["strategy"] %> · <%= selection["default_version"] %></summary><p><%= selection["reason"] %></p><p>Фактические веса: <%= selection["actual_weights"].map { |name, weight| "#{name}=#{weight}" }.join(", ") %></p></details>
+  <% end %>
   <div class="report-summary__tables">
     <% [["Доли по количеству", "count", "distribution", "Операции", "count"], ["Доли по сумме", "wallet", "volume_distribution", "Сумма", "amount"]].each do |title, icon, key, value_label, value_key| %>
       <section class="report-summary__distribution">
         <h2><%= icon_label(title, icon) %></h2>
         <div class="table-wrap"><table aria-label="<%= title %>"><thead><tr><th scope="col">Провайдер</th><th scope="col"><%= value_label %></th><th scope="col">Цель</th><th scope="col">Факт</th><th scope="col" title="Отклонение в процентных пунктах">Δ, п.п.</th></tr></thead><tbody>
           <% report.fetch(key, {}).each do |name, row| %>
-            <tr><td><%= name %></td><td><%= value_key == "amount" ? money(row[value_key]) : row[value_key] %></td><td><%= pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"].nil? ? "—" : row["deviation_pp"] %></td></tr>
+            <tr><td><%= name %></td><td><%= value_key == "amount" ? money(row[value_key]) : row[value_key] %></td><td><%= row["target_pct"].nil? ? "не задано" : pct(row["target_pct"]) %></td><td><%= pct(row["share_pct"]) %></td><td><%= row["deviation_pp"].nil? ? "не задано" : row["deviation_pp"] %></td></tr>
           <% end %>
         </tbody></table></div>
       </section>

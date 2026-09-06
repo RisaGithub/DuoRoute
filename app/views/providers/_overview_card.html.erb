@@ -28,11 +28,11 @@
     <% [["Доля операций", distribution], ["Доля суммы", volume]].each do |label, values| %>
       <div class="provider-meter">
         <div class="provider-meter__label"><span><%= label %></span><strong><%= pct(values["share_pct"]) %></strong></div>
-        <div class="provider-meter__track" role="img" aria-label="<%= label %>: <%= pct(values['share_pct']) %>, цель <%= pct(values['target_pct']) %>">
+        <div class="provider-meter__track" role="img" aria-label="<%= label %>: <%= pct(values['share_pct']) %>, цель <%= values['target_pct'].nil? ? "не задано" : pct(values['target_pct']) %>">
           <span style="width: <%= values["share_pct"].to_f.clamp(0, 100) %>%"></span>
           <% unless values["target_pct"].nil? %><i style="left: <%= values["target_pct"].to_f.clamp(0, 100) %>%" aria-hidden="true"></i><% end %>
         </div>
-        <div class="provider-meter__caption"><span>Фактическая доля</span><span>Цель <%= pct(values["target_pct"]) %></span></div>
+        <div class="provider-meter__caption"><span>Фактическая доля</span><span>Цель <%= values["target_pct"].nil? ? "не задано" : pct(values["target_pct"]) %></span></div>
       </div>
     <% end %>
     <div class="provider-meter <%= 'provider-meter--warning' if utilization.to_f >= 85 %>">

@@ -29,10 +29,8 @@ module DuoRoute
       end
       catalog = StrategyCatalog.all
       entry = catalog[strategy]
-      defaults = entry ? entry.fetch("parameters").merge("presets" => { strategy => entry.slice("weights", "policy_priorities") }) : {}
-      if %w[balanced custom].include?(strategy)
-        defaults = catalog.values.reduce({}) { |combined, row| merge(combined, row.fetch("parameters")) }
-      end
+      # Catalog parameters are editable examples, never implicit input data.
+      defaults = entry ? { "presets" => { strategy => entry.slice("weights", "policy_priorities") } } : {}
       common = Input::Loader.config_file(File.expand_path("../../config/routing/default.yml", __dir__)).slice("simulation", "routing")
       result = merge(merge(common, defaults), config)
       result["presets"] ||= {}
@@ -67,7 +65,7 @@ module DuoRoute
     def self.validate_shape!(config)
       keys!(config, %w[schema_version routing simulation calibration provider_overrides presets resolved_strategy user_configuration input_metadata seed], "config")
       schemas = {
-        "routing" => %w[fallback_provider timeout_mode],
+        "routing" => %w[fallback_provider timeout_mode default_strategy],
         "simulation" => %w[source expired_rate minimum_samples latency_method failure_expired_share latency_spread_sec providers],
         "calibration" => %w[enabled minimum_samples prior_strength]
       }
@@ -75,6 +73,9 @@ module DuoRoute
       routing = config.fetch("routing", {})
       if routing.key?("fallback_provider") && (!routing["fallback_provider"].is_a?(String) || routing["fallback_provider"].strip.empty?)
         fail!("routing.fallback_provider", "ожидается непустая строка")
+      end
+      if routing.key?("default_strategy") && (!routing["default_strategy"].is_a?(String) || routing["default_strategy"].strip.empty?)
+        fail!("routing.default_strategy", "ожидается непустое имя стратегии")
       end
       overrides = config.fetch("provider_overrides", {})
       fail!("provider_overrides", "ожидается объект") unless overrides.is_a?(Hash)

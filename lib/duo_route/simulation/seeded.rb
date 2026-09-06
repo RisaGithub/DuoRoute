@@ -14,18 +14,19 @@ module DuoRoute
       end
 
       def call(operation:, provider:, attempt:)
-        value = unit("result", operation["operation_id"], provider["payment_system"], attempt)
+        # Each provider is called at most once per operation. Cascade position is not a random input.
+        value = unit("result", operation["operation_id"], provider["payment_system"], 1)
         profile = @profiles&.fetch(provider["payment_system"])
         conversion = profile ? profile["approved_rate"] : (provider["effective_conversion"] || provider["conversion_24h"])
         result = if value < conversion.to_f then "approved"
         elsif value < conversion.to_f + (profile ? profile["expired_rate"] : @expired_rate) then "expired" else "rejected"
         end
         average = provider["avg_latency_sec"].to_f
-        latency = result == "expired" ? [ (average * 8).round, 120 ].max : [ (average * (0.55 + unit("latency", operation["operation_id"], provider["payment_system"], attempt))).round, 1 ].max
+        latency = result == "expired" ? [ (average * 8).round, 120 ].max : [ (average * (0.55 + unit("latency", operation["operation_id"], provider["payment_system"], 1))).round, 1 ].max
         if profile
-          latency = [ (profile["average_latency_sec"] + (2 * unit("latency", operation["operation_id"], provider["payment_system"], attempt) - 1) * profile["latency_spread_sec"]).round, 0 ].max
+          latency = [ (profile["average_latency_sec"] + (2 * unit("latency", operation["operation_id"], provider["payment_system"], 1) - 1) * profile["latency_spread_sec"]).round, 0 ].max
         end
-        status_check = result == "expired" ? (unit("status", operation["operation_id"], provider["payment_system"], attempt) < conversion.to_f ? "approved" : "rejected") : nil
+        status_check = result == "expired" ? (unit("status", operation["operation_id"], provider["payment_system"], 1) < conversion.to_f ? "approved" : "rejected") : nil
         Outcome.new(result:, latency_sec: latency, status_check_result: status_check)
       end
 

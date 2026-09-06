@@ -15,7 +15,7 @@ class ConfigurationTest < ActiveSupport::TestCase
   test "resolver applies strategy defaults then user overrides and snapshots them" do
     resolved = DuoRoute::Configuration.resolve(config, strategy: "volume_share", settings: [ "provider_overrides.vipay.volume_share_pct=60" ])
     assert_equal 60, resolved.dig("provider_overrides", "vipay", "volume_share_pct")
-    assert_equal 25, resolved.dig("provider_overrides", "payflow", "volume_share_pct")
+    assert_nil resolved.dig("provider_overrides", "payflow", "volume_share_pct")
     assert_equal resolved, DuoRoute::Configuration.resolve(resolved, strategy: "volume_share")
     assert_empty config["provider_overrides"]
   end

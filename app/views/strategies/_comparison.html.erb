@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "strategy_comparison" do %>
 <section class="card panel compare-panel" id="comparison">
-  <div class="section-head"><div><p class="eyebrow">Одинаковые данные · разные приоритеты</p><h2><%= icon_label("Сравнение стратегий", "compare") %></h2><p class="hint">10 демоопераций · симуляция по snapshot · seed <%= @comparison_seed || params[:seed] || 42 %></p></div><span class="pill pill--info">What-if</span></div>
+  <div class="section-head"><div><p class="eyebrow">Одинаковые входы и ответы · разные приоритеты</p><h2><%= icon_label("Сравнение стратегий", "compare") %></h2><p class="hint">Общие цели и лимиты для всех стратегий · 10 демоопераций · симуляция по snapshot · seed <%= @comparison_seed || params[:seed] || 42 %></p></div><span class="pill pill--info">What-if</span></div>
   <div class="comparison-workspace">
     <%= form_with url: compare_strategies_path(anchor: "comparison"), method: :get, class: "comparison-sidebar", data: { turbo: false } do %>
       <% selected = @comparison ? @comparison.map { |row| row[:name] } : (params.key?(:presets) ? Array(params[:presets]) : (@comparison_submitted ? [] : @strategies.keys)) %>
@@ -44,6 +44,7 @@
             <tr class="<%= 'comparison-ranking__active' if row[:name] == @analysis[:name] %>"><td><%= @strategies.fetch(row[:name])["title"] %></td><td class="num <%= 'metric-best' if metrics['approval_rate_pct'] == @best_strategy[:report]['approval_rate_pct'] %>"><%= pct(metrics["approval_rate_pct"]) %></td><td class="num"><%= pct(metrics["fallback_rate_pct"]) %></td><td class="num"><%= metrics["average_latency_sec"] %> с</td></tr>
           <% end %>
         </tbody></table></div>
+        <p class="hint">Balanced остаётся стандартной комбинацией: на короткой очереди отдельная стратегия может дать лучший результат. Автоматический выбор по одному сценарию не гарантирует улучшения на новых исходах.</p>
         <div class="comparison-deviations"><span>Отклонение долей выбранной стратегии</span><span>По числу: <b><%= strategy_distribution_deviation(report["distribution"]) %></b></span><span>По сумме: <b><%= strategy_distribution_deviation(report["volume_distribution"]) %></b></span></div>
         <p class="hint">Отклонение — сумма абсолютных отклонений от целевых долей. Рейтинг относится только к этому демонабору; при других данных лидер может измениться.</p>
       <% else %>

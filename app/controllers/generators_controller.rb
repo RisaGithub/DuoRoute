@@ -22,8 +22,8 @@ class GeneratorsController < ApplicationController
     when "run"
       routing_config = DuoRoute::Input::Loader.config_file(Rails.root.join("config/routing/default.yml").to_s)
       DuoRoute::Runner.new(providers_data: @bundle["providers"], operations: @bundle["operations"],
-        config: routing_config, preset: "balanced", seed: @defaults[:seed], outcomes: @bundle["outcomes"]).validate!
-      run = RoutingRun.create!(name: "Generated #{@defaults[:scenario]}", preset: "balanced", seed: @defaults[:seed],
+        config: routing_config, preset: DuoRoute::DefaultSelection.strategy, seed: @defaults[:seed], outcomes: @bundle["outcomes"]).validate!
+      run = RoutingRun.create!(name: "Generated #{@defaults[:scenario]}", preset: DuoRoute::DefaultSelection.strategy, seed: @defaults[:seed],
         timeout_mode: "fallback_on_timeout", simulator_mode: "scripted", providers_json: JSON.generate(@bundle["providers"]),
         operations_json: JSON.generate(@bundle["operations"]), history_csv: history_csv(@bundle["history"]),
         config_json: JSON.generate(routing_config), outcomes_json: JSON.generate(@bundle["outcomes"]), total: @bundle["operations"].length)

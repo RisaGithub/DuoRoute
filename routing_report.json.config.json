@@ -10,40 +10,13 @@
     "fallback_provider": "spacepayments",
     "timeout_mode": "fallback_on_timeout"
   },
-  "provider_overrides": {
-    "vipay": {
-      "traffic_percentage": 40,
-      "volume_share_pct": 50,
-      "priority": 1,
-      "preferred_amount_min": 50001,
-      "preferred_amount_max": 100000,
-      "requests_per_minute_limit": 7,
-      "daily_turnover_max": 5000000
-    },
-    "payflow": {
-      "traffic_percentage": 35,
-      "volume_share_pct": 25,
-      "priority": 2,
-      "preferred_amount_min": 500,
-      "preferred_amount_max": 50000,
-      "requests_per_minute_limit": 15,
-      "daily_turnover_min": 2000000
-    },
-    "quickpay": {
-      "traffic_percentage": 25,
-      "volume_share_pct": 25,
-      "priority": 3,
-      "preferred_amount_min": 100000.01,
-      "preferred_amount_max": null,
-      "requests_per_minute_limit": 20
-    }
-  },
   "schema_version": "1.0",
   "calibration": {
     "enabled": false,
     "minimum_samples": 20,
     "prior_strength": 30
   },
+  "provider_overrides": {},
   "presets": {
     "balanced": {
       "weights": {

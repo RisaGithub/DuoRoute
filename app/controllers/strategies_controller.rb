@@ -64,8 +64,9 @@ class StrategiesController < ApplicationController
     config = routing_config
     config["simulation"] ||= {}
     config["simulation"]["source"] = "provider_snapshot"
+    config = StrategySetting.apply(config, "balanced", provider_names: providers["providers"].map { |p| p["payment_system"] }) if source == "saved"
     @comparison = presets.map do |preset|
-      resolved = DuoRoute::Configuration.merge(@comparison_catalog.fetch(preset).fetch("parameters"), config)
+      resolved = config
       result = DuoRoute::Runner.new(providers_data: providers, operations:, config: resolved, preset:, seed:).call
       { name: preset, report: result.report }
     end.sort_by do |row|

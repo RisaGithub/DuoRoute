@@ -3,6 +3,7 @@ schema_version: '1.0'
 routing:
   fallback_provider: spacepayments
   timeout_mode: fallback_on_timeout
+  default_strategy: balanced
 simulation:
   source: history
   minimum_samples: 20

@@ -74,6 +74,16 @@ class FinalSafetyTest < ActiveSupport::TestCase
     end
   end
 
+  test "strict reference failure never publishes a partial final pair" do
+    final_fixture do |root, args|
+      strict = args - [ "--allow-reference-mismatch" ]
+      assert_equal 2, DuoRoute::CLI::App.new(strict, root:, out: StringIO.new, err: StringIO.new).run
+      assert_empty Dir.glob("#{root}/routing*.json")
+      assert_empty Dir.glob("#{root}/**/*.{tmp,backup}-*")
+      assert_empty Dir.glob("#{root}/tmp/final_audit/*.json")
+    end
+  end
+
   private
 
   def final_fixture
@@ -82,7 +92,7 @@ class FinalSafetyTest < ActiveSupport::TestCase
       FileUtils.cp(Rails.root.join("data/operations_queue_10.json"), "#{root}/operations_queue_test.json")
       %w[providers.json operations_history.csv].each { |name| FileUtils.cp(Rails.root.join("data", name), "#{root}/data/#{name}") }
       FileUtils.cp(Rails.root.join("config/routing/final.yml"), "#{root}/config/routing/final.yml")
-      yield root, [ "final", "--quiet" ]
+      yield root, [ "final", "--quiet", "--allow-reference-mismatch" ]
     end
   end
 end

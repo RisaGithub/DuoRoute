@@ -93,6 +93,8 @@ ruby script/validate_10.rb routing_decisions.json
 <a id="settings"></a>
 ## Стратегии и параметры
 
+Числа в следующей таблице — примеры для явной настройки, а не автоматически добавляемые цели.
+
 Стратегия — правило предпочтения среди допустимых провайдеров. Ни один вес не отменяет обязательных ограничений.
 
 | Стратегия | Смысл | Основные параметры |
@@ -107,7 +109,7 @@ ruby script/validate_10.rb routing_decisions.json
 
 `balanced` — готовая комбинация: conversion 4; count_share, volume_share, load_safe, intensity, turnover_commitment по 2; latency 1; economy 0.5. `custom` позволяет задать собственные веса. Дополнительные факторы: загрузка `load_safe`, время ответа `latency`, запас маржи `economy`. Это не дополнительные самостоятельные стратегии. Старые профили `conversion_first`, `load_safe`, `economy_first` сохранены для совместимости.
 
-`--strategy` выбирает режим, `--preset` — его прежнее имя. `--config` читает YAML/JSON, `--set path=value` меняет отдельный ключ. Порядок: общие настройки → параметры стратегии → пользовательская конфигурация → точечные изменения; явный seed передаётся отдельно. Последнее изменение одного пути побеждает. Неизвестные настройки отклоняются.
+`--strategy` выбирает режим, `--preset` — его синоним. `--config` читает YAML/JSON, `--set path=value` меняет отдельный ключ. Порядок: общие настройки → веса стратегии → пользовательская конфигурация → точечные изменения; явный seed передаётся отдельно. Последнее изменение одного пути побеждает. Неизвестные настройки отклоняются.
 
 Обычная стратегия:
 
@@ -135,6 +137,12 @@ bin/router route --strategy custom --config config/routing/default.yml --seed 42
 ```
 
 Веса неотрицательны; хотя бы один положителен. 0 полностью отключает фактор, включая выбор при равенстве. Доли количества внешних провайдеров должны давать 100%; резерв в эту настройку не входит. Формулы и правило равенства — в [алгоритме](ALGORITHM.md).
+
+### Импорт и экспорт конфигурации
+
+Отдельных команд `import` и `export` нет. Импорт выполняется через `--config PATH`; результаты экспортируются через `--decisions PATH` и `--report PATH`. Рядом с отчётом сохраняются разрешённая конфигурация `<report>.config.json` и Manifest `<report>.manifest.json`.
+
+Для повторения используйте те же входы, seed и версию ядра, передав сохранённый Config в `--config`. Web скачивает тот же формат через «Config», а форма нового запуска принимает его в поле «Config YAML / JSON». Пользовательские веса задаются в `presets.custom.weights` и используют только зарегистрированные soft policies.
 
 <a id="simulation"></a>
 ## Симуляция ответов
@@ -172,7 +180,7 @@ bin/router route --strategy custom --config config/routing/default.yml --seed 42
 
 Все коды причин определены в [reason_codes.rb](../lib/duo_route/reason_codes.rb). Обязательные отказы перечислены в [карте ограничений](CRITERIA_COMPLIANCE.md#constraints); причины процесса включают `lower_combined_score`, `provider_rejected`, `provider_expired`, `provider_expired_status_rejected`, `highest_combined_score`, `timeout_held_until_status`, `external_pool_exhausted`.
 
-Совместимые поля отчёта: `period`, `total_operations`, `distribution`, `skip_reasons`, `projected_daily_utilization`, `recommendations` (массив строк). Использование дневного лимита содержит `used`, `limit`, `utilization_pct` и прежние совместимые имена `daily_used`, `daily_limit`, `daily_utilization_pct`.
+Совместимые поля отчёта: `period`, `total_operations`, `distribution`, `skip_reasons`, `projected_daily_utilization`, `recommendations` (массив строк). Использование дневного лимита содержит `used`, `limit`, `utilization_pct` и совместимые имена `daily_used`, `daily_limit`, `daily_utilization_pct`.
 
 Дополнения: `total_amount`, `volume_distribution`, отклонение `deviation_pp` в процентных пунктах, итоговые статусы, Approval/Fallback/Latency, `provider_performance`, `capacity_utilization`, `turnover_commitments`, `target_exceptions`, `history_analytics`, `recommendation_details`, `daily_state_history`, `daily_state_date`. Доли относятся только к итоговому провайдеру текущей очереди, включая неуспешные результаты; история не увеличивает знаменатель.
 
@@ -189,7 +197,7 @@ bin/router route --providers providers.json --operations operations.json \
 <a id="final"></a>
 ## Финальный запуск — только после получения очереди
 
-**Сейчас `operations_queue_test.json` отсутствует. Обычный `bin/router final` запускать нельзя.** Публичный пример не переименовывают в финальную очередь; конкурсные `_test`-файлы намеренно отсутствуют. Сейчас у `bin/router final --dry-run` ожидается контролируемая ошибка `file_not_found`, exit 2.
+**Для `final` требуется входной файл `operations_queue_test.json`.** Публичный пример не заменяет финальную очередь. Если файла нет, `bin/router final`, в том числе с `--dry-run`, возвращает `file_not_found`, exit 2.
 
 После получения настоящего файла:
 
@@ -250,6 +258,8 @@ bin/router route --providers providers.json --operations operations.json \
 <a id="readiness"></a>
 ## Проверка готовности и репетиция
 
+`readiness` включает `ruby script/check_production_docs.rb`: проверку пользовательских текстов и локальных файловых ссылок. Отдельная проверка Markdown также проверяет якоря.
+
 ```bash
 bin/router readiness
 bin/router readiness --full
@@ -262,9 +272,11 @@ bin/router rehearse-final --operations data/operations_queue_10.json \
 
 `--full` добавляет Rails tests, RuboCop, Brakeman, локальный bundler-audit без обновления базы и Zeitwerk. Сеть не нужна; тесты могут изменять тестовую SQLite, кэш и логи. Assets и benchmark остаются отдельными явными проверками, чтобы команда не меняла выдачу работающего сервера.
 
+**Strict по умолчанию:** `bin/router rehearse-final` возвращает exit 2 при любой обязательной ошибке, включая reference mismatch. Разрешить только объяснённое статическое расхождение: `bin/router rehearse-final --allow-reference-mismatch`. Тогда успешный статус — `PASS WITH REFERENCE MISMATCH` (exit 0), а не `REHEARSAL PASS`. Падение схемы, semantic audit, согласованности или другая ошибка публичного валидатора флагом не разрешаются. Аналогичный флаг поддерживает `final`; все применимые проверки выполняются до публикации.
+
 Rehearsal копирует только указанную очередь в `Dir.mktmpdir`, присваивает ей там конкурсное имя, дважды вызывает `CLI::App final` с временным root и теми же опциями. Внутренний и независимый валидаторы проверяют временные результаты; decisions совпадают побайтово, report — после исключения только `reproducibility.duration_ms`. Весь временный каталог удаляется и при ошибке. В корне проекта `_test`-файлы не создаются.
 
-Публичный валидатор запускается только на совпадающих публичных queue/providers. На вероятностном final seed 42 он сообщает один конфликт: op_108 может перейти к spacepayments после отказа quickpay, хотя эталон требует quickpay. Этот результат показывается явно и не отменяет независимое доказательство допустимого каскада. Для другой очереди public validator помечается N/A. Скрипт организаторов не изменяется; seed не подбирается.
+Публичный валидатор запускается только на совпадающих публичных queue/providers. На вероятностном final seed 42 он сообщает один конфликт: op_108 может перейти к spacepayments после отказа quickpay, хотя эталон требует quickpay. Этот результат показывается целиком и блокирует публикацию без явного разрешения. Обёртка сопоставляет каждую ошибку с reference и реально состоявшимся отказом первоначального кандидата; ID и провайдеры не зашиты в исключение. Для другой очереди public validator помечается N/A. Скрипт организаторов не изменяется; seed не подбирается.
 
 <a id="independent-audit"></a>
 ## Независимый аудит и схемы
@@ -287,4 +299,19 @@ bin/router feasibility --report routing_report.json
 
 `route --audit-level full|submission|compact`; final по умолчанию использует `submission`, обычные CLI/Web — `full`. Алгоритм выбора общий. Full сохраняет все проверки и вклад каждого кандидата. Submission сохраняет attempts со всеми причинами, все hard failures, eligibility, краткий ranking, выбранный score_breakdown и state до/после; успешные checks не повторяются, simulation profiles хранятся в report/Manifest. Compact дополнительно опускает снимки состояния отдельных операций. `audit_level` указан в Manifest. Для подробного финального аудита можно явно выбрать `--audit-level full`; автоматической второй полной копии нет.
 
-`evaluate-default` теперь выполняет прежние 258 и дополнительные 2 064 диагностических прогона; занимает несколько минут. Команда обновляет только артефакт исследования, **не меняет веса config** и не читает финальную очередь.
+`evaluate-default` выполняет 258 прогонов комбинаций, 2 064 проверки чувствительности и 672 сравнения семи стратегий с balanced; занимает несколько минут. Команда обновляет только артефакт исследования, **не меняет веса config** и не читает финальную очередь.
+
+
+## Применимые цели и честное сравнение
+
+Каталог содержит примеры параметров. Ядро и CLI не подмешивают их в providers: изменение стратегии меняет веса, а цели и лимиты берутся только из входа, config и `--set`. Для заданной явно цели объёма 0 отклонение рассчитывается; отсутствие поля или null исключает цель. `compare` возвращает `volume_absolute_deviation_pp: null`, если целей нет, и `volume_target_providers: []`. При частичных целях суммируются абсолютные отклонения только перечисленных провайдеров, без деления на два или нормализации неполной суммы. Аналогичный список есть для count targets.
+
+`selected_provider` — итоговый провайдер после каскада. Первоначальный кандидат — первая реальная попытка с `result`, а не первая строка attempts: перед вызовами могут находиться записи hard exclusions. Attempts сохраняет все вызовы, ответы, причины переходов и исключения. После исчерпания внешних кандидатов fallback становится итоговым провайдером, а report относит операцию к нему.
+
+Default — `balanced`, версия `paired-final-v1-2026-09-06`. Balanced — единственный проверенный статический кандидат с worst-case regret успешности не выше 0,1 п.п. и на validation, и на holdout. Кандидат `amount_range` имеет больший worst-case regret на holdout. Глобальная оптимальность не доказана. Полные числа и ограничения — в [финальном исследовании](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json).
+
+### Версия и доказательства default
+
+`routing.default_strategy` в default.yml/final.yml и `config/routing/default_selection.json` согласованы. CLI, Web и Runner используют эти настройки. `--strategy` явно выбирает другой режим. В Manifest и Report сохраняются `strategy_selection`: фактическая стратегия, веса, policy_priorities, причина, версия и основные validation/holdout-метрики. Seed и хеши входов находятся рядом в reproducibility. Пользовательские настройки отмечены отдельно; исследование default не доказывает их превосходства.
+
+Повторение исследования: `ruby script/evaluate_default_final.rb tmp/repeated-study.json`. Машинный результат основной проверки: [DEFAULT_STRATEGY_FINAL_EVALUATION.json](../artifacts/verification/DEFAULT_STRATEGY_FINAL_EVALUATION.json). Команда не меняет рабочие веса и не использует финальную очередь. `ruby script/replay_default_final.rb` сверяет решения по всем сценариям в обратном порядке.

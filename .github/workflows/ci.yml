@@ -83,6 +83,11 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Check production documentation
+        run: |
+          ruby script/check_production_docs.rb
+          ruby script/check_markdown_links.rb
+
       - name: Run tests
         env:
           RAILS_ENV: test
