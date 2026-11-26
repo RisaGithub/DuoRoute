@@ -27,6 +27,114 @@ bin/dev -b 127.0.0.1 -p 3000
 
 Откройте <http://localhost:3000>. Подготовка добавляет готовый публичный пример.
 
+## Веб-интерфейс на скриншотах
+
+На скриншотах — веб-интерфейс DuoRoute с демонстрационными данными. Нажмите на изображение, чтобы открыть его в полном размере.
+
+**Дашборд: успешность, резерв и распределение выплат**
+
+[![Дашборд: успешность, резерв и распределение выплат](docs/readme-screenshots/duoroute-03-dashboard.webp)](docs/readme-screenshots/duoroute-03-dashboard.webp)
+
+**Вклад стратегий в оценку и матрица ограничений**
+
+[![Вклад стратегий в оценку и матрица ограничений](docs/readme-screenshots/duoroute-16-decision.webp)](docs/readme-screenshots/duoroute-16-decision.webp)
+
+**Сравнение стратегий: успешность, резерв и задержка**
+
+[![Сравнение стратегий: успешность, резерв и задержка](docs/readme-screenshots/duoroute-18-comparison.webp)](docs/readme-screenshots/duoroute-18-comparison.webp)
+
+<details>
+<summary>Аналитика и карточки провайдеров</summary>
+
+**План и факт по сумме и количеству, достижимость целей**
+
+[![План и факт по сумме и количеству, достижимость целей](docs/readme-screenshots/duoroute-04-goals.webp)](docs/readme-screenshots/duoroute-04-goals.webp)
+
+**Провайдеры: оборот, загрузка и лимиты**
+
+[![Провайдеры: оборот, загрузка и лимиты](docs/readme-screenshots/duoroute-05-providers.webp)](docs/readme-screenshots/duoroute-05-providers.webp)
+
+**Vipay: показатели и ограничения**
+
+[![Vipay: показатели и ограничения](docs/readme-screenshots/duoroute-06-vipay.webp)](docs/readme-screenshots/duoroute-06-vipay.webp)
+
+**Payflow: показатели и ограничения**
+
+[![Payflow: показатели и ограничения](docs/readme-screenshots/duoroute-07-payflow.webp)](docs/readme-screenshots/duoroute-07-payflow.webp)
+
+**Quickpay: показатели и ограничения**
+
+[![Quickpay: показатели и ограничения](docs/readme-screenshots/duoroute-08-quickpay.webp)](docs/readme-screenshots/duoroute-08-quickpay.webp)
+
+**Spacepayments: резервный провайдер**
+
+[![Spacepayments: резервный провайдер](docs/readme-screenshots/duoroute-09-spacepayments.webp)](docs/readme-screenshots/duoroute-09-spacepayments.webp)
+
+</details>
+
+<details>
+<summary>Запуски, отчёты и разбор маршрута</summary>
+
+**История запусков**
+
+[![История запусков](docs/readme-screenshots/duoroute-10-runs.webp)](docs/readme-screenshots/duoroute-10-runs.webp)
+
+**Новый запуск: веса, симуляция и загрузка файлов**
+
+[![Новый запуск: веса, симуляция и загрузка файлов](docs/readme-screenshots/duoroute-11-new-run.webp)](docs/readme-screenshots/duoroute-11-new-run.webp)
+
+**Результат запуска: метрики и решения по выплатам**
+
+[![Результат запуска: метрики и решения по выплатам](docs/readme-screenshots/duoroute-12-run.webp)](docs/readme-screenshots/duoroute-12-run.webp)
+
+**Рекомендации и параметры воспроизводимости**
+
+[![Рекомендации и параметры воспроизводимости](docs/readme-screenshots/duoroute-13-reproducibility.webp)](docs/readme-screenshots/duoroute-13-reproducibility.webp)
+
+**Предпросмотр отчёта JSON**
+
+[![Предпросмотр отчёта JSON](docs/readme-screenshots/duoroute-14-report.webp)](docs/readme-screenshots/duoroute-14-report.webp)
+
+**Каскад попыток и переход на резерв**
+
+[![Каскад попыток и переход на резерв](docs/readme-screenshots/duoroute-15-fallback.webp)](docs/readme-screenshots/duoroute-15-fallback.webp)
+
+</details>
+
+<details>
+<summary>Каталог стратегий и генератор данных</summary>
+
+**Каталог семи стратегий**
+
+[![Каталог семи стратегий](docs/readme-screenshots/duoroute-17-strategies.webp)](docs/readme-screenshots/duoroute-17-strategies.webp)
+
+**Генератор сценариев и предпросмотр тестового набора**
+
+[![Генератор сценариев и предпросмотр тестового набора](docs/readme-screenshots/duoroute-19-generator.webp)](docs/readme-screenshots/duoroute-19-generator.webp)
+
+</details>
+
+<details>
+<summary>Страница продукта, архитектура и документация</summary>
+
+**Страница продукта**
+
+[![Страница продукта](docs/readme-screenshots/duoroute-01-product.webp)](docs/readme-screenshots/duoroute-01-product.webp)
+
+**Архитектура и документация**
+
+[![Архитектура и документация](docs/readme-screenshots/duoroute-02-architecture.webp)](docs/readme-screenshots/duoroute-02-architecture.webp)
+
+**Встроенная документация алгоритма**
+
+[![Встроенная документация алгоритма](docs/readme-screenshots/duoroute-20-documentation.webp)](docs/readme-screenshots/duoroute-20-documentation.webp)
+
+**Страница продукта целиком**
+
+[![Страница продукта целиком](docs/readme-screenshots/duoroute-21-product-full.webp)](docs/readme-screenshots/duoroute-21-product-full.webp)
+
+</details>
+
 ## Быстрый запуск CLI
 
 Из корня подготовленного проекта:
