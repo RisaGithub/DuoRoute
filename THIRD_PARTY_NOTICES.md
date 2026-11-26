@@ -2,7 +2,7 @@
 
 Все runtime/development зависимости перечислены с зафиксированными версиями в `Gemfile.lock`.
 
-- Ruby on Rails 8.1.3.1 и связанные gems — MIT License.
+- Ruby on Rails 8.1.4.1 и связанные gems — MIT License.
 - SQLite / `sqlite3` gem 2.9.6 — public domain / BSD-3-Clause bindings.
 - Puma 8.0.2 — BSD-3-Clause.
 - Hotwire Turbo 2.0.23, Stimulus 1.3.4, Importmap Rails 2.2.3 — MIT.

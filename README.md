@@ -16,7 +16,7 @@ JSON со состоянием провайдеров и очередью опе
 
 ## Быстрый запуск Web
 
-Нужны Ruby **3.4.10** через rbenv, Bundler и SQLite. Установка и исправление системной Ruby описаны в [CLI](docs/CLI.md#installation).
+Нужны Ruby **3.4.13** через rbenv, Bundler и SQLite. Установка и исправление системной Ruby описаны в [CLI](docs/CLI.md#installation).
 
 ```bash
 git clone https://github.com/RisaGithub/DuoRoute.git

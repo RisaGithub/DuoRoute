@@ -18,7 +18,7 @@ Web хранит историю расчётов локально и позво�
 <a id="start"></a>
 ## Запуск
 
-Подготовьте Ruby 3.4.10 через rbenv, Bundler и SQLite по [инструкции установки](CLI.md#installation). Из корня проекта:
+Подготовьте Ruby 3.4.13 через rbenv, Bundler и SQLite по [инструкции установки](CLI.md#installation). Из корня проекта:
 
 ```bash
 bin/setup --skip-server

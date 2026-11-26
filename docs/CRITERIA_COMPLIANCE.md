@@ -4,7 +4,7 @@ DuoRoute реализует последовательный выбор пров
 
 Код ядра — [lib/duo_route](../lib/duo_route), Web — [app](../app), команды — [CLI::App](../lib/duo_route/cli/app.rb). Проверяйте входы, матрицу ограничений, переходы и согласованность итогового JSON.
 
-После установки Ruby 3.4.10 через rbenv:
+После установки Ruby 3.4.13 через rbenv:
 
 ```bash
 bin/setup --skip-server

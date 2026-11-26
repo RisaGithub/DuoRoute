@@ -50,7 +50,7 @@ class AboutTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.product-doc a[href="#installation"]', text: "Установка"
     assert_select ".product-doc #installation"
-    assert_select ".product-doc strong", text: "3.4.10"
+    assert_select ".product-doc strong", text: RUBY_VERSION
     assert_select ".product-doc pre code.bash", text: /brew install rbenv/
     assert_select ".product-doc__table table thead th", text: "Файл"
     assert_select ".product-doc a[href=?]", product_document_path("algorithm", anchor: "constraints")

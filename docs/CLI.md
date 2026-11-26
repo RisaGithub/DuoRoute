@@ -17,12 +17,12 @@ CLI — команды без браузера. Они проверяют дан
 <a id="installation"></a>
 ## Требования и установка
 
-Проверенная среда: Ruby **3.4.10**, Bundler 2.6+, SQLite 3 для Web, rbenv для выбора Ruby. Из корня проекта на macOS с установленным Homebrew:
+Проверенная среда: Ruby **3.4.13**, Bundler 2.6+, SQLite 3 для Web, rbenv для выбора Ruby. Из корня проекта на macOS с установленным Homebrew:
 
 ```bash
 brew install rbenv ruby-build sqlite
-rbenv install -s 3.4.10
-rbenv local 3.4.10
+rbenv install -s 3.4.13
+rbenv local 3.4.13
 eval "$(rbenv init - zsh)"
 ruby -v
 gem install bundler
@@ -32,7 +32,7 @@ bin/setup --skip-server
 
 На Linux установите rbenv, ruby-build, SQLite и инструменты сборки пакетным менеджером своей системы; остальные команды те же. `bin/setup` готовит и Web-базу с публичным примером. Только для CLI достаточно Ruby и `bundle install`.
 
-Если видна системная Ruby 2.6, проверьте `which ruby` и `rbenv version`. Добавьте `eval "$(rbenv init - zsh)"` в `~/.zshrc`, откройте новый терминал. Немедленный обход: `rbenv exec ruby -v`, `rbenv exec ruby bin/router help`. Версия закреплена в `.ruby-version` и Gemfile. `bin/router` и `bin/setup` проверяют её до загрузки приложения и при несовпадении завершаются короткой ошибкой. Все дальнейшие команды предполагают Ruby 3.4.10.
+Если видна системная Ruby 2.6, проверьте `which ruby` и `rbenv version`. Добавьте `eval "$(rbenv init - zsh)"` в `~/.zshrc`, откройте новый терминал. Немедленный обход: `rbenv exec ruby -v`, `rbenv exec ruby bin/router help`. Версия закреплена в `.ruby-version` и Gemfile. `bin/router` и `bin/setup` проверяют её до загрузки приложения и при несовпадении завершаются короткой ошибкой. Все дальнейшие команды предполагают Ruby 3.4.13.
 
 <a id="demo"></a>
 ## Быстрый демонстрационный запуск
@@ -268,7 +268,7 @@ bin/router rehearse-final --operations data/operations_queue_10.json \
   --providers data/providers.json --history data/operations_history.csv
 ```
 
-Обычный readiness занимает около секунды на проверенной машине: Ruby 3.4.10, обязательные файлы, config, семь стратегий, providers/history, два demo во временном каталоге, внутренний и независимый аудит, публичный валидатор, шесть схем, Markdown-ссылки, отсутствие преждевременных финальных файлов и Git без содержимого файлов. Изменённое рабочее дерево разрешено; конфликты Git запрещены. `READY` означает exit 0, `NOT READY` — exit 2 со списком причин. Это режим **до получения финальной очереди**: наличие любого из трёх финальных файлов считается проблемой.
+Обычный readiness занимает около секунды на проверенной машине: Ruby 3.4.13, обязательные файлы, config, семь стратегий, providers/history, два demo во временном каталоге, внутренний и независимый аудит, публичный валидатор, шесть схем, Markdown-ссылки, отсутствие преждевременных финальных файлов и Git без содержимого файлов. Изменённое рабочее дерево разрешено; конфликты Git запрещены. `READY` означает exit 0, `NOT READY` — exit 2 со списком причин. Это режим **до получения финальной очереди**: наличие любого из трёх финальных файлов считается проблемой.
 
 `--full` добавляет Rails tests, RuboCop, Brakeman, локальный bundler-audit без обновления базы и Zeitwerk. Сеть не нужна; тесты могут изменять тестовую SQLite, кэш и логи. Assets и benchmark остаются отдельными явными проверками, чтобы команда не меняла выдачу работающего сервера.
 

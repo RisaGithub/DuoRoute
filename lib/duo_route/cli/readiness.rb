@@ -114,7 +114,10 @@ module DuoRoute
         rescue StandardError => e
           problems << "#{label}: #{e.is_a?(Error) ? e.message : e.class.name}"
         end
-        check.call("Ruby") { raise Error, "нужна Ruby 3.4.10, получена #{RUBY_VERSION}" unless RUBY_VERSION == "3.4.10" }
+        check.call("Ruby") do
+          required = File.read(File.join(App::ROOT, ".ruby-version")).strip
+          raise Error, "нужна Ruby #{required}, получена #{RUBY_VERSION}" unless RUBY_VERSION == required
+        end
         check.call("required files") do
           REQUIRED_FILES.each do |path|
             raise Error, "missing #{path}" unless File.file?(File.join(@root, path))
